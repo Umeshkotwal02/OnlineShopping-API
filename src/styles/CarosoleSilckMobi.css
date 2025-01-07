@@ -1,0 +1,105 @@
+.MobileCarasole{
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.MobileCarasole .slider-item {
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+    border-radius: 15px;
+  }
+
+.MobileCarasole .slider-image {
+    width: 100vw;
+    height: 25vh;
+    object-fit: fill;
+    border: 0px solid rgb(255, 255, 255);
+    border-radius: 11px;
+}
+
+.MobileCarasole .slick-slide {
+    padding: 0px 0px !important;
+    border-radius: 15px !important;
+    margin-bottom: -7px !important;
+  }
+  
+  .MobileCarasole .slick-list {
+    border-radius: 15px;
+    /* border-bottom-right-radius: 46px;
+    border-bottom-left-radius: 46px; */
+  }
+
+.MobileCarasole .custom-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 2;
+}
+
+.MobileCarasole .next-arrow {
+    right: -7px;
+}
+
+.MobileCarasole .prev-arrow {
+    left: -7px;
+}
+
+.MobileCarasole .custom-arrow img {
+    width: 30px;
+    height: auto;
+}
+
+
+.MobileCarasole .slick-dots {
+    position: relative;
+    bottom: 2px !important;
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+}
+
+.MobileCarasole .slick-dots li button:before {
+    font-family: 'slick';
+    font-size: 8px !important;
+    line-height: 15px !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 9px;
+    height: 10px;
+    content: '•';
+    opacity: 1 !important;
+    text-align: center;
+    color: #E1E1E1 !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.MobileCarasole .slick-dots li.slick-active button:before {
+    content: "•";
+    opacity: 1;
+    /* background-image: url(''); */
+    color: #B51B3B !important;
+    background-size: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 9px;
+    height: 10px;
+    display: inline-block;
+}
+
+.MobileCarasole .slick-dots li {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 0 -4px !important;
+    padding: 0;
+    cursor: pointer;
+}

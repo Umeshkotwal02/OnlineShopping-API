@@ -1,0 +1,43 @@
+
+/* Custom styles for the next and previous control icons */
+.custom-carousel .carousel-control-prev-icon,
+.custom-carousel .carousel-control-next-icon {
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.custom-carousel .carousel-control-prev-icon {
+  background-image: url("../../public/assets/images/Carasole-Img/sidechange-prev.png");
+  
+}
+
+.custom-carousel .carousel-control-next-icon {
+  background-image: url("../../public/assets/images/Carasole-Img/sidechange-next.png");
+
+}
+.carousel-control-next, .carousel-control-prev {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1% !important;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+  background: 0 0;
+  border: 0;
+  opacity: 1 !important;
+  transition: opacity .15s ease;
+}
+
+.carousel-control-next-icon, .carousel-control-prev-icon {
+  display: inline-block;
+  width: 2rem;
+  height: 4rem !important;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: 100% 100%;
+}

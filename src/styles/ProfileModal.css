@@ -1,0 +1,259 @@
+/* Profile Modal & Notification Modal Css Here */
+
+.profile-image {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    width: 200px;
+}
+
+.form-control {
+    background-clip: padding-box;
+    border-top: 0px !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+    border-bottom: 1px solid #CDCDCD;
+}
+
+.signin-heading {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    /* Space between heading and description */
+}
+
+.Profile-form-input {
+    height: 45px;
+    border-bottom: 1px solid #cdcdcd;
+    background-color: #F5F5F5 !important;
+    padding: 10px;
+    font-size: 1rem;
+    margin-bottom: 18px;
+    margin-top: 18px;
+}
+
+.btn-continue {
+    background-color: #B51B3B;
+    color: white;
+    padding: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+/* Horizontal line with text */
+.d-flex.align-items-center.my-3 {
+    margin: 20px 0;
+    /* Add space around the horizontal divider */
+}
+
+.social-login-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    /* Increase space between social buttons */
+    margin-top: 20px;
+    /* Add space above social login buttons */
+}
+
+/* Social icon background and hover effect */
+.icon-bg {
+    background-color: #f1f1f1;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+    /* Space below social buttons */
+}
+
+.icon-bg img {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-bg .fs-3 {
+    font-size: 30px;
+    color: #4285f4;
+    /* Google icon color */
+}
+
+.icon-bg:hover {
+    background-color: #e0e0e0;
+}
+
+.signup-text {
+    font-size: 0.9rem;
+    margin-top: 20px;
+    /* Space between social buttons and sign-up text */
+    margin-bottom: 20px;
+    /* Space between sign-up text and bottom */
+}
+
+.signup-link {
+    color: #e9b159;
+    cursor: pointer;
+}
+
+/* Styling for the terms and conditions */
+.terms-text {
+    font-size: 0.8rem;
+    color: black;
+    margin-top: 20px;
+    /* Add space above terms text */
+}
+
+.terms-link {
+    color: #e9b159;
+    text-decoration: none;
+}
+
+/* Close button on the left side */
+.custom-header .btn-close {
+    order: -1;
+    /* Move the close button to the left */
+}
+
+/* Styling for the Offcanvas Title (center it) */
+.custom-header .offcanvas-title {
+    margin-left: 20px;
+    flex-grow: 1;
+    /* Center the title */
+    text-align: center;
+}
+
+/* Notification Css ################################################################### */
+
+.modal{
+    border-radius: 20px;
+}
+
+.modal-header .btn-close {
+    width: 20px; 
+    height: 20px;
+    padding: 0;
+    font-size: 12px; 
+    font-weight: bold !important;
+    line-height: 1; 
+    color: #000;
+    background-color: transparent; 
+    border: none;
+    transition: transform 0.1s ease; 
+  }
+  @keyframes rotateCloseButton {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(180deg);
+    }
+  }
+  
+  /* Trigger rotation on click */
+  .modal-header .btn-close:hover {
+    animation: rotateCloseButton 0.5s ease-in-out;
+  }
+
+/* Limit the height of the modal body */
+.notification-scrollable {
+    max-height: 464px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.notification-modal-title {
+    font-size: 1.3rem !important;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* .modal-header {
+    padding: 0.5rem 1.2rem !important;
+    border: none !important;
+} */
+
+/* Notification item styles */
+.notification-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid #BFBFBF;
+    margin-bottom: 0.5rem;
+}
+
+.notification-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.notification-content {
+    flex: 1;
+    /* Allow it to take up remaining space */
+    overflow: hidden;
+    /* Ensure child doesn't overflow */
+}
+
+.notification-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+
+.notification-date {
+    font-size: 0.75rem;
+    color: #999;
+}
+
+/* Custom scrollbar styling (optional) */
+.notification-scrollable::-webkit-scrollbar {
+    width: 10px;
+}
+
+.notification-scrollable::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.notification-scrollable::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Target the scrollable area inside the modal */
+.notification-scrollable {
+    overflow-y: auto;
+    padding-right: 10px;
+  }
+  
+  /* WebKit Browsers (e.g., Chrome, Edge, Safari) */
+  .notification-scrollable::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+  }
+  
+  .notification-scrollable::-webkit-scrollbar-track {
+    background: #f0f0f0; /* Background color of the scrollbar track */
+    border-radius: 20px; /* Optional rounded corners */
+  }
+  
+  .notification-scrollable::-webkit-scrollbar-thumb {
+    background-color: #D6D3D3; /* Color of the scrollbar thumb */
+    border-radius: 20px; /* Optional rounded corners */
+    border: 1px solid #f0f0f0; /* Optional border for contrast */
+  }
+  
+  .notification-scrollable::-webkit-scrollbar-thumb:hover {
+    background-color: #D6D3D3; /* Darker color on hover */
+  }
+  
+
+  

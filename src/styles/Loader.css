@@ -1,0 +1,150 @@
+/* Loader container */
+.loader-container {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(252, 252, 252, 0.6) !important;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+/* Pulsating Bag Icon */
+.loader-bag {
+  display: inline-block;
+  animation: pulse 1.5s infinite;
+}
+
+
+/* Pulsating animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.loader-icon {
+  width: 60px;
+  height: auto;
+  display: block;
+  margin: -92px auto;
+}
+
+.loader-container h1 {
+  font-family: "KaushanScript";
+  font-weight: 100;
+  font-size: 1.8em;
+  color: black;
+}
+
+.animation-span span {
+  position: relative;
+  top: 0rem;
+  display: inline-block;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: rotateX(-90deg);
+}
+
+.let1 {
+  animation: drop 1.8s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+.let2 {
+  animation: drop 1.8s ease-in-out infinite;
+  animation-delay: 1.6s;
+}
+
+.let3 {
+  animation: drop 1.8s ease-in-out infinite;
+  animation-delay: 1.7s;
+}
+
+.let4 {
+  animation: drop 1.8s ease-in-out infinite;
+  animation-delay: 1.8s;
+
+}
+
+.let5 {
+  animation: drop 1.8s ease-in-out infinite;
+  animation-delay: 1.9s;
+}
+
+.let6 {
+  animation: drop 1.8s ease-in-out infinite;
+  animation-delay: 1.10s;
+}
+
+.let7 {
+  animation: drop 1.8s ease-in-out infinite;
+  animation-delay: 1.11s;
+}
+
+.let8 {
+  animation: drop 1.8s ease-in-out infinite;
+  animation-delay: 1.12s;
+}
+
+.let9 {
+  animation: drop 1.3s ease-in-out infinite;
+  animation-delay: 1.13s;
+}
+
+.let10 {
+  animation: drop 1.3s ease-in-out infinite;
+  animation-delay: 1.14s;
+}
+
+.let11 {
+  animation: drop 1.3s ease-in-out infinite;
+  animation-delay: 1.15s;
+}
+
+.let12 {
+  animation: drop 1.3s ease-in-out infinite;
+  animation-delay: 1.16s;
+}
+
+@keyframes drop {
+  10% {
+    opacity: 0.5;
+  }
+
+  20% {
+    opacity: 1;
+    top: 3.78em;
+    transform: rotateX(-360deg);
+  }
+
+  80% {
+    opacity: 1;
+    top: 3.78em;
+    transform: rotateX(-360deg);
+  }
+
+  90% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0;
+    top: 6.94em
+  }
+}

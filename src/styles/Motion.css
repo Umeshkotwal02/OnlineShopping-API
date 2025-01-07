@@ -1,0 +1,34 @@
+/* Parallax Background Section */
+.sixth-section {
+    background-attachment: fixed;
+    background-Image: url('../assets/images/motion.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 40vh;
+    width: 100%;
+  }
+  
+
+  /* Content Sections */
+  .content-section {
+    min-height: 100vh;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .content-section h1, h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+  }
+  
+  .content-section p {
+    max-width: 600px;
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  

@@ -1,0 +1,210 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.container-fluid {
+  max-width: 100%;
+}
+
+.offcanvas {
+  margin: 0 !important;
+  margin-right: 0px !important;
+  padding: 0 !important;
+  width: 100%;
+}
+
+
+
+
+/* Common style ++++++++++++++++++++++++++++++++++++*/
+.web-bg-color {
+  background-color: #F3F3F3;
+}
+
+.text-size {
+  font-size: 0.9rem;
+}
+
+.font-color-global {
+  color: #666464;
+}
+
+.box-shadow {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.product-cart-close-btn {
+  opacity: 0.35 !important;
+  background-color: rgba(164, 164, 164, 1) !important;
+  border-radius: 8px !important;
+  font-size: 0.8rem !important;
+  margin: 5px !important;
+  padding: 0px 3px 0px 3px !important;
+}
+
+
+
+
+
+
+
+/* banner */
+.banner {
+  background-image: url("./assets/images/Banner/Banner.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+/* festival animation */
+.transition-transform {
+  transition-duration: .15s;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+}
+
+
+/* Bridal Banner */
+.image-overlay-text {
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent black background */
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+/* for web */
+.custom-placeholder::placeholder {
+  color: black !important;
+  font-size: 13px !important;
+}
+
+/* for web */
+.Mobile-placeholder::placeholder {
+  color: black !important;
+  font-size: 16px !important;
+}
+
+/* Cart OffCanva */
+.cart-para {
+  margin-bottom: 0px !important;
+  margin-bottom: 0rem !important;
+}
+
+
+/* Slider */
+/* scroll bar  */
+::-webkit-scrollbar {
+  width: 8px;
+  /* Scrollbar width */
+  height: auto;
+  /* Scrollbar height */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #C7C7C7;
+  /* Scrollbar thumb color */
+  border-radius: 10px;
+  /* Rounded corners */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a6a6a6;
+  /* Thumb color on hover */
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(101, 98, 98);
+  border-radius: 10px;
+  /* Scrollbar track color */
+}
+
+
+/* Payment Form */
+.custom-check-form .form-check-input:checked[type=radio] {
+  --bs-form-check-bg-image: url("./assets/images/form-checkout/checkedot.png") !important;
+}
+
+.custom-check-form .form-check-input:checked {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+  border: 0px;
+}
+
+.custom-check-form .form-check-input {
+  border: 2px solid #C4C3C3;
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+}
+
+.Address-Form .form-control {
+  background-color: #F5F5F5;
+  padding: 0.66rem;
+}
+
+.Address-Form::placeholder {
+  color: #A7A7A7 !important;
+  font-size: 1.2rem !important;
+}
+
+.form-switch .form-check-input {
+  background-image: url("./assets/images/form-checkout/swichdot.png") !important;
+  background-color: black !important;
+  width: 2.1rem !important;
+  height: 1.2rem !important;
+}
+
+/* Table */
+.table {
+  --bs-table-bg: "#F3F3F3" !important;
+}
+
+.tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+  border-color: inherit;
+  border-style: none !important;
+  border-width: 0;
+}
+
+.no-style {
+  resize: none !important;
+}
+
+/* Common Radius */
+.cmn-btn {
+  border-radius: 8px !important;
+}
+
+.accordion-button {
+  border-bottom: 0px !important;
+  color: black !important;
+}
+
+.accordion-button:not(.collapsed) {
+  border-bottom: 0px !important;
+  color: black !important;
+}
+
+.contact-us .form-control {
+  padding: 12px !important;
+}
+
+@media (min-width: 0) and (max-width: 768px) {
+  .slick-arrow {
+    display: none !important;
+  }
+}

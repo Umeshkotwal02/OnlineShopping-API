@@ -1,0 +1,30 @@
+* {
+  font-family: 'Roboto';
+}
+
+@font-face {
+  font-family: "KaushanScript";
+  src: url("../src/assets/fonts/KaushanScript-Regular.ttf") format("truetype"),
+    url("../src/assets/fonts/roboto-v30-latin-regular.woff2") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("../src/assets/fonts/roboto-v30-latin-regular.woff2") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Roboto';
+}
+
+.container-fluid {
+  max-width: 100%;
+}
+
+code {
+  font-family: 'Roboto', sans-serif;
+}

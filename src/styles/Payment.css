@@ -1,0 +1,113 @@
+/* style.css */
+.payment-method-header {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.payment-method-paragraph {
+    font-size: 1.2rem;
+    line-height: 120%;
+    color: #535353;
+}
+
+.bg-design {
+    padding: 0.5rem;
+    background-color: #F3F3F3;
+    border-radius: 10px;
+    margin: 0px;
+}
+
+.btn-payment {
+    background-color: #B51B3B;
+    color: white;
+    padding: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+/* ++++++++++++++++++++++++++++ Order Success Modal Css +++++++++++++++++++++++ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    margin-bottom: 20px;
+}
+
+.success-image {
+    width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.modal-title {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.modal-body {
+    margin-bottom: 20px;
+}
+
+.modal-message {
+    font-size: 16px;
+}
+
+.modal-footer {
+    margin-top: 10px;
+}
+
+.btn-back-home:hover {
+    background-color: #d1a148;
+}
+
+.btn-after-order {
+    background-color: #F3F3F3;
+    color: black;
+    padding: 10px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+.success-model .modal-content {
+    border-radius: 30px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+    max-width: 410px;
+
+}
+
+.modal-dialog {
+
+    /* max-width: 410px !important; */
+}
+
+/* Custom Modal Width */
+.modal-dialog.custom-width {
+    width: 100%;
+    border-radius: 30px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+}

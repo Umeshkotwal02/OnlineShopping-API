@@ -1,0 +1,143 @@
+/* Search input */
+.search-input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: none;
+  outline: none;
+  border-radius: 1.25rem;
+  font-size: 1rem;
+  background-color: #f7f7f7;
+  flex-grow: 1;
+  /* Ensure input stretches to fill space */
+}
+
+.search-bar img {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.search-related-product {
+  border-top: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #F3F3F3;
+  border-radius: 1.25rem;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.search-related-product img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+}
+
+.search-title {
+  flex-grow: 1;
+  margin-left: 10px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.search-arrow {
+  font-size: 1.2rem;
+  color: #333;
+  opacity: 0.4;
+}
+
+/* Style the placeholder text */
+.custom-placeholder::placeholder {
+  font-weight: normal !important;
+  font-size: 1rem !important;
+  color: rgb(0, 0, 0) !important;
+}
+
+/* Style the entered text (value) */
+.custom-placeholder {
+  font-weight: 500 !important;
+  font-size: 1rem !important;
+  color: rgb(0, 0, 0) !important;
+}
+
+
+@media (min-width: 992px) {
+  .dropdown-menu-custom {
+    position: absolute;
+    top: 100% !important;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    background-color: #fff;
+    border-radius: 0 0 1.25rem 1.25rem;
+    padding: 1rem;
+    z-index: 10;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    max-height: 400px;
+    /* Set height to display only 5 items */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    scrollbar-width: none;
+    /* For Firefox */
+    -ms-overflow-style: none;
+    /* For Internet Explorer */
+  }
+}
+
+@media (max-width: 576px) {
+  .search-input {
+    font-size: 0.8rem;
+  }
+
+  .search-related-product img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .search-title {
+    font-size: 1rem;
+  }
+
+  .search-arrow {
+    font-size: 1rem;
+  }
+
+  .dropdown-menu-custom {
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    background-color: #fff;
+    border-radius: 0 0 1.25rem 1.25rem;
+    padding: 1rem;
+    z-index: 10;
+    /* Hide scrollbar for Internet Explorer and Edge */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    max-height: 400px;
+    /* Set height to display only 5 items */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    scrollbar-width: none;
+    /* For Firefox */
+    -ms-overflow-style: none;
+    /* For Internet Explorer */
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.dropdown-menu-custom::-webkit-scrollbar {
+  display: none;
+}
+
+@media screen and (max-width: 576px) {
+  .dropdown-menu-custom {
+    max-height: 50%;
+  }
+}

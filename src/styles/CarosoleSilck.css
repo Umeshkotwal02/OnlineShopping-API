@@ -1,0 +1,121 @@
+.CarosoleSlickSlider {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.CarosoleSlickSlider .slick-slider {
+  overflow: visible;
+}
+
+.caro-img {
+  width: 100%;
+  height: 75vh;
+  object-fit: cover;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+.CarosoleSlickSlider .slider-item {
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  border-radius: 0px;
+}
+
+.CarosoleSlickSlider .custom-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.CarosoleSlickSlider .next-arrow {
+  right: -5px;
+}
+
+.CarosoleSlickSlider .prev-arrow {
+  left: -5px;
+}
+
+.CarosoleSlickSlider .custom-arrow img {
+  width: 22px;
+  height: auto;
+}
+
+.CarosoleSlickSlider .slick-dots {
+  position: absolute;
+  bottom: 20px !important;
+  display: inline-block;
+  width: 99%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.CarosoleSlickSlider .slick-dots li button:before {
+  content: '';
+  opacity: 1;
+  background-image: url('../assets/images/Carasole-Img/deactivebtn.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 12px;
+  height: 18px;
+  display: inline-block;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.CarosoleSlickSlider .slick-dots li.slick-active button:before {
+  content: '';
+  opacity: 1;
+  background-image: url('../assets/images/Carasole-Img/activebtn.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 13.8px;
+  height: 17px;
+  display: inline-block;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+
+.CarosoleSlickSlider .slick-dots li.slick button {
+  content: '';
+  opacity: 1;
+  background-image: url('../assets/images/Carasole-Img/activebtn.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 13px;
+  height: 19px;
+  display: inline-block;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.CarosoleSlickSlider .slick-dots li {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 0 0px !important;
+  padding: 0;
+  cursor: pointer;
+}
+
+.CarosoleSlickSlider .slick-slide {
+  padding: 0px 0px !important;
+  border-radius: 30px !important;
+  margin-bottom: -7px !important;
+}
+
+.CarosoleSlickSlider .slick-list {
+  border-radius: 30px;
+  /* border-bottom-right-radius: 46px;
+  border-bottom-left-radius: 46px; */
+}

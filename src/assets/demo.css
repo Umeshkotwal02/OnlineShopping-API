@@ -1,0 +1,95 @@
+
+.wave-container {
+
+    background: #f9f9f9;
+    position: absolute;
+    width: 1640px;
+    height: 200px;
+    left: calc(50% - 1640px / 2);
+    top: 2238px;
+  
+    background: #ffffff;
+    border: 10px solid #E3E1E1;
+    border-radius: 10px;
+    clip-path: path("M0,100 C150,200 350,0 500,100 C650,200 850,0 1000,100 L1000,200 L0,200 Z");
+  }
+  
+  
+
+.steps-section {
+    padding: 50px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+    position: relative;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 50px;
+  }
+  
+  .highlight {
+    color: #ff6ec7;
+  }
+  
+  /* Steps Container */
+  .steps-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .step-item {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    width: 30%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .step-number {
+    display: block;
+    background: #f4f4f4;
+    border-radius: 20px;
+    color: #6c63ff;
+    font-weight: bold;
+    padding: 10px 20px;
+    margin: 0 auto 15px;
+    width: fit-content;
+  }
+  
+  .step-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .step-description {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 15px;
+  }
+  
+  .step-image {
+    width: 100%;
+    border-radius: 10px;
+    max-height: 200px;
+    object-fit: contain;
+  }
+  
+  /* Curved Connector */
+  .curved-connector {
+    position: absolute;
+    width: 80%;
+    height: 150px;
+    border-top: 2px solid #ddd;
+    border-radius: 100%;
+    top: 40%;
+    left: 10%;
+    z-index: -1;
+  }
+  
+  

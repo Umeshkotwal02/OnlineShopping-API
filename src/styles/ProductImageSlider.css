@@ -1,0 +1,113 @@
+/* Container styling */
+.product-slider-container {
+  position: relative;
+  height: 100%;
+}
+
+/* Slider buttons styling */
+.slider-button {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #ededed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border: none;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity 0.3s ease;
+}
+
+.product-slider-container:hover .slider-button {
+  opacity: 1;
+}
+
+.slider-button-prev {
+  left: 8px;
+}
+
+.slider-button-next {
+  right: 8px;
+}
+
+/* Icon size */
+.icon-lg {
+  font-size: 1.25rem;
+  /* Equivalent to text-lg */
+}
+
+/* Swiper styling */
+.product-image-slider {
+  position: relative;
+  height: 100%;
+}
+
+/* Individual Slide */
+.slider-slide {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Image container */
+.slider-image-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  z-index: 1 !important;
+  /* border-radius: 20px; */
+}
+
+/* Image styling */
+.slider-image {
+  height: 100%;
+  width: 100%;
+  object-fit: fill;
+  transition: transform 0.8s ease;
+}
+
+.slider-image:hover {
+  transform: scale(1.05);
+}
+
+/* New Arrive  */
+/* Container background */
+.product-image-slider.swiper .swiper-pagination.swiper-pagination-bullets {
+  background: #0000004d;
+  bottom: 72px !important;
+  opacity: 0;
+  padding: 3px 6px;
+}
+
+.product-slider-container:hover .product-image-slider.swiper .swiper-pagination.swiper-pagination-bullets {
+  opacity: 1;
+}
+
+.swiper .swiper-pagination.swiper-pagination-bullets {
+  border-radius: 30px;
+  display: inline-flex;
+  justify-content: center;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: -webkit-max-content !important;
+  width: max-content !important;
+}
+
+.swiper-pagination-bullet:only-child {
+  display: none !important;
+}
+
+.product-image-slider.swiper .swiper-pagination-bullet {
+  background: #9c9c9c;
+  margin: 0 2px !important;
+  opacity: 1;
+}
+
+.product-image-slider.swiper .swiper-pagination-bullet-active {
+  background-color: rgb(255, 255, 255);
+}

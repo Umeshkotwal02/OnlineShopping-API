@@ -1,0 +1,126 @@
+.offcanvas-for-header .offcanvas-header {
+  background: #3B3B3B;
+  position: relative;
+  padding: 2.7rem !important;
+}
+.offcanvas-for-header {
+  border-right: 2px solid #B51B3B !important
+}
+
+.offcanvas-for-header .offcanvas-header .btn-close {
+  background-color: #B51B3B;
+  opacity: 1;
+  padding: 0.5rem;
+  border-radius: 50%;
+  position: absolute;
+  right: -2%;
+  --bs-btn-close-bg: url("../assets/images/MobileView/offclosebtn.png") !important;
+  /* background-size: 10px; */
+  background-size: 55%;
+}
+
+.offcanvas-for-header .accordion-header-button {
+  width: 70%;
+}
+
+.offcanvas-for-header .accordion-button {
+  padding: 0px;
+}
+
+.offcanvas-for-header .offcanvas-header .btn-close:hover {
+  background-color: green;
+  opacity: 0.8;
+}
+
+.offcanvas-for-header .nav-link {
+  font-weight: 400 !important;
+  padding: 14px !important;
+}
+
+.accordion-for-header .accordion-button::after {
+  display: none;
+}
+
+.offcanvas-for-header .offcanvas-header .offcanvas-header-logo {
+  height: auto;
+  width: 100%;
+}
+
+.offcanvas-for-header .offcanvas-header .border-bottom {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.offcanvas-for-header .accordion-for-header .accordion-item:first-child {
+  border-top: 0;
+}
+
+.offcanvas-for-header .accordion-for-header .accordion-item {
+  border-left: 0;
+  border-radius: 0;
+  border-right: 0;
+}
+
+.offcanvas-for-header .accordion-for-header .accordion-item .plus-button {
+  background: #f3f3f3;
+  border-radius: 30px;
+  font-size: 20px;
+  font-weight: normal;
+  padding: 5px;
+}
+
+.fs-15 {
+  font-size: 15px;
+}
+
+.fs-14 {
+  font-size: 14px;
+}
+
+.fs-13 {
+  font-size: 13px;
+}
+
+
+/* to remove default acorrdion focus and blue color  */
+.offcanvas-for-header .accordion-button {
+  background-color: transparent !important;
+  border: none !important;
+  color: #000 !important;
+  box-shadow: none !important;
+}
+
+.offcanvas-for-header .accordion-button:not(.collapsed) {
+  background-color: transparent !important;
+  color: #000 !important;
+}
+
+.offcanvas-for-header .accordion-button::after {
+  color: #000 !important;
+}
+
+.offcanvas-for-header .accordion-button:focus {
+  outline: none !important;
+}
+
+@media (max-width: 991.98px) {
+  .offcanvas-lg.show:not(.hiding),
+  .offcanvas-lg.showing {
+    transform: none;
+    width: 75% !important;
+  }
+}
+
+/* --------------------------------------------------------------------------------- */
+.offcanvas-for-header .red-hover:hover {
+  color: red;
+}
+
+/* Default chevron icon style */
+.chevron-icon {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Rotate the chevron icon 90 degrees */
+.rotate-icon {
+  transform: rotate(90deg);
+}

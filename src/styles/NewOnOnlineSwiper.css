@@ -1,0 +1,239 @@
+/* Wrapper for each new arrival offer card */
+.new-onKapoor-background-gradient {
+  background: linear-gradient(90deg, #eff4ff, #e2ecff);
+}
+
+.new-on-online {
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Image container */
+.new-on-online-image {
+  aspect-ratio: 9 / 12;
+  max-width: 100%;
+  height: 320px;
+}
+
+.new-on-online-img {
+  width: 82%;
+  height: 87%;
+  object-fit: fill;
+  border-radius: 62px 0 0 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+}
+
+/* Product name */
+.new-on-online-name {
+  position: absolute;
+  z-index: 10;
+  left: -80%;
+  transform: translateY(-50%);
+  bottom: 0;
+  height: 100%;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 25px;
+  letter-spacing: 1px;
+  font-family: 'Roboto', sans-serif;
+  color: black;
+  transform: rotate(-90deg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-transform: uppercase;
+  /* text-overflow: ellipsis; */
+}
+
+/* Discount text */
+.new-on-online-discount {
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 25px;
+  font-family: 'Roboto', sans-serif;
+  color: black;
+}
+
+/* Tag showing "Lowest Price Ever" */
+.new-on-online-tag {
+  position: absolute;
+  right: 3%;
+  top: 3%;
+  height: 70px;
+  width: 70px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #60012B;
+  color: white;
+  font-size: 10px;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1;
+}
+
+
+
+
+/* Container with relative positioning */
+.new-on-kapoor-swiper {
+  position: relative;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 2rem;
+}
+
+/* Button styles */
+.swiper-button {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: #EDEDED;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  z-index: 10;
+}
+
+.swiper-button-left {
+  left: 1rem;
+  border: none;
+
+}
+
+.swiper-button-right {
+  right: 1rem;
+  border: none;
+}
+
+/* Swiper Slide container styles */
+.swiper-slide-container {
+  height: 100%;
+  background-image: url("../assets/images/NewOnOnline/newononlineBg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.swiper-slide-content {
+  position: relative;
+  height: 100%;
+  cursor: pointer;
+}
+
+.swiper-slide-inner {
+  display: block;
+  height: 100%;
+  background: linear-gradient(153.1deg, #a7b8b7 100%, #FFA654 31.92%, #eda72b 50.8%, #b37e52 99.27%);
+  padding: 15px;
+}
+
+/* Grid and Text styles */
+.swiper-text-center {
+  display: grid;
+  place-items: center;
+  justify-items: center;
+  border: 2px solid white;
+  height: 100%;
+  text-align: center;
+}
+
+.swiper-image {
+  margin-bottom: 1rem;
+}
+
+.swiper-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 26px;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.swiper-subtitle {
+  font-size: 1rem;
+  color: white;
+  line-height: 1;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.swiper-link {
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding-left: 0.75rem;
+  padding-right: 1.125rem;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  background-color: black;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+/* Swiper breakpoints */
+@media screen and (min-width: 340px) {
+  .swiper-slide-container {
+    slides-per-view: 1.5;
+  }
+  .new-onKapoor-background-gradient{
+    background: white;
+  }
+}
+
+@media screen and (min-width: 540px) {
+  .swiper-slide-container {
+    slides-per-view: 2;
+  }
+
+  .new-onKapoor-background-gradient{
+    background: white;
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .swiper-slide-container {
+    slides-per-view: 3.5;
+  }
+  .new-onKapoor-background-gradient{
+    background: white;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .swiper-slide-container {
+    slides-per-view: 4;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .swiper-slide-container {
+    slides-per-view: 6;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .swiper-slide-container {
+    slides-per-view: 6;
+    space-between: 25px;
+  }
+}

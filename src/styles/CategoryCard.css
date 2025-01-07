@@ -1,0 +1,7 @@
+/* Card Styles */
+.category-static-card {
+  background-image: url("../assets/images/CategoryByShopSlicks/ShopByCategoryBg.png");
+  background-size: fill;
+  object-fit: cover;
+  border-radius: 10px;
+}

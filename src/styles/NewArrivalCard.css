@@ -1,0 +1,287 @@
+.new-arrival-container {
+  padding: 2rem;
+}
+
+.new-arrival-container h2,
+.new-arrival-container p {
+  margin-bottom: 0.1rem;
+}
+
+.new-arrival-card {
+  background-color: #F3F3F3 !important;
+  border-radius: 10px;
+}
+
+.new-arrival-card {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.new-arrival-card:hover {
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+  background-color: #fff !important;
+  border-radius: 10px;
+}
+
+
+.new-arrival-card:hover {
+  background-color: #fff !important;
+}
+
+.image-container {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  /* background: #f8f8f8; */
+  z-index: 1;
+}
+
+.bridal-image-container {
+  z-index: 16;
+}
+
+.wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+
+.overlay-buttons {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  z-index: 7;
+  transition: opacity 0.3s ease;
+}
+
+.new-arrival-card:hover .overlay-buttons {
+  opacity: 1;
+}
+
+.add-to-cart-btn {
+  width: 90%;
+  margin: 0 auto;
+  display: block;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.9);
+  color: #000;
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #f0f0f0;
+  color: #000000;
+}
+
+
+.new-arrival-card:hover .wishlist-btn {
+  opacity: 1 !important;
+  /* Make visible on hover */
+}
+
+.wishlist-btn button {
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.icon {
+  font-size: 19px;
+  color: #000;
+}
+
+.heart-icon {
+  color: #ff3f3f;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  left: -16px;
+  background: url("../assets/images/discount1.png") no-repeat center center;
+  background-size: contain;
+  width: 5.1rem;
+  height: 3rem;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  z-index: 10;
+  overflow: visible;
+}
+
+.discount-p {
+  margin-top: 11px;
+  margin-bottom: 0;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+/* Ensure the container doesn’t clip the badge */
+.image-container {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  background: #f8f8f8;
+  z-index: 1;
+  overflow: visible;
+}
+
+.discount-badge h5 {
+  margin: 10px;
+}
+
+.discount-p {
+  margin-top: 11px;
+  margin-bottom: 1re
+}
+
+.product-info {
+  padding: 10px;
+  text-align: center;
+}
+
+.product-info h3 {
+  font-size: 16px;
+  font-weight: normal;
+  margin: 5px 0;
+}
+
+.price-section {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 5px;
+}
+
+.mrp {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 14px;
+}
+
+.discounted-price {
+  color: #03a685;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+/* Responsive Design */
+/* Extra small (xs): <576px */
+@media (max-width: 575.98px) {
+  .discount-badge {
+    width: 4.1rem;
+    height: 2rem;
+  }
+
+  .discount-p {
+    margin-top: 4px;
+    font-size: 0.7rem;
+  }
+}
+
+.new-arrival-container {
+  padding: 0 1.3rem;
+}
+
+/* Small (sm): ≥576px and <768px */
+@media (min-width: 576px) and (max-width: 767) {
+  .discount-badge {
+    width: 4.1rem;
+    height: 2rem;
+  }
+
+  .discount-p {
+    margin-top: 3px;
+    font-size: 0.7rem;
+  }
+}
+
+/* Medium (md): ≥768px and <992px */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .discount-badge {
+    width: 4.8rem;
+    height: 2.8rem;
+  }
+
+  .discount-p {
+    margin-top: 10px;
+    font-size: 0.7rem;
+  }
+}
+
+/* wishlist-page-btn ++++++++++++++++++++++++++++=================================== &&&&&&&&&&&&&&&&&&&&&&&&&_________=+++++++*/
+
+.new-arrival-card:hover .wishlist-page-btn {
+  opacity: 1 !important;
+  /* Make visible on hover */
+}
+
+.wishlist-page-btn button {
+  background: #fff;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.wishlist-page-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+
+@media (min-width: 576px) {
+  .new-arrival-container .col-md-4 {
+    flex: 0 0 auto;
+    width: 50% !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .new-arrival-container .col-md-4 {
+    flex: 0 0 auto;
+    width: 33.33333333% !important;
+  }
+}
+
+/* Apply specific width for lg, xl, and xxl */
+@media (min-width: 992px) {
+
+  /* lg breakpoint */
+  .new-arrival-container .wishlist-column {
+    width: 19.666667% !important;
+  }
+}
+
+@media (min-width: 1200px) {
+
+  /* xl breakpoint */
+  .new-arrival-container .wishlist-column {
+    width: 19.666667% !important;
+  }
+}
+
+@media (min-width: 1400px) {
+
+  /* xxl breakpoint */
+  .new-arrival-container .wishlist-column {
+    width: 19.666667% !important;
+  }
+}
