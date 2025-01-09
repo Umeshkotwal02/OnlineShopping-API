@@ -6,8 +6,6 @@ import "../../styles/NewArrivalCard.css";
 import { FiHeart } from "react-icons/fi";
 import ProductImageSlider from "../../components/homepage/ProductImageSlider";
 
-{/* <NewArrivalCard info={item} /> */ }
-
 const NewArrivalCard = ({ data }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [visibleItems, setVisibleItems] = useState(10);
@@ -80,7 +78,6 @@ const NewArrivalCard = ({ data }) => {
         <i> "Embrace the festival magic, let joy fill every moment."</i>
       </p>
       <Row className="px-lg-5 px-xl-5 px-xxl-5">
-        {/* data?.newarrival?.map((item, index) => { */}
         {data?.newarrival?.map((product, index) => (
           <Col xs={6} sm={6} md={4} lg={2} xl={2} xxl={2} key={product.id}
             className="mb-4 rounded wishlist-column"

@@ -34,40 +34,56 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
       prompt: "select_account",
     });
 
-    signInWithPopup(auth, provider)
-      .then(async (result) => {
-        // console.log(result);
-        try {
-          const userData = {
-            device_id: localStorage.getItem("deviceId"),
-            user_email: result.user.email,
-            user_name: result.user.displayName,
-            type: STORAGE?.GOOGLE,
-            is_admin: "0",
-            user_type: STORAGE?.B2C,
-          };
+    try {
+      // Initiating Google Sign-In
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
-          const { data } = await axios.post("/sendotp", userData);
-          if (data && data?.STATUS === 200) {
-            toast.success(data?.MESSAGE);
-            console.log("Google login success", data);
-            setUser(true);
-            setSuccess(true);
-            handleClose(true);
-            localStorage.setItem(STORAGE?.ISLOGIN, 1);
-            localStorage.setItem(
-              STORAGE?.USERDETAIL,
-              JSON.stringify(data?.DATA)
-            );
-          }
-        } catch (err) {
-          console.error(err);
+      if (user) {
+        const userData = {
+          device_id: localStorage.getItem("deviceId") || "default",
+          user_email: user.email,
+          user_name: user.displayName,
+          type: STORAGE?.GOOGLE,
+          is_admin: "0",
+          user_type: STORAGE?.B2C,
+        };
+
+        // Sending data to your API
+        const response = await axios.post(`${API_URL}sendotp`, userData);
+        const data = response.data;
+
+        if (data && data.STATUS === 200) {
+          toast.success(data.MESSAGE);
+          console.log("Google login success", data);
+          setUser(true);
+          setSuccess(true);
+          handleClose(true);
+          localStorage.setItem(STORAGE?.ISLOGIN, 1);
+          localStorage.setItem(
+            STORAGE?.USERDETAIL,
+            JSON.stringify(data.DATA)
+          );
+        } else {
+          console.error("Unexpected response from /sendotp:", data);
         }
-      })
-      .catch((error) => {
-        console.error("Error during sign-in with Google: ", error);
-      });
+      }
+    } catch (error) {
+      if (error.response) {
+        // Errors from the API
+        console.error("Error response from API: ", error.response.data);
+      } else if (error.request) {
+        // No response received
+        console.error("No response from API: ", error.request);
+      } else {
+        // Other errors
+        console.error("Error during sign-in with Google: ", error.message);
+      }
+
+      toast.error("An error occurred during login. Please try again.");
+    }
   };
+
 
   const [touched, setTouched] = useState({
     mobileNumber: false,
@@ -139,7 +155,7 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
   };
 
 
-  const handleVerifyOtp = async (data) => {
+  const handleVerifyOtp = async () => {
     if (isOtpExpired) {
       toast.error("OTP has expired. Please request a new OTP.");
       return;
@@ -156,27 +172,29 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
         user_otp: enteredOtp,
         code: referralCode || "",
       });
-      console.log("login from b2c", data.DATA);
+
       if (data && data.STATUS === 200) {
-        console.log("OTP Verifyed");
         toast.success(data?.MESSAGE || "OTP verified.");
+        // Store login details
         localStorage.setItem(STORAGE?.ISLOGIN, 1);
         localStorage.setItem(STORAGE?.USERDETAIL, JSON.stringify(data?.DATA));
         localStorage.setItem("loginTimestamp", Date.now());
-        window.location.reload();
-        setSuccess(true);
-        toast.success('OTP Verified Successfully!');
-        setOtpCanvas(false);
-        handleClose(true);
-        setOtp(['', '', '', '', '', '']);
+
+        // Update the user state
         setUser(true);
+
+        // Clear OTP canvas and inputs
+        setOtpCanvas(false);
+        setOtp(['', '', '', '', '', '']);
+        setSuccess(true);
+
+        // Close the canvas
         handleClose();
       } else {
-        console.error(error);
-        setError(data.data.message);
+        setError(data.MESSAGE || "OTP verification failed.");
       }
     } catch (err) {
-      setError(data.message);
+      setError("An error occurred during OTP verification.");
       console.error(err);
     } finally {
       toast.dismiss(loadingId);

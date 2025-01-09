@@ -1,126 +1,169 @@
 import React, { useState } from "react";
 import { Accordion, Card, Form } from "react-bootstrap";
 import { FaPlus, FaMinus } from "react-icons/fa";
+import { MdOutlineFilterList } from "react-icons/md";
 import "../../styles/ProductPage.css"
 
-const data = [
-  {
-    title: "Category",
-    name: "Category",
-    items: [
-      { label: "Umbrella Lehenga(983)", value: "electronics" },
-      { label: "Classic Sherwani(419)", value: "fashion" },
-      { label: "Indowestern Sherwani(407)", value: "home_kitchen" },
-      { label: "A Line Lehenga(305)", value: "home_kitchen" },
-      { label: "Dresses and Gown(169)", value: "home_kitchen" },
-      { label: "Bangles(38)", value: "home_kitchen" },
-      { label: "Umbrella Lehenga(983)", value: "electronics" },
-      { label: "Classic Sherwani(419)", value: "fashion" },
-      { label: "Indowestern Sherwani(407)", value: "home_kitchen" },
-      { label: "A Line Lehenga(305)", value: "home_kitchen" },
-      { label: "Dresses and Gown(169)", value: "home_kitchen" },
-    ],
-  },
-  {
-    title: "Fabric",
-    name: "price",
-    items: [
-      { label: "Under $100", value: "under_100" },
-    ],
-  },
-  {
-    title: "Price",
-    name: "price",
-    items: [
-      { label: "Under $100", value: "under_100" },
-      { label: "$100 - $500", value: "100_500" },
-      { label: "Above $500", value: "above_500" },
-    ],
-  },
-  {
-    title: "Color",
-    name: "price",
-    items: [
-      { label: "Under $100", value: "under_100" },
-    ],
-  },
-  {
-    title: "Rating",
-    name: "price",
-    items: [
-      { label: "Under $100", value: "under_100" },
-    ],
-  },
-  {
-    title: "Discount",
-    name: "price",
-    items: [
-      { label: "Under $100", value: "under_100" },
-    ],
-  },
-];
 
-const ProductFilter = () => {
+const ProductFilter = ({
+  handleFilterClick,
+  handleFilterChange,
+  selectedFilters,
+  handleCheckboxLocalChange,
+  showFilterOverlay,
+  filterOptions,
+  activeFilterIndex,
+  handleCloseClick,
+  handleApplyFilters,
+}) => {
   const [isExpanded, setIsExpanded] = useState([]);
 
   const handleAccordionChange = (title) => {
-    setIsExpanded((prev) =>
-      prev.includes(title)
-        ? prev.filter((item) => item !== title)
-        : [...prev, title]
-    );
+    if (isExpanded.includes(title)) {
+      setIsExpanded(isExpanded.filter((t) => t !== title));
+    } else {
+      setIsExpanded([...isExpanded, title]);
+    }
   };
 
   const handleCheckboxChange = (filterName, value) => {
-    console.log(`Filter: ${filterName}, Value: ${value}`);
-    // Add your filter logic here
-  };
+    handleCheckboxLocalChange(filterName, value);
+  }; 
 
   return (
-    <Accordion className="product-page-accordion">
-      {data.map((filterData, index) => (
-        <Card key={index} className="border-0 border-bottom" style={{ borderRadius: "15px" }}>
-          <Accordion.Item eventKey={index.toString()} style={{ borderRadius: "15px" }}>
-            <Accordion.Header
-              onClick={() => handleAccordionChange(filterData.title)}
-              className="d-flex align-items-center"
-              style={{ borderRadius: "15px" }}
-            >
-              <span className="text-capitalize fw-medium">
-                {filterData.title}
-              </span>
-              <span className="ms-auto">
-                {isExpanded.includes(filterData.title) ? (
-                  <FaMinus />
-                ) : (
-                  <FaPlus />
-                )}
-              </span>
-            </Accordion.Header>
-            <Accordion.Body className="py-3" style={{ backgroundColor: "#F6F6F6" }}>
-              <Form
-                className="overflow-auto custom-scrollbar"
-                style={{ maxHeight: "200px" }}
-              >
-                {filterData.items.map((item, itemIndex) => (
-                  <Form.Check
-                    key={item.value + itemIndex}
-                    type="checkbox"
-                    id={`${filterData.name}-${item.value}`}
-                    label={item.label}
-                    onChange={() =>
-                      handleCheckboxChange(filterData.name, item.value)
-                    }
-                    className="text-capitalize py-1"
-                  />
-                ))}
-              </Form>
-            </Accordion.Body>
+    <>
+      <div className="d-block d-lg-none fixed-bottom w-100 px-3 z-50">
+        <div className="d-flex justify-content-center align-items-center gap-2 text-xl fw-medium text-center py-3">
+          <MdOutlineFilterList size={24} />
+          <div className="text-uppercase" onClick={handleFilterClick}>
+            Filter
+          </div>
+        </div>
+      </div>
 
-          </Accordion.Item>
-        </Card>
-      ))}
-    </Accordion>
+      {showFilterOverlay && (
+        <div className="d-block d-lg-none position-fixed top-0 start-0 w-100 h-100 z-1002 bg-white d-flex flex-column">
+          <div className="fs-5 fw-medium p-3 border-bottom">
+            FILTER BY
+          </div>
+
+          <div className="flex-grow-1 d-flex">
+            <div className="">
+              {filterOptions?.map((filterData, index) => {
+                if (filterData.name.toLowerCase() !== "sort") {
+                  return (
+                    <div
+                      key={index}
+                      className={`p-3 cursor-pointer text-capitalize ${
+                        activeFilterIndex === index ? "" : ""
+                      }`}
+                      onClick={() => handleFilterChange(index)}
+                    >
+                      {filterData.title}
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+
+            <div className="w-75 p-3">
+              <Accordion className="product-page-accordion">
+                {filterOptions?.map((filterData, index) => {
+                  if (
+                    filterData.name.toLowerCase() !== "sort" &&
+                    activeFilterIndex === index
+                  ) {
+                    const sortedItems = filterData.data?.sort((a, b) => {
+                      const isCheckedA = selectedFilters[
+                        filterData.name
+                      ]?.includes(a.value);
+                      const isCheckedB = selectedFilters[
+                        filterData.name
+                      ]?.includes(b.value);
+                      return isCheckedB - isCheckedA;
+                    });
+
+                    return (
+                      <Card
+                        key={index}
+                        className="border-0 border-bottom"
+                        style={{ borderRadius: "15px" }}
+                      >
+                        <Accordion.Item
+                          eventKey={index.toString()}
+                          style={{ borderRadius: "15px" }}
+                        >
+                          <Accordion.Header
+                            onClick={() =>
+                              handleAccordionChange(filterData.title)
+                            }
+                            className="d-flex align-items-center"
+                            style={{ borderRadius: "15px" }}
+                          >
+                            <span className="text-capitalize fw-medium">
+                              {filterData.title}
+                            </span>
+                            <span className="ms-auto">
+                              {isExpanded.includes(filterData.title) ? (
+                                <FaMinus />
+                              ) : (
+                                <FaPlus />
+                              )}
+                            </span>
+                          </Accordion.Header>
+                          <Accordion.Body
+                            className="py-3"
+                            style={{ backgroundColor: "#F6F6F6" }}
+                          >
+                            <Form
+                              className="overflow-auto custom-scrollbar"
+                              style={{ maxHeight: "200px" }}
+                            >
+                              {sortedItems?.map((item, itemIndex) => (
+                                <Form.Check
+                                  key={item.value + itemIndex}
+                                  type="checkbox"
+                                  id={`${filterData.name}-${item.value}`}
+                                  label={item.label}
+                                  onChange={() =>
+                                    handleCheckboxChange(
+                                      filterData.name,
+                                      item.value
+                                    )
+                                  }
+                                  className="text-capitalize py-1"
+                                />
+                              ))}
+                            </Form>
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      </Card>
+                    );
+                  }
+                  return null;
+                })}
+              </Accordion>
+            </div>
+          </div>
+
+          <div className="d-flex justify-content-center py-2 border-top">
+            <button
+              className="btn btn-link fs-5 fw-medium"
+              onClick={handleCloseClick}
+            >
+              Close
+            </button>
+            <button
+              className="btn btn-link fs-5 fw-medium"
+              onClick={handleApplyFilters}
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

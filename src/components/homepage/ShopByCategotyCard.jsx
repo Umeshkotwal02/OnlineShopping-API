@@ -14,7 +14,7 @@ const ShopByCategotyCard = () => {
 
     return (
         <Container fluid>
-            <div className="card-container d-flex justify-content-center align-items-center">
+            <div className="custom-card-container d-flex justify-content-center align-items-center">
                 <div className="card shadow-lg text-center p-3">
                     <div className="card-body">
                         <div className="icon-container mb-3">

@@ -162,9 +162,9 @@ const ReviewClose = (props) => (
 );
 const SearchCloseIcon = (props) => (
    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-   <path d="M1 1L11 11M1 11L11 1L1 11Z" stroke="#D3D1D1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M1 1L11 11M1 11L11 1L1 11Z" stroke="#D3D1D1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
    </svg>
-   
+
 );
 
 
@@ -281,8 +281,8 @@ const LocationIcon = (props) => (
    </svg>
 );
 const CameraIcon = (props) => (
-   <svg xmlns="http://www.w3.org/2000/svg" width={20} height={24} fill="none" {...props}>
-      <path fill="#000" fillRule="evenodd" d="M33.427 11.953c.076.134.21.23.383.23 4.6 0 8.357 3.752 8.357 8.347v11.373c0 4.595-3.757 8.347-8.357 8.347H12.19c-4.62 0-8.357-3.752-8.357-8.347V20.53c0-4.595 3.738-8.347 8.357-8.347.153 0 .307-.077.364-.23l.115-.23.203-.427A186.51 186.51 0 0 1 14.24 8.45c.881-1.724 2.376-2.68 4.236-2.7h9.027c1.86.02 3.373.976 4.255 2.7.302.603.762 1.574 1.205 2.51l.27.572.193.421Zm-1.4 7.352c0 .957.767 1.723 1.725 1.723.959 0 1.745-.766 1.745-1.723a1.75 1.75 0 0 0-1.745-1.742c-.958 0-1.725.785-1.725 1.742Zm-12.343 2.968c.9-.9 2.07-1.379 3.316-1.379s2.415.479 3.297 1.36a4.616 4.616 0 0 1 1.36 3.292C27.638 28.112 25.568 30.2 23 30.2a4.626 4.626 0 0 1-3.297-1.36 4.616 4.616 0 0 1-1.36-3.293v-.019a4.496 4.496 0 0 1 1.341-3.255Zm8.625 8.596A7.494 7.494 0 0 1 23 33.07c-2.012 0-3.89-.785-5.327-2.202-1.419-1.436-2.205-3.312-2.205-5.323-.019-1.99.767-3.867 2.185-5.303A7.516 7.516 0 0 1 23 18.023a7.5 7.5 0 0 1 5.328 2.2 7.55 7.55 0 0 1 2.204 5.323 7.586 7.586 0 0 1-2.223 5.323Z" clipRule="evenodd" />
+   <svg width="24" height="21" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M18.0594 3.73371C18.1054 3.81458 18.1859 3.87235 18.2894 3.87235C21.0495 3.87235 23.3036 6.13685 23.3036 8.9097V15.7725C23.3036 18.5454 21.0495 20.8099 18.2894 20.8099H5.31693C2.54532 20.8099 0.302734 18.5454 0.302734 15.7725V8.9097C0.302734 6.13685 2.54532 3.87235 5.31693 3.87235C5.40893 3.87235 5.50093 3.82614 5.53544 3.73371L5.60444 3.59506C5.64409 3.51113 5.68478 3.42492 5.7261 3.3374C6.0203 2.71415 6.34579 2.02465 6.54747 1.61941C7.07649 0.579588 7.97353 0.00191 9.08907 -0.00964355H14.5058C15.6213 0.00191 16.5299 0.579588 17.0589 1.61941C17.24 1.9834 17.5161 2.56975 17.7821 3.13485C17.8369 3.25136 17.8913 3.36696 17.9444 3.47953L18.0594 3.73371ZM17.2201 8.17034C17.2201 8.74801 17.6801 9.21016 18.2551 9.21016C18.8302 9.21016 19.3017 8.74801 19.3017 8.17034C19.3017 7.59266 18.8302 7.11896 18.2551 7.11896C17.6801 7.11896 17.2201 7.59266 17.2201 8.17034ZM9.81385 9.9611C10.3544 9.41809 11.0559 9.12925 11.8034 9.12925C12.551 9.12925 13.2525 9.41809 13.7815 9.94955C14.3105 10.481 14.598 11.1858 14.598 11.9368C14.5865 13.4849 13.3445 14.7443 11.8034 14.7443C11.0559 14.7443 10.3544 14.4554 9.82535 13.924C9.29633 13.3925 9.00881 12.6877 9.00881 11.9368V11.9252C8.99731 11.1973 9.28483 10.4926 9.81385 9.9611ZM14.9889 15.1486C14.1724 15.9689 13.0454 16.4773 11.8033 16.4773C10.5958 16.4773 9.46873 16.0036 8.60619 15.1486C7.75516 14.2821 7.28364 13.1499 7.28364 11.9367C7.27214 10.7352 7.74366 9.60292 8.59469 8.73641C9.45722 7.86989 10.5958 7.39619 11.8033 7.39619C13.0109 7.39619 14.1494 7.86989 15.0004 8.72485C15.8515 9.59137 16.323 10.7352 16.323 11.9367C16.3115 13.1961 15.8055 14.3283 14.9889 15.1486Z" fill="white" />
    </svg>
 );
 const ArrowRightXlIcon = (props) => (
@@ -459,4 +459,4 @@ const AddressProIcon = (props) => (
 )
 
 
-export { AddPhotoIcon, AmazonIcon, CheckBadgeIcon, WalletIcon, CopyIcon, ShareIcon, ArrowRightXlIcon, CameraIcon, TimeIcon, TimeIconRed, CallingIcon, LocationIcon, AppDownloadIcon, InfoIcon, TweeterIcon, InstagramIcon, PinterestIcon, FacebookIcon, AboutLinkArrow, ReturnIcon, AccountIcon, WishlistIcon, CartIcon, RightAngle, LikePlus, CouponIcon, RightArrow, CashOnDelIcon, ExchangeIcon, StitchingIcon, ShippingIcon, TruckIcon, PlusIcon, MinusIcon, XClose, ProfileIcon, NotificationIcon, MyOrderIcon, LogoutIcon, SearchIcon, DropdownUp, DropdownDown, LoginIcon, offcanvaceMobiIcon, LgBagIcon, CategorySlickNextIcon, CategoryPrevNextIcon, HomeIcon, CategoryIcon, ExclaimIcon, WalletIcon2, CashONIcon2, ReviewClose, OffCanvaArrowIcon, HeartIcon, HomeActiveIcon, ProfileTwoIcon, WishlistProfileIcon, MyOrderProIcon, NotificationProIcon, AddressProIcon,SearchCloseIcon };
+export { AddPhotoIcon, AmazonIcon, CheckBadgeIcon, WalletIcon, CopyIcon, ShareIcon, ArrowRightXlIcon, CameraIcon, TimeIcon, TimeIconRed, CallingIcon, LocationIcon, AppDownloadIcon, InfoIcon, TweeterIcon, InstagramIcon, PinterestIcon, FacebookIcon, AboutLinkArrow, ReturnIcon, AccountIcon, WishlistIcon, CartIcon, RightAngle, LikePlus, CouponIcon, RightArrow, CashOnDelIcon, ExchangeIcon, StitchingIcon, ShippingIcon, TruckIcon, PlusIcon, MinusIcon, XClose, ProfileIcon, NotificationIcon, MyOrderIcon, LogoutIcon, SearchIcon, DropdownUp, DropdownDown, LoginIcon, offcanvaceMobiIcon, LgBagIcon, CategorySlickNextIcon, CategoryPrevNextIcon, HomeIcon, CategoryIcon, ExclaimIcon, WalletIcon2, CashONIcon2, ReviewClose, OffCanvaArrowIcon, HeartIcon, HomeActiveIcon, ProfileTwoIcon, WishlistProfileIcon, MyOrderProIcon, NotificationProIcon, AddressProIcon, SearchCloseIcon };

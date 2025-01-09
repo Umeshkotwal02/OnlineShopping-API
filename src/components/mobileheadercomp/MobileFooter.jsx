@@ -38,7 +38,7 @@ const MobileFooter = () => {
             <NavLink
               to="/"
               className="mobi-footer-icon d-flex flex-column align-items-center"
-              activeClassName="active"
+              activepagemobile="active"
             >
               {({ isActive }) => (
                 <>
@@ -58,7 +58,7 @@ const MobileFooter = () => {
             <NavLink
               to="/"
               className="mobi-footer-icon d-flex flex-column align-items-center"
-              activeClassName="active"
+              activepagemobile="active"
             >
               {({ isActive }) => (
                 <>
@@ -78,7 +78,7 @@ const MobileFooter = () => {
             <NavLink
               to="/wishlist"
               className="mobi-footer-icon d-flex flex-column align-items-center"
-              activeClassName="active"
+              activepagemobile="active"
             >
               {({ isActive }) => (
                 <>
@@ -107,11 +107,11 @@ const MobileFooter = () => {
       </Container>
 
       {/* Login Modal */}
-      {/* <LoginModal
+      <LoginModal
         show={showLoginModal}
         handleClose={() => setShowLoginModal(false)}
         setUser={handleSuccessfulLogin}
-      /> */}
+      />
     </>
   );
 };

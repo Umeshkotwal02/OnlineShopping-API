@@ -22,8 +22,6 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { API_URL } from '../Constant/constApi'
 import CarosoleSlickMobi from './MobilePages/CarosoleSlickMobi'
-import { info } from 'sass'
-import CustomerStories from '../components/CustomerStories'
 
 
 function HomePage() {
@@ -99,7 +97,7 @@ function HomePage() {
       {/* <BridalLahegaCholi /> */}
 
       <NewArrivalCard data={data} />
-      <NewOnOnlineSwiper info={data?.New_on_kapoor} />
+      <NewOnOnlineSwiper data={data?.New_on_kapoor} />
 
       <Motion motionBanner={data?.AllBanners?.banner6} />
       <FestivalSpecial data={data} />

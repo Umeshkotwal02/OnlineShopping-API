@@ -1,129 +1,164 @@
-import React, { useState } from 'react';
-import { Modal, Form } from 'react-bootstrap';
-import { toast } from 'react-hot-toast';
+import React, { useEffect, useState } from "react";
+import { Modal, Form } from "react-bootstrap";
+import { toast } from "react-hot-toast";
 import "../../styles/ProfileModal.css";
+import { API_URL } from "../../Constant/constApi";
+import { useForm } from "react-hook-form";
+import { STORAGE } from "../../config/config";
+import axios from "axios";
+import { CameraIcon } from "../../assets/SvgIcons";
+import { useUser } from "../../context/UserContext ";
 
 const ProfileModal = ({ show, handleClose }) => {
-  const [profileData, setProfileData] = useState({
-    fullName: '',
-    mobileNumber: '',
-    email: '',
-    address: ''
-  });
+  const { userDetails, setUserDetails } = useUser();
+  const [loading, setLoading] = useState(true);
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const [error, setError] = useState("");
 
-  const [error, setError] = useState('');
+  const fetchUserDetails = async () => {
+    const userProfile = JSON.parse(localStorage?.getItem(STORAGE?.USERDETAIL));
+    const deviceId = localStorage.getItem(STORAGE?.DEVICEID);
+    try {
+      setLoading(true);
+      const { data } = await axios.post(`${API_URL}userdetail`, {
+        user_id: userProfile?.id,
+        device_id: deviceId,
+        user_type: userProfile?.user_type ?? STORAGE?.B2C,
+      });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProfileData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+      if (data?.STATUS === 200) {
+        const { user_name, user_last_name, user_email, user_mobile, user_profile } = data.DATA;
+        setUserDetails({ user_first_name: user_name, user_last_name, user_email, user_mobile, user_profile });
+        setValue("user_first_name", user_name);
+        setValue("user_last_name", user_last_name);
+        setValue("user_email", user_email);
+        setValue("user_mobile", user_mobile);
+      }
+    } catch (err) {
+      console.error("Error fetching user details:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSubmit = () => {
-    const { fullName, mobileNumber, email, address } = profileData;
+  const onSubmit = async (data) => {
+    const deviceId = localStorage.getItem(STORAGE?.DEVICEID);
+    const userProfile = JSON.parse(localStorage?.getItem(STORAGE?.USERDETAIL));
 
-    if (!fullName || !mobileNumber || !email || !address) {
-      setError('All fields are required');
-      return;
+    try {
+      setLoading(true);
+      const response = await axios.post(`${API_URL}updateprofile`, {
+        device_id: deviceId,
+        id: userProfile?.id,
+        is_admin: "0",
+        user_type: userProfile?.user_type ?? STORAGE?.B2C,
+        user_first_name: data.user_first_name,
+        user_last_name: data.user_last_name,
+        user_email: data.user_email,
+        user_mobile: data.user_mobile,
+        user_profile: userDetails.user_profile,
+      });
+
+      if (response.data?.STATUS === 200) {
+        toast.success(response.data.MESSAGE || "User updated successfully.");
+        setUserDetails({
+          ...userDetails,
+          user_first_name: data.user_first_name,
+          user_last_name: data.user_last_name,
+          user_email: data.user_email,
+          user_mobile: data.user_mobile,
+        });
+        handleClose();
+      } else {
+        setError(response.data.MESSAGE || "Failed to update user.");
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    // Add API call logic to update the profile here
-    setError('');  
-    toast.success('Profile updated successfully!');
-    handleClose();
+  useEffect(() => {
+    fetchUserDetails();
+  }, []); // Run once on mount
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setUserDetails((prevState) => ({ ...prevState, user_profile: reader.result }));
+      };
+      reader.onerror = () => {
+        toast.error("Failed to load the file. Please try again.");
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
-    <>
-      {/* Profile Modal */}
-      <Modal
-        show={show}
-        onHide={handleClose}
-        centered
-        size="md"
-        aria-labelledby="example-modal-title"
-      >
-        <Modal.Header closeButton className="web-bg-color">
-          <Modal.Title id="example-modal-title" className="text-start">My Profile</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="text-center">
-            <div className="profile-upload-container">
-              <div>
-                <label htmlFor="file-input" className="profile-upload-label">
-                  <span className="block">
-                    <img
-                      src={require("../../assets/images/profile.png")}
-                      alt="Default Profile"
-                      loading="lazy"
-                      className="d-flex justify-content-center profile-image"
-                    />
-                  </span>
-                  {/* <span className="profile-upload-overlay">
-                    <CameraIcon />
-                  </span> */}
-                  {/* <input
-                    type="file"
-                    accept="image/*"
-                    id="file-input"
-                    className="profile-upload-input"
-                  /> */}
-                </label>
-              </div>
-            </div>
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder="Full Name"
-                name="fullName"
-                value={profileData.fullName}
-                onChange={handleChange}
-                className="Profile-form-input"
-              />
-              {error && <p className="text-danger mt-2">{error}</p>}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder="Mobile Number"
-                name="mobileNumber"
-                value={profileData.mobileNumber}
-                onChange={handleChange}
-                className="Profile-form-input"
-              />
-              {error && <p className="text-danger mt-2">{error}</p>}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="email"
-                placeholder="Email Id"
-                name="email"
-                value={profileData.email}
-                onChange={handleChange}
-                className="Profile-form-input"
-              />
-              {error && <p className="text-danger mt-2">{error}</p>}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder="Address"
-                name="address"
-                value={profileData.address}
-                onChange={handleChange}
-                className="Profile-form-input"
-              />
-              {error && <p className="text-danger mt-2">{error}</p>}
-            </Form.Group>
-            <button type="button" className="btn-continue w-100" onClick={handleSubmit}>
-              Update
-            </button>
+    <Modal show={show} onHide={handleClose} centered size="md">
+      <Modal.Header closeButton className="web-bg-color">
+        <Modal.Title id="example-modal-title" className="text-start">My Profile</Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="py-0">
+        <div className="text-center">
+          <div className="profile-upload-container">
+            <label htmlFor="file-input" className="d-inline-block position-relative rounded-circle overflow-hidden" style={{ height: "160px", width: "160px", cursor: "pointer" }}>
+              <img src={userDetails?.user_profile || "/images/account-avatar.png"} alt="Profile" className="img-fluid h-100 w-100 object-fill profile-image" />
+              <span className="position-absolute bottom-0 start-0 end-0 py-4 d-flex justify-content-center align-items-center">
+                
+                <CameraIcon />
+                <input type="file" accept="image/*" id="file-input" onChange={handleFileChange} className="position-absolute invisible" />
+              </span>
+            </label>
           </div>
-        </Modal.Body>
-      </Modal>
-    </>
+        </div>
+        <Form onSubmit={handleSubmit(onSubmit)} className="mt-4">
+          <Form.Group controlId="formFullName" className="mb-3">
+            <Form.Control
+              type="text"
+              placeholder="Full Name"
+              {...register("user_first_name", { required: "First name is required." })}
+              className="Profile-form-input"
+            />
+            {errors.user_first_name && <p className="text-danger mt-2">{errors.user_first_name.message}</p>}
+          </Form.Group>
+          <Form.Group controlId="formLastName" className="mb-3">
+            <Form.Control
+              type="text"
+              placeholder="Last Name"
+              {...register("user_last_name", { required: "Last name is required." })}
+              className="Profile-form-input"
+            />
+            {errors.user_last_name && <p className="text-danger mt-2">{errors.user_last_name.message}</p>}
+          </Form.Group>
+          <Form.Group controlId="formEmail" className="mb-3">
+            <Form.Control
+              type="email"
+              placeholder="Email"
+              {...register("user_email", { required: "Email is required.", pattern: { value: /^[^@]+@[^@]+\.[^@]+$/, message: "Invalid email format." } })}
+              className="Profile-form-input"
+            />
+            {errors.user_email && <p className="text-danger mt-2">{errors.user_email.message}</p>}
+          </Form.Group>
+          <Form.Group controlId="formMobile" className="mb-3">
+            <Form.Control
+              type="text"
+              placeholder="Mobile Number"
+              {...register("user_mobile", { required: "Mobile number is required.", pattern: { value: /^[0-9]{10}$/, message: "Invalid mobile number." } })}
+              className="Profile-form-input"
+            />
+            {errors.user_mobile && <p className="text-danger mt-2">{errors.user_mobile.message}</p>}
+          </Form.Group>
+          {error && <p className="text-danger">{error}</p>}
+          <button type="button" className="btn-continue w-100 m-0" disabled={loading}>
+            {loading ? "Updating..." : "Update"}
+          </button>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 };
 

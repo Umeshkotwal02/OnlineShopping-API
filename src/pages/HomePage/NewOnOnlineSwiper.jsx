@@ -7,7 +7,18 @@ import "../../styles/NewOnOnlineSwiper.css";
 import { Container, Row, Col } from "react-bootstrap";
 import Loader from "../../components/Loader";
 
-const NewOnOnlineSwiper = ({info}) => {
+// Custom arrow components to handle unwanted props
+const CustomPrevArrow = (props) => {
+  const { className, style, onClick } = props;
+  return <FaAngleLeft className={className} style={style} onClick={onClick} />;
+};
+
+const CustomNextArrow = (props) => {
+  const { className, style, onClick } = props;
+  return <FaAngleRight className={className} style={style} onClick={onClick} />;
+};
+
+const NewOnOnlineSwiper = ({ data }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
@@ -20,8 +31,8 @@ const NewOnOnlineSwiper = ({info}) => {
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
-    nextArrow: <FaAngleRight className="slick-arrow-right" />,
-    prevArrow: <FaAngleLeft className="slick-arrow-left" />,
+    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow />,
     responsive: [
       {
         breakpoint: 1200,
@@ -71,7 +82,6 @@ const NewOnOnlineSwiper = ({info}) => {
   }
 
   return (
-
     <div className="new-on-kapoor-swiper px-lg-5 px-xl-5 px-xxl-5 new-onKapoor-background-gradient ">
       <h3 className="text-center d-none d-lg-block mt-2" style={{ fontWeight: "400" }}>
         New on Online Shop
@@ -84,14 +94,11 @@ const NewOnOnlineSwiper = ({info}) => {
       </p>
       <Row>
         <Col xxl={2} xl={2} lg={2} className="px-2 d-none d-lg-block ">
-          <div >
-            <Link
-              to={`/product/`}
-              className="shop-by-category-card text-decoration-none"
-            >
-              <div className="position-relative w-100 h-100  rounded">
+          <div>
+            <Link to={`/product/`} className="shop-by-category-card text-decoration-none">
+              <div className="position-relative w-100 h-100 rounded">
                 <img
-                  src={require(("../../assets/images/NewOnOnline/newarrive.png"))}
+                  src={require("../../assets/images/NewOnOnline/newarrive.png")}
                   className="staic-slider-image"
                   alt={"New Arrive Product"}
                   loading="lazy"
@@ -104,8 +111,12 @@ const NewOnOnlineSwiper = ({info}) => {
         <Col xxl={10} xl={10} lg={10} className="p-0 m-0">
           {/* Slider Component */}
           <Slider {...settings}>
-            {info.map((item, index) => (
-              <div key={"newOnKapoor-" + index} className="slick-slide-container swiper-slide-container rounded" style={{ borderRadius: "10px" }}>
+            {data.map((item, index) => (
+              <div
+                key={"newOnKapoor-" + index}
+                className="slick-slide-container swiper-slide-container rounded"
+                style={{ borderRadius: "10px" }}
+              >
                 <NewArrivalOfferCard itemInfo={item} />
               </div>
             ))}
@@ -113,7 +124,6 @@ const NewOnOnlineSwiper = ({info}) => {
         </Col>
       </Row>
     </div>
-
   );
 };
 

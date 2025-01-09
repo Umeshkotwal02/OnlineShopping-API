@@ -9,13 +9,14 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import toast from "react-hot-toast";
 import { IoLogOutOutline } from "react-icons/io5";
-import ProfileModal from "../canvas/ProfileModal";
 import NotificationCanvas from "../canvas/NotificationCanvas";
 import "../../styles/Header.css"
 import CartOffCanvas from "./CartOffCanvas";
 import SearchBar from "../SearchBar";
 import axios from "axios";
 import { API_URL } from "../../Constant/constApi";
+import ProfileModal from "../canvas/ProfileModal";
+import { UserProvider } from "../../context/UserContext ";
 
 const Header = ({
   searchTerm,
@@ -295,7 +296,9 @@ const Header = ({
       </div>
       <LoginOffCanvas show={showLoginCanvas} handleClose={handleCloseLoginCanvas} setUser={handleUserUpdate} />
       <CartOffCanvas show={showCartCanvas} handleClose={handleCloseCartCanvas} />
-      <ProfileModal show={showProfileModals} handleClose={handleCloseProfileModals} />
+      <UserProvider>
+        <ProfileModal show={showProfileModals} handleClose={handleCloseProfileModals} />
+      </UserProvider>
       <NotificationCanvas show={showNotificationModal} handleClose={handleCloseNotificationModals} />
 
       {/* <MobileFooter /> */}
