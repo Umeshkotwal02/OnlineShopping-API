@@ -157,7 +157,7 @@ const XClose = (props) => (
 const ReviewClose = (props) => (
    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="6.9319" cy="6.06667" r="6.06667" fill="#FF2E2E" />
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M9.96315 3.63987L9.35648 3.0332L6.92982 5.45987L4.50315 3.0332L3.89648 3.63987L6.32315 6.06654L3.89648 8.4932L4.50315 9.09987L6.92982 6.6732L9.35648 9.09987L9.96315 8.4932L7.53648 6.06654L9.96315 3.63987Z" fill="white" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M9.96315 3.63987L9.35648 3.0332L6.92982 5.45987L4.50315 3.0332L3.89648 3.63987L6.32315 6.06654L3.89648 8.4932L4.50315 9.09987L6.92982 6.6732L9.35648 9.09987L9.96315 8.4932L7.53648 6.06654L9.96315 3.63987Z" fill="white" />
    </svg>
 );
 const SearchCloseIcon = (props) => (
@@ -402,7 +402,7 @@ const CategoryIcon = (props) => (
 
 const ExclaimIcon = (props) => (
    <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M21.0002 1.72949C31.6419 1.72949 40.271 10.3566 40.271 21.0003C40.271 31.642 31.6419 40.2712 21.0002 40.2712C10.3565 40.2712 1.72937 31.642 1.72937 21.0003C1.72937 10.3566 10.3565 1.72949 21.0002 1.72949Z" stroke="#130F26" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M21.0002 1.72949C31.6419 1.72949 40.271 10.3566 40.271 21.0003C40.271 31.642 31.6419 40.2712 21.0002 40.2712C10.3565 40.2712 1.72937 31.642 1.72937 21.0003C1.72937 10.3566 10.3565 1.72949 21.0002 1.72949Z" stroke="#130F26" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M20.99 13.0923V22.2985" stroke="#130F26" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M20.9896 28.9089H21.0105" stroke="#130F26" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
    </svg>
@@ -421,19 +421,19 @@ const HeartIcon = (props) => (
 
 const HomeActiveIcon = (props) => (
    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M7.15722 18.7714V15.7047C7.1572 14.9246 7.79312 14.2908 8.58101 14.2856H11.4671C12.2587 14.2856 12.9005 14.9209 12.9005 15.7047V18.7809C12.9003 19.4432 13.4343 19.9845 14.103 20H16.0271C17.9451 20 19.5 18.4607 19.5 16.5618V7.83784C19.4898 7.09083 19.1355 6.38935 18.538 5.93303L11.9577 0.685301C10.8049 -0.228434 9.1662 -0.228434 8.01342 0.685301L1.46203 5.94256C0.862259 6.39702 0.507387 7.09967 0.5 7.84736V16.5618C0.5 18.4607 2.05488 20 3.97291 20H5.89696C6.58235 20 7.13797 19.4499 7.13797 18.7714" fill="#B51B3B" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M7.15722 18.7714V15.7047C7.1572 14.9246 7.79312 14.2908 8.58101 14.2856H11.4671C12.2587 14.2856 12.9005 14.9209 12.9005 15.7047V18.7809C12.9003 19.4432 13.4343 19.9845 14.103 20H16.0271C17.9451 20 19.5 18.4607 19.5 16.5618V7.83784C19.4898 7.09083 19.1355 6.38935 18.538 5.93303L11.9577 0.685301C10.8049 -0.228434 9.1662 -0.228434 8.01342 0.685301L1.46203 5.94256C0.862259 6.39702 0.507387 7.09967 0.5 7.84736V16.5618C0.5 18.4607 2.05488 20 3.97291 20H5.89696C6.58235 20 7.13797 19.4499 7.13797 18.7714" fill="#B51B3B" />
    </svg>
 )
 
 const ProfileTwoIcon = (props) => (
    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9849 15.3462C8.11731 15.3462 4.81445 15.931 4.81445 18.2729C4.81445 20.6148 8.09636 21.2205 11.9849 21.2205C15.8525 21.2205 19.1545 20.6348 19.1545 18.2938C19.1545 15.9529 15.8735 15.3462 11.9849 15.3462Z" stroke="#B51B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9849 12.0059C14.523 12.0059 16.5801 9.94779 16.5801 7.40969C16.5801 4.8716 14.523 2.81445 11.9849 2.81445C9.44679 2.81445 7.3887 4.8716 7.3887 7.40969C7.38013 9.93922 9.42394 11.9973 11.9525 12.0059H11.9849Z" stroke="#B51B3B" stroke-width="1.42857" stroke-linecap="round" stroke-linejoin="round" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M11.9849 15.3462C8.11731 15.3462 4.81445 15.931 4.81445 18.2729C4.81445 20.6148 8.09636 21.2205 11.9849 21.2205C15.8525 21.2205 19.1545 20.6348 19.1545 18.2938C19.1545 15.9529 15.8735 15.3462 11.9849 15.3462Z" stroke="#B51B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M11.9849 12.0059C14.523 12.0059 16.5801 9.94779 16.5801 7.40969C16.5801 4.8716 14.523 2.81445 11.9849 2.81445C9.44679 2.81445 7.3887 4.8716 7.3887 7.40969C7.38013 9.93922 9.42394 11.9973 11.9525 12.0059H11.9849Z" stroke="#B51B3B" stroke-width="1.42857" stroke-linecap="round" stroke-linejoin="round" />
    </svg>
 )
 const WishlistProfileIcon = (props) => (
    <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M1.87187 9.59832C0.798865 6.24832 2.05287 2.41932 5.56987 1.28632C7.41987 0.689322 9.46187 1.04132 10.9999 2.19832C12.4549 1.07332 14.5719 0.693322 16.4199 1.28632C19.9369 2.41932 21.1989 6.24832 20.1269 9.59832C18.4569 14.9083 10.9999 18.9983 10.9999 18.9983C10.9999 18.9983 3.59787 14.9703 1.87187 9.59832Z" stroke="#B51B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M1.87187 9.59832C0.798865 6.24832 2.05287 2.41932 5.56987 1.28632C7.41987 0.689322 9.46187 1.04132 10.9999 2.19832C12.4549 1.07332 14.5719 0.693322 16.4199 1.28632C19.9369 2.41932 21.1989 6.24832 20.1269 9.59832C18.4569 14.9083 10.9999 18.9983 10.9999 18.9983C10.9999 18.9983 3.59787 14.9703 1.87187 9.59832Z" stroke="#B51B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
    </svg>
 
 )
@@ -446,14 +446,14 @@ const MyOrderProIcon = (props) => (
 )
 const NotificationProIcon = (props) => (
    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M12 17.8476C17.6392 17.8476 20.2481 17.1242 20.5 14.2205C20.5 11.3188 18.6812 11.5054 18.6812 7.94511C18.6812 5.16414 16.0452 2 12 2C7.95477 2 5.31885 5.16414 5.31885 7.94511C5.31885 11.5054 3.5 11.3188 3.5 14.2205C3.75295 17.1352 6.36177 17.8476 12 17.8476Z" stroke="#B51B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M12 17.8476C17.6392 17.8476 20.2481 17.1242 20.5 14.2205C20.5 11.3188 18.6812 11.5054 18.6812 7.94511C18.6812 5.16414 16.0452 2 12 2C7.95477 2 5.31885 5.16414 5.31885 7.94511C5.31885 11.5054 3.5 11.3188 3.5 14.2205C3.75295 17.1352 6.36177 17.8476 12 17.8476Z" stroke="#B51B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
       <path d="M14.3889 20.8572C13.0247 22.3719 10.8967 22.3899 9.51953 20.8572" stroke="#B51B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
    </svg>
 )
 const AddressProIcon = (props) => (
    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M14.5 10.5005C14.5 9.11924 13.3808 8 12.0005 8C10.6192 8 9.5 9.11924 9.5 10.5005C9.5 11.8808 10.6192 13 12.0005 13C13.3808 13 14.5 11.8808 14.5 10.5005Z" stroke="#B51B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9995 21C10.801 21 4.5 15.8984 4.5 10.5633C4.5 6.38664 7.8571 3 11.9995 3C16.1419 3 19.5 6.38664 19.5 10.5633C19.5 15.8984 13.198 21 11.9995 21Z" stroke="#B51B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M14.5 10.5005C14.5 9.11924 13.3808 8 12.0005 8C10.6192 8 9.5 9.11924 9.5 10.5005C9.5 11.8808 10.6192 13 12.0005 13C13.3808 13 14.5 11.8808 14.5 10.5005Z" stroke="#B51B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M11.9995 21C10.801 21 4.5 15.8984 4.5 10.5633C4.5 6.38664 7.8571 3 11.9995 3C16.1419 3 19.5 6.38664 19.5 10.5633C19.5 15.8984 13.198 21 11.9995 21Z" stroke="#B51B3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
    </svg>
 
 )

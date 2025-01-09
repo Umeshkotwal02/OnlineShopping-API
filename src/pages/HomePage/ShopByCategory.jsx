@@ -5,51 +5,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../../styles/ShopbyCatCard.css"
 import "../../styles/ShopByCategorySlick.css";
-import Loader from "../../components/Loader";
 
-
-const sliderItems = [
-    {
-        id: 1,
-        image: require("../../assets/images/CategoryByShopSlicks/Crush.png"),
-        text: "Crush(Pleated) Work"
-    },
-    {
-        id: 2,
-        image: require("../../assets/images/CategoryByShopSlicks/lahenga.png"),
-        text: "Lehenga Saree"
-    },
-    {
-        id: 3,
-        image: require("../../assets/images/CategoryByShopSlicks/DesignerSaree.png"),
-        text: "Designer Saree"
-    },
-    {
-        id: 4,
-        image: require("../../assets/images/CategoryByShopSlicks/Printed.png"),
-        text: "Printed Embroidered "
-    },
-    {
-        id: 5,
-        image: require("../../assets/images/CategoryByShopSlicks/FloralSaree.png"),
-        text: "Floral Saree"
-    },
-    {
-        id: 6,
-        image: require("../../assets/images/CategoryByShopSlicks/Crush.png"),
-        text: "Celebrity Outfits"
-    },
-    {
-        id: 7,
-        image: require("../../assets/images/CategoryByShopSlicks/lahenga.png"),
-        text: "Reception"
-    },
-    {
-        id: 8,
-        image: require("../../assets/images/CategoryByShopSlicks/DesignerSaree.png"),
-        text: "Others"
-    },
-];
 
 // Custom Next Arrow Component
 const NextCatArrow = ({ onClick }) => {
@@ -69,7 +25,7 @@ const PrevCatArrow = ({ onClick }) => {
     );
 };
 
-const ShopByCategorySlick = () => {
+const ShopByCategorySlick = ({ data }) => {
     const [loading, setLoading] = useState(true);
     const [prevArrowPosition, setPrevArrowPosition] = useState(0);
     const sliderRef = useRef(null);
@@ -143,8 +99,6 @@ const ShopByCategorySlick = () => {
         ],
     };
 
-    const productNameSlug = (name) => name.replace(/\s+/g, "-").toLowerCase();
-
     return (
         <>
             <Container
@@ -157,7 +111,7 @@ const ShopByCategorySlick = () => {
                             <Link to={`/products-page`} className="shop-by-category-card text-decoration-none">
                                 <div className="position-relative w-100 h-100 rounded">
                                     <img
-                                        src={require("../../assets/images/CategoryByShopSlicks/image.png")}
+                                        src={require("../../assets/images/CategoryByShopSlicks/shopCateImg.png")}
                                         className="staic-slider-image"
                                         alt={"shop by cat"}
                                         loading="lazy"
@@ -170,26 +124,33 @@ const ShopByCategorySlick = () => {
                         {/* Render the slider */}
                         <div ref={sliderRef}>
                             <Slider {...settings}>
-                                {sliderItems.map((product) => (
+                                {data.map((product) => (
                                     <div key={product.id}>
                                         <Link
                                             // to={`/product/${productNameSlug(product.text)}`}
                                             to={`/products-page`}
-                                            className="shop-by-category-card text-decoration-none"
+                                            className="shop-by-category-slick text-decoration-none"
                                         >
-                                            <div className="position-relative w-100 h-100 rounded">
-                                                <img
-                                                    src={product.image}
-                                                    className="slider-image  rounded"
-                                                    alt={product.text}
-                                                    loading="lazy"
-                                                />
-                                                <div className="image-overlay position-absolute d-flex align-items-end justify-content-center pb-3 gradient-bg ">
+                                            <div className="shop-by-category-slick position-relative h-100 overflow-hidden rounded-4">
+                                                <div className="img-container h-100 group">
+                                                    <img
+                                                        src={product?.category_web_image || '/images/product-img.png'}
+                                                        className="w-100 h-100 duration-500 img-hover-effect"
+                                                        alt=""
+                                                        loading="lazy"
+                                                    // onError="setImageError(true)"
+                                                    />
+                                                </div>
+
+                                                <div className="shop-by-category-slick img-container bg-light d-none" id="fallbackImage"></div>
+
+                                                <div
+                                                    className="position-absolute start-0 bottom-0 w-100 text-center bg-dark-gradient py-3 px-2"
+                                                >
                                                     <h3
-                                                        className="overlay-text text-white text-center"
-                                                        style={{ fontFamily: "KaushanScript" }}
+                                                        className="text-white shop-cat-heading"
                                                     >
-                                                        {product.text}
+                                                        {product?.category_name}
                                                     </h3>
                                                 </div>
                                             </div>

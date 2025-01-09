@@ -47,7 +47,7 @@ const LoginModal = ({ show, handleClose, setUser }) => {
             const userData = {
                 phoneNumber: mobileNumber,
             };
-            setUser(userData); // Notify parent about the logged-in user
+            setUser(userData);
             setSuccess(true);
             toast.success("OTP Verified Successfully!");
             setOtpModal(false);

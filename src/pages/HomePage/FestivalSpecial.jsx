@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const FestivalSpecial = () => {
+const FestivalSpecial = ({ data }) => {
     return (
         <Container fluid className="py-0 pt-4 px-md-2 px-lg-5 px-xl-5 px-xxl-5">
             {/* Bridal Edit */}
@@ -18,8 +18,8 @@ const FestivalSpecial = () => {
                         <Col xs={12} md={12} lg={12} xl={5} xxl={5} className="p-0 pe-3">
                             <div className="p-0">
                                 <img
-                                    src={require('../../assets/images/Festival-Special/img1.png')}
-                                    className="w-100 transition-transform"
+                                    src={data?.AllBanners?.banner5?.[3]?.file}
+                                    className="w-100 h-100  transition-transform"
                                     alt="Bridal Edit"
                                 />
                             </div>
@@ -29,7 +29,7 @@ const FestivalSpecial = () => {
                                 <Col xs={12} className="pb-2 pb-lg-3" style={{ height: '50%' }}>
                                     <div className="p-0">
                                         <img
-                                            src={require('../../assets/images/Festival-Special/img4.png')}
+                                            src={data?.AllBanners?.banner5?.[0]?.file}
                                             className="w-100"
                                             alt="Bridal Edit"
                                         />
@@ -38,7 +38,7 @@ const FestivalSpecial = () => {
                                 <Col xs={6} style={{ height: '50%' }}>
                                     <div className="pt-3">
                                         <img
-                                            src={require('../../assets/images/Festival-Special/img2.png')}
+                                            src={data?.AllBanners?.banner5?.[1]?.file}
                                             className="w-100"
                                             alt="Bridal Edit"
                                         />
@@ -47,7 +47,7 @@ const FestivalSpecial = () => {
                                 <Col xs={6} style={{ height: '50%' }}>
                                     <div className="pt-3 ">
                                         <img
-                                            src={require('../../assets/images/Festival-Special/img3.png')}
+                                            src={data?.AllBanners?.banner5?.[2]?.file}
                                             className="w-100"
                                             alt="Bridal Edit"
                                         />

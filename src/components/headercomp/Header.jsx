@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
-import { AccountIcon, WishlistIcon, SearchIcon, LoginIcon, DropdownDown, LgBagIcon, DropdownUp, ProfileIcon, NotificationIcon, MyOrderIcon } from "../../assets/SvgIcons";
+import { AccountIcon, WishlistIcon, LoginIcon, DropdownDown, LgBagIcon, DropdownUp, ProfileIcon, NotificationIcon, MyOrderIcon } from "../../assets/SvgIcons";
 import LoginOffCanvas from "../canvas/LoginOffCanvas";
-import CategoryMenuMobi from "../../pages/MobilePages/CategoryMenuMobi";
 import CategoryMenu from "./CategoryMenu";
-import MobileHeader from "../mobileheadercomp/MobileHeader";
 import TopBar from "./TopBar";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
@@ -16,6 +14,8 @@ import NotificationCanvas from "../canvas/NotificationCanvas";
 import "../../styles/Header.css"
 import CartOffCanvas from "./CartOffCanvas";
 import SearchBar from "../SearchBar";
+import axios from "axios";
+import { API_URL } from "../../Constant/constApi";
 
 const Header = ({
   searchTerm,
@@ -30,17 +30,12 @@ const Header = ({
   const [showCartCanvas, setShowCartCanvas] = useState(false); // Cart OffCanvas
   const [showProfileModals, setShowProfileModals] = useState(false); // Profile Modal
   const [showNotificationModal, setShowNotificationModal] = useState(false); // Notification Modal
+  const [headerButtons, setHeaderButtons] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Monitor authentication state
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe(); // Cleanup subscription
-  }, []);
+
 
   // Logout handler
   const handleLogout = () => {
@@ -107,7 +102,38 @@ const Header = ({
     setIsOpen(false);
   };
 
+
+  const fetchHeaderButtons = async () => {
+    try {
+      const response = await axios.get(`${API_URL}header_api`);
+      const { data } = response;
+
+      if (data && data.STATUS === 200 && Array.isArray(data.DATA)) {
+        setHeaderButtons(data.DATA);
+      } else {
+        throw new Error("Unexpected response format");
+      }
+    } catch (err) {
+      console.error("Error fetching header buttons:", err);
+      toast.error(
+        err?.response?.data?.MESSAGE ||
+        err?.message ||
+        "Failed to fetch header buttons."
+      );
+    }
+  };
+
   const handleCloseNotificationModals = () => setShowNotificationModal(false);
+
+  // Monitor authentication state
+  useEffect(() => {
+    fetchHeaderButtons();
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe(); // Cleanup subscription
+  }, []);
+
   return (
     <>
       <TopBar />
@@ -128,7 +154,7 @@ const Header = ({
 
               {/* Search Bar */}
               <Col xxl={6} xl={6} lg={6} className="flex-grow-1 my-1">
-              <SearchBar/>
+                <SearchBar />
 
               </Col>
 
@@ -265,8 +291,8 @@ const Header = ({
             </Row>
           </div>
         </Container>
-        <CategoryMenu />
-      </div >
+        <CategoryMenu headerCatData={headerButtons} />
+      </div>
       <LoginOffCanvas show={showLoginCanvas} handleClose={handleCloseLoginCanvas} setUser={handleUserUpdate} />
       <CartOffCanvas show={showCartCanvas} handleClose={handleCloseCartCanvas} />
       <ProfileModal show={showProfileModals} handleClose={handleCloseProfileModals} />

@@ -1,51 +1,52 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import { CategoryPrevNextIcon, CategorySlickNextIcon } from "../../assets/SvgIcons";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../../styles/ShopbyCatCard.css"
 import "../../styles/ShopByCategorySlick.css";
+import Loader from "../../components/Loader";
 
 
 const sliderItems = [
   {
     id: 1,
-    image: require("../../assets/images/ShopByColor/img1.png"),
+    image: require("../../assets/images/CategoryByShopSlicks/Crush.png"),
     text: "Crush(Pleated) Work"
   },
   {
     id: 2,
-    image: require("../../assets/images/ShopByColor/img2.png"),
+    image: require("../../assets/images/CategoryByShopSlicks/lahenga.png"),
     text: "Lehenga Saree"
   },
   {
     id: 3,
-    image: require("../../assets/images/ShopByColor/img3.png"),
+    image: require("../../assets/images/CategoryByShopSlicks/DesignerSaree.png"),
     text: "Designer Saree"
   },
   {
     id: 4,
-    image: require("../../assets/images/ShopByColor/img4.png"),
+    image: require("../../assets/images/CategoryByShopSlicks/Printed.png"),
     text: "Printed Embroidered "
   },
   {
     id: 5,
-    image: require("../../assets/images/ShopByColor/img5.png"),
+    image: require("../../assets/images/CategoryByShopSlicks/FloralSaree.png"),
     text: "Floral Saree"
   },
   {
     id: 6,
-    image: require("../../assets/images/ShopByColor/img6.png"),
+    image: require("../../assets/images/CategoryByShopSlicks/Crush.png"),
     text: "Celebrity Outfits"
   },
   {
     id: 7,
-    image: require("../../assets/images/ShopByColor/img1.png"),
+    image: require("../../assets/images/CategoryByShopSlicks/lahenga.png"),
     text: "Reception"
   },
   {
     id: 8,
-    image: require("../../assets/images/ShopByColor/img2.png"),
+    image: require("../../assets/images/CategoryByShopSlicks/DesignerSaree.png"),
     text: "Others"
   },
 ];
@@ -62,14 +63,39 @@ const NextCatArrow = ({ onClick }) => {
 // Custom Previous Arrow Component
 const PrevCatArrow = ({ onClick }) => {
   return (
-    <div className="custom-arrow shop-by-color-prev-arrow d-none d-lg-block" onClick={onClick}>
+    <div className="custom-arrow prev-arrow d-none d-lg-block" onClick={onClick}>
       <CategoryPrevNextIcon />
     </div>
   );
 };
 
-const ShopByColorSlick = () => {
+const ShopByColorSlick = ({ data }) => {
+  const [loading, setLoading] = useState(true);
+  const [prevArrowPosition, setPrevArrowPosition] = useState(0);
+  const sliderRef = useRef(null);
 
+  useEffect(() => {
+    const updateArrowPosition = () => {
+      if (sliderRef.current) {
+        const slide = sliderRef.current.querySelector(".slick-slide");
+        if (slide) {
+          const slideWidth = slide.offsetWidth;
+          const prevArrow = document.querySelector(".prev-arrow");
+          if (prevArrow) {
+            prevArrow.style.left = `-${slideWidth + 11}px`;
+          }
+        }
+      }
+    };
+
+    // Update on mount and on window resize
+    updateArrowPosition();
+    window.addEventListener("resize", updateArrowPosition);
+
+    return () => {
+      window.removeEventListener("resize", updateArrowPosition);
+    };
+  }, []);
   // Slick slider settings
   const settings = {
     dots: false,
@@ -80,7 +106,7 @@ const ShopByColorSlick = () => {
     autoplay: false,
     autoplaySpeed: 2000,
     nextArrow: <NextCatArrow />,
-    prevArrow: <PrevCatArrow />,
+    prevArrow: <PrevCatArrow style={{ left: prevArrowPosition }} />,
     responsive: [
       {
         breakpoint: 1200,
@@ -109,23 +135,20 @@ const ShopByColorSlick = () => {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 2.3,
+          slidesToShow: 1.2,
           slidesToScroll: 1,
           centerMode: true,
-          centerPadding: "0px",
         },
       },
     ],
   };
-
-  const productNameSlug = (name) => name.replace(/\s+/g, "-").toLowerCase();
 
   return (
     <>
       <Container
         fluid
         className="shop-by-category-slick slider-container h-100 w-100 px-lg-5 px-xl-5 px-xxl-5">
-        <h3 className="text-start font-bold my-3 ms-2 mt-4">
+        <h3 className="text-start font-bold my-3 ms-2 mt-4 d-lg-none">
           Shop by Color
         </h3>
         <div className="d-none d-lg-block">
@@ -133,30 +156,38 @@ const ShopByColorSlick = () => {
           <p className="text-center font-italic mb-2"><i>"Embrace the festival magic, let joy fill every moment."</i></p>
         </div>
         <Row>
-          <Col xxl={12} xl={12} lg={12} className="p-0 m-0">
+          <Col xxl={12} xl={12} lg={12} sm={12} xs={12} className="mobile-category-slider px-0">
             {/* Render the slider */}
-            <div>
+            <div ref={sliderRef}>
               <Slider {...settings}>
-                {sliderItems.map((product) => (
+                {data.map((product) => (
                   <div key={product.id}>
                     <Link
-                      to={`/product/${productNameSlug(product.text)}`}
-                      className="shop-by-category-card text-decoration-none"
+                      // to={`/product/${productNameSlug(product.text)}`}
+                      to={`/products-page`}
+                      className="shop-by-category-slick text-decoration-none"
                     >
-                      <div className="position-relative w-100 h-100 rounded">
-                        <img
-                          src={product.image}
-                          className="slider-image rounded"
-                          alt={product.text}
-                          loading="lazy"
-                        />
-                        <div className="image-overlay position-absolute d-flex align-items-end justify-content-center pb-3">
-                          {/* <p
-                            className="overlay-text text-white text-center"
-                            style={{ fontFamily: "KaushanScript" }}
+                      <div className="shop-by-category-slick position-relative h-100 overflow-hidden rounded-4">
+                        <div className="img-container h-100 group">
+                          <img
+                            src={product?.product_image || '/images/product-img.png'}
+                            className="w-100 h-100 duration-500 img-hover-effect"
+                            alt=""
+                            loading="lazy"
+                          // onError="setImageError(true)"
+                          />
+                        </div>
+
+                        <div className="shop-by-category-slick img-container bg-light d-none" id="fallbackImage"></div>
+
+                        <div
+                          className="position-absolute start-0 bottom-0 w-100 text-center bg-dark-gradient py-3 px-2"
+                        >
+                          <h3
+                            className="text-white shop-cat-heading"
                           >
-                            {product.text}
-                          </p> */}
+                            {product?.product_name}
+                          </h3>
                         </div>
                       </div>
                     </Link>
@@ -168,33 +199,6 @@ const ShopByColorSlick = () => {
         </Row>
       </Container>
 
-      <Container fluid className="d-lg-none">
-        {/* <h3 className="fw-bold my-3">Shop by Category</h3> */}
-        <h3 className="text-start my-3">Shop by Category</h3>
-
-        {/* <Slider {...settings}>
-          {sliderItems.map((product) => (
-            <div key={product.id}>
-              <Link
-                to={`/product/${productNameSlug(product.text)}`}
-                className="shop-by-category-card text-decoration-none"
-              >
-                <div className="position-relative w-100 h-100 rounded">
-                  <img
-                    src={product.image}
-                    className="slider-image rounded"
-                    alt={product.text}
-                    loading="lazy"
-                  />
-                  <div className="image-overlay position-absolute d-flex align-items-end justify-content-center pb-3">
-                    <p className="overlay-text text-white text-center" style={{ fontFamily: "KaushanScript" }}>{product.text}</p>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          ))}
-        </Slider> */}
-      </Container>
     </>
   );
 };

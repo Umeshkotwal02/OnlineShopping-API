@@ -12,8 +12,16 @@ import Footer from "./components/Footer";
 import ScrollUp from "./components/ScrollUp";
 import { publicRoutes } from "./routes/allRoutes";
 import AutoScrollToTop from "./components/AutoScrollToTop";
+import { STORAGE } from "./config/config";
 
 function App() {
+
+  const deviceId = localStorage.getItem(STORAGE?.DEVICEID || "defaultDeviceId");
+  if (!deviceId) {
+    const newDeviceId = Date.now();
+    localStorage.setItem(STORAGE?.DEVICEID || "defaultDeviceId", newDeviceId);
+  }
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

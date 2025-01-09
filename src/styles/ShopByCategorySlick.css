@@ -1,3 +1,30 @@
+.shop-by-category-slick .img-container {
+  aspect-ratio: 9 / 12;
+  max-width: 100%;
+}
+
+.shop-by-category-slick .img-container img {
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.5s ease-in-out;
+}
+
+.img-hover-effect:hover {
+  transform: scale(1.1);
+}
+
+.bg-dark-gradient {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.88) 100%);
+}
+
+.shop-cat-heading {
+  font-family: 'KaushanScript';
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+/* End  +++++++++++++++++++++++++++*/
+
 .cat-image-container {
   position: relative;
   aspect-ratio: 2 / 3;
@@ -53,7 +80,7 @@
   }
 }
 
-@media (min-width: 430px) {
+@media (max-width: 430px) {
   .mobile-category-slider {
     padding-left: 12px !important;
     padding-right: 0px !important;

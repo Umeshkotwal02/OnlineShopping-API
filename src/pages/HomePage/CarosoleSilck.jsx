@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "../../styles/CarosoleSilck.css";
 import { Container } from "react-bootstrap";
-import CarosoleSlickMobi from "../MobilePages/CarosoleSlickMobi";
 import Loader from "../../components/Loader";
 
 // Custom Next Arrow Component
@@ -30,7 +29,7 @@ const PrevArrow = ({ onClick }) => {
     );
 };
 
-const CarosoleSilckSlider = () => {
+const CarosoleSilckSlider = ({ bannerList }) => {
     const [loading, setLoading] = useState(true);
 
     // Simulating loading for 2 seconds
@@ -51,12 +50,6 @@ const CarosoleSilckSlider = () => {
         prevArrow: <PrevArrow />,
     };
 
-    const images = [
-        require("../../assets/images/Carasole-Img/Carousel-1.png"),
-        require("../../assets/images/Carasole-Img/Carousel-2.png"),
-        require("../../assets/images/Carasole-Img/Carousel-3.png"),
-    ];
-
     return (
         <>
             <>
@@ -64,16 +57,16 @@ const CarosoleSilckSlider = () => {
                     <Loader />
                 ) : (
                     <>
-                        <CarosoleSlickMobi />
+                       
                         <Container
                             fluid
                             className="d-none d-lg-block CarosoleSlickSlider py-3 px-lg-5 px-xl-5 px-xxl-5"
                         >
                             <Slider {...settings}>
-                                {images.map((image, index) => (
+                                {bannerList?.map((item, index) => (
                                     <div key={index} className="slider-item">
                                         <img
-                                            src={image}
+                                            src={item?.webfile}
                                             alt={`Slide ${index + 1}`}
                                             className="caro-img"
                                         />

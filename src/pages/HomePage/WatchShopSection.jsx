@@ -8,52 +8,6 @@ import Loader from "../../components/Loader";
 import "../../styles/WatchShopCard.css";
 import WatchShopCard from "../../components/homepage/WatchShopCard";
 
-// Static data example
-const productData = [
-    {
-        id: "1",
-        product_name: "Ruffle Lehenga With Crop Top",
-        product_price: "1,999 - ₹5,999",
-        product_video_url: "https://www.koskii.com/cdn/shop/files/quinn_Qd2F4EqIl5KtZdCoJ2m53.mp4",
-        small_image: "https://cdn.shopify.com/s/files/1/0049/3649/9315/files/koskii-wine-swarovski-semicrepe-designer-saree-saus0029624_wine_4_cec7ec12-04e9-469d-b993-d046a0f61ee1_200x200.jpg?v=1710161670",
-    },
-    {
-        id: "2",
-        product_name: "Ruffle Lehenga With Crop Top",
-        product_price: "1,999 - ₹5,999",
-        product_video_url: "https://www.koskii.com/cdn/shop/files/quinn_t32uuhxkdsw44jxao3ifkisl.mp4",
-        small_image: "https://cdn.shopify.com/s/files/1/0049/3649/9315/files/koskii-navy-blue-swarovski-semi-crepe-designer-saree-saus0017312_navy_blue_1_594227a8-c285-4637-ad30-b18091eebc66_200x200.jpg?v=1689751227",
-    },
-    {
-        id: "3",
-        product_name: "Ruffle Lehenga With Crop Top",
-        product_price: "1,999 - ₹5,999",
-        product_video_url: "https://www.koskii.com/cdn/shop/files/quinn_fpDadFFBq1o6TadfeVVbg.mp4",
-        small_image: "https://cdn.shopify.com/s/files/1/0049/3649/9315/files/koskii-wine-swarovski-semicrepe-designer-saree-saus0029624_wine_4_cec7ec12-04e9-469d-b993-d046a0f61ee1_200x200.jpg?v=1710161670",
-    },
-    {
-        id: "4",
-        product_name: "Ruffle Lehenga With Crop Top",
-        product_price: "1,999 - ₹5,999",
-        product_video_url: "https://www.koskii.com/cdn/shop/files/quinn_xrwczuptre1zumxwhojw2l6i.mp4",
-        small_image: "https://cdn.shopify.com/s/files/1/0049/3649/9315/files/koskii-wine-swarovski-semicrepe-designer-saree-saus0029624_wine_4_cec7ec12-04e9-469d-b993-d046a0f61ee1_200x200.jpg?v=1710161670",
-    },
-    {
-        id: "5",
-        product_name: "Ruffle Lehenga With Crop Top",
-        product_price: "1,999 - ₹5,999",
-        product_video_url: "https://www.koskii.com/cdn/shop/files/quinn_b8nskjdd37lrkx8kk4ol7a19.mp4",
-        small_image: "https://cdn.shopify.com/s/files/1/0049/3649/9315/files/koskii-wine-swarovski-semicrepe-designer-saree-saus0029624_wine_4_cec7ec12-04e9-469d-b993-d046a0f61ee1_200x200.jpg?v=1710161670",
-    },
-    {
-        id: "6",
-        product_name: "Ruffle Lehenga With Crop Top",
-        product_price: "1,999 - ₹5,999",
-        product_video_url: "https://www.koskii.com/cdn/shop/files/quinn_eebme1xxxy977oxtfcs29pnu.mp4",
-        small_image: "https://cdn.shopify.com/s/files/1/0049/3649/9315/files/koskii-wine-swarovski-semicrepe-designer-saree-saus0029624_wine_4_cec7ec12-04e9-469d-b993-d046a0f61ee1_200x200.jpg?v=1710161670",
-    },
-];
-// Custom Next Arrow Component
 // Custom Next Arrow Component
 const NextCatArrow = ({ onClick }) => {
     return (
@@ -73,12 +27,11 @@ const PrevCatArrow = ({ onClick }) => {
 };
 
 
-
-const WatchShopSection = () => {
+const WatchShopSection = ({ data }) => {
     const settings = {
         infinite: true,
         speed: 500,
-        slidesToShow: 6,
+        slidesToShow: 5,
         slidesToScroll: 1,
         autoplay: false,
         autoplaySpeed: 2000,
@@ -88,7 +41,7 @@ const WatchShopSection = () => {
             {
                 breakpoint: 1400,
                 settings: {
-                    slidesToShow: 6,
+                    slidesToShow: 5,
                     slidesToScroll: 1,
                     centerMode: false,
                     nextArrow: <NextCatArrow />,
@@ -137,8 +90,8 @@ const WatchShopSection = () => {
             },
         ],
     };
-    
-    
+
+
 
     // Modal Setting
     const sliderSettings = {
@@ -196,7 +149,7 @@ const WatchShopSection = () => {
                         <Row>
                             <Col className="mobile-watchandshop-slider">
                                 <Slider {...settings} className="wtc-shop-slick-slider">
-                                    {productData.map((product) => (
+                                    {data?.map((product, index) => (
                                         <div key={product.id}>
                                             <WatchShopCard watchShopProductInfo={product} onVideoClick={handleVideoClick} />
                                         </div>
@@ -214,7 +167,7 @@ const WatchShopSection = () => {
                                     afterChange={(index) => setSelectedVideo(index)}
                                     style={{ background: "transparent" }}
                                 >
-                                    {productData.map((product, index) => (
+                                    {data?.map((product, index) => (
                                         <div key={product.id} className="video-slide">
                                             <ReactPlayer
                                                 url={selectedVideo}

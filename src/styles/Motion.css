@@ -1,7 +1,7 @@
 /* Parallax Background Section */
 .sixth-section {
     background-attachment: fixed;
-    background-Image: url('../assets/images/motion.png');
+    /* background-Image: url('../assets/images/motion.png'); */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

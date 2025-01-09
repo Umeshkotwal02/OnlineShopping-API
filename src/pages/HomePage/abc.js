@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Offcanvas, Form } from 'react-bootstrap';
-import { auth } from '../firebase';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'; // Import signInWithPopup from firebase/auth
+import { auth, googleProvider } from '../firebase'; // Importing auth and provider
+import { signInWithPopup } from 'firebase/auth'; // Import signInWithPopup from firebase/auth
 import { FcGoogle } from 'react-icons/fc';
 import "../../styles/LoginCanva.css";
 import toast from "react-hot-toast";
@@ -25,48 +25,17 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
 
 
 
-  // setUser(true);
-  // setSuccess(true);
-  // handleClose(true);
   const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({
-      prompt: "select_account",
-    });
-
-    signInWithPopup(auth, provider)
-      .then(async (result) => {
-        // console.log(result);
-        try {
-          const userData = {
-            device_id: localStorage.getItem("deviceId"),
-            user_email: result.user.email,
-            user_name: result.user.displayName,
-            type: STORAGE?.GOOGLE,
-            is_admin: "0",
-            user_type: STORAGE?.B2C,
-          };
-
-          const { data } = await axios.post("/sendotp", userData);
-          if (data && data?.STATUS === 200) {
-            toast.success(data?.MESSAGE);
-            console.log("Google login success", data);
-            setUser(true);
-            setSuccess(true);
-            handleClose(true);
-            localStorage.setItem(STORAGE?.ISLOGIN, 1);
-            localStorage.setItem(
-              STORAGE?.USERDETAIL,
-              JSON.stringify(data?.DATA)
-            );
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      })
-      .catch((error) => {
-        console.error("Error during sign-in with Google: ", error);
-      });
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      setUser(true);
+      setSuccess(true);
+      toast.success("Google Login success");
+      console.log('User logged in:', result.user);
+      handleClose(true);
+    } catch (error) {
+      console.error("Error logging in with Google: ", error.message);
+    }
   };
 
   const [touched, setTouched] = useState({
@@ -100,6 +69,7 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
         setMobileNumber(mobileNumber);
         // setOtp(data?.OTP)
         setOtpCanvas(true);
+        startResendTimer();
         setError('');
         setResendTimer(59);
         setIsCounting(true);
@@ -133,9 +103,7 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
       setError('Please enter a valid 10-digit mobile number.');
       return;
     }
-    // send otp
     sendOtp();
-    handleClose(true)
   };
 
 
@@ -221,6 +189,15 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
     setOtp(['', '', '', '', '', '']);
   };
 
+  const startResendTimer = () => {
+    setResendTimer(30);
+    const interval = setInterval(() => {
+      setResendTimer((prev) => {
+        if (prev <= 1) clearInterval(interval);
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
   const maskMobileNumber = (number) => {
     if (number.length >= 4) {
@@ -280,8 +257,7 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
             <h3 className="signin-heading">Login</h3>
             <p className="signin-description font-color-global">
               Enter your email ID or phone
-              <br />
-              number to sign in
+              <p>number to sign in</p>
             </p>
             {/* Mobile Number Enter */}
             <Form.Group className="mb-3">
@@ -353,19 +329,26 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
             <h3 className="signin-heading">Verify with OTP</h3>
             <p className="signin-description font-color-global">
               Enter the OTP sent to your
-              <br />
-              phone number
+              <p>phone number</p>
             </p>
             <p>OTP sent to {maskMobileNumber(mobileNumber)}
               <button
-                className="btn-link text-danger resend-btn px-2"
+                className="btn-link text-danger resend-btn"
                 onClick={() => {
+                  resendOtp();
                   setOtpCanvas(false);
                   setMobileNumber('');
                   clearOtp();
                   setError('');
                 }}
               >
+                <span className="font-medium text-[#666464] underline">
+                  {isOtpExpired ? "Resend OTP" : "Resend OTP"}
+                </span>
+                <span className="font-medium">
+                  {resendTimer > 0 && ` in ${resendTimer}s`}
+                </span>
+
                 Change
               </button></p>
             {/* OTP Input */}
@@ -393,15 +376,9 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
               <button
                 className="btn-link p-0 text-decoration-none resend-btn ps-1 text-dark"
                 disabled={resendTimer > 0}
-                onClick={resendOtp}
+                onClick={startResendTimer}
               >
-
-                <span className="font-medium text-[#666464] underline">
-                  {isOtpExpired ? "Resend OTP" : "Resend OTP"}
-                </span>
-                <span className="font-medium">
-                  {resendTimer > 0 && ` in ${resendTimer}s`}
-                </span>
+                Resend OTP{resendTimer > 0 ? ` in ${resendTimer}s` : ''}
               </button>
             </div>
           </div>

@@ -26,10 +26,10 @@ const WatchShopCard = ({ watchShopProductInfo }) => {
                         className="position-relative"
                         onMouseEnter={handleMouseEnter}
                     >
-                        <div className="ratio ratio-3x4">
+                        <div className="video-ratio">
                             <ReactPlayer
                                 url={watchShopProductInfo.product_video_url}
-                                playing={play} // Always play once activated
+                                playing={play}
                                 loop
                                 muted
                                 width="100%"
@@ -55,7 +55,8 @@ const WatchShopCard = ({ watchShopProductInfo }) => {
                         </div>
                     </div>
                     <div className="text-center py-3 px-2 web-bg-color wtc-shop-product-info">
-                        <h3 className="fw-medium">{watchShopProductInfo.product_name}</h3>
+                        {/* <h3 className="fw-medium text-truncate">{watchShopProductInfo.product_name}</h3> */}
+                        <h3 className="fw-medium two-line-truncate">{watchShopProductInfo.product_name}</h3>
                         <div className="d-flex justify-content-center align-items-center text-success fw-medium ">
                             ₹{watchShopProductInfo.product_price}
                         </div>

@@ -3,11 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import { FaHeart } from "react-icons/fa6";
 import "../../styles/NewArrivalCard.css";
-import { productData } from "../../config/productData";
 import { FiHeart } from "react-icons/fi";
 import ProductImageSlider from "../../components/homepage/ProductImageSlider";
 
-const NewArrivalCard = ({ products = productData }) => {
+{/* <NewArrivalCard info={item} /> */ }
+
+const NewArrivalCard = ({ data }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [visibleItems, setVisibleItems] = useState(10);
   const navigate = useNavigate();
@@ -79,7 +80,8 @@ const NewArrivalCard = ({ products = productData }) => {
         <i> "Embrace the festival magic, let joy fill every moment."</i>
       </p>
       <Row className="px-lg-5 px-xl-5 px-xxl-5">
-        {products.slice(0, visibleItems).map((product) => (
+        {/* data?.newarrival?.map((item, index) => { */}
+        {data?.newarrival?.map((product, index) => (
           <Col xs={6} sm={6} md={4} lg={2} xl={2} xxl={2} key={product.id}
             className="mb-4 rounded wishlist-column"
           >
@@ -87,7 +89,8 @@ const NewArrivalCard = ({ products = productData }) => {
               <div className="new-arrival-card rounded-top-3">
                 {/* Product Image Section */}
                 <div className="image-container rounded-top-3">
-                  <ProductImageSlider imageList={product.product_images || []} />
+                  <ProductImageSlider imageList={[product.product_image]} />
+
                   <div className="overlay-buttons">
                     <button className="add-to-cart-btn" onClick={handleAddToCart}>
                       ADD TO CART
@@ -129,13 +132,6 @@ const NewArrivalCard = ({ products = productData }) => {
           </Col>
         ))}
       </Row>
-      {visibleItems < products.length && (
-        <div className="text-center d-flex justify-content-center">
-          <Button variant="dark rounded-5 px-4" onClick={handleViewMore} style={{ fontSize: "0.9rem" }} className="d-none d-lg-block">
-            View All
-          </Button>
-        </div>
-      )}
     </Container>
   );
 };

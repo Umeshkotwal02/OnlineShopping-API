@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Offcanvas, Row, Col, Nav } from "react-bootstrap";
 import { CartIcon, OffCanvaArrowIcon } from "../../assets/SvgIcons";
-import { FiSearch } from "react-icons/fi";
 import "../../styles/OffCanvasForHeader.css"
 import CartModal from "../../pages/MobilePages/CartModal";
 import SearchBar from "../SearchBar";

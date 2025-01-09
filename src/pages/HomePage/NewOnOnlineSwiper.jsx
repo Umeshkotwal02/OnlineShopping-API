@@ -7,42 +7,8 @@ import "../../styles/NewOnOnlineSwiper.css";
 import { Container, Row, Col } from "react-bootstrap";
 import Loader from "../../components/Loader";
 
-const NewOnOnlineSwiper = () => {
+const NewOnOnlineSwiper = ({info}) => {
   const navigate = useNavigate();
-
-  // Static data
-  const staticData = [
-    {
-      product_name: "Lavender Georgette",
-      product_image: require('../../assets/images/NewOnOnline/img1.png'),
-      product_discount: "20",
-    },
-    {
-      product_name: "Lavender Georgette",
-      product_image: require('../../assets/images/NewOnOnline/img2.png'),
-      product_discount: "40",
-    },
-    {
-      product_name: "Lavender Georgette",
-      product_image: require('../../assets/images/NewOnOnline/img3.png'),
-      product_discount: "40",
-    },
-    {
-      product_name: "Lavender Georgette",
-      product_image: require('../../assets/images/NewOnOnline/img4.png'),
-      product_discount: "40",
-    },
-    {
-      product_name: "Lavender Georgette",
-      product_image: require('../../assets/images/NewOnOnline/img5.png'),
-      product_discount: "40",
-    },
-    {
-      product_name: "Lavender Georgette",
-      product_image: require('../../assets/images/New-Arrive/img1.png'),
-      product_discount: "40",
-    },
-  ];
 
   const handleNavigate = () => {
     navigate("/product-page");
@@ -138,7 +104,7 @@ const NewOnOnlineSwiper = () => {
         <Col xxl={10} xl={10} lg={10} className="p-0 m-0">
           {/* Slider Component */}
           <Slider {...settings}>
-            {staticData.map((item, index) => (
+            {info.map((item, index) => (
               <div key={"newOnKapoor-" + index} className="slick-slide-container swiper-slide-container rounded" style={{ borderRadius: "10px" }}>
                 <NewArrivalOfferCard itemInfo={item} />
               </div>

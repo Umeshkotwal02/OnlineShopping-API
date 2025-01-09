@@ -107,11 +107,11 @@ const MobileFooter = () => {
       </Container>
 
       {/* Login Modal */}
-      <LoginModal
+      {/* <LoginModal
         show={showLoginModal}
         handleClose={() => setShowLoginModal(false)}
         setUser={handleSuccessfulLogin}
-      />
+      /> */}
     </>
   );
 };
