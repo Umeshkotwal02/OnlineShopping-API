@@ -47,8 +47,8 @@ const AboutUsPage = () => {
       <Breadcrumb list={breadcrumbArray} className="px-0" />
       <Container fluid className="px-lg-5 px-xl-5 px-xxl-5">
         {!loading && companyInfo ? ( // Add this conditional check
-          <div className="font-medium">
-            <p className="text-justify font-medium" style={{ fontSize: "1.2rem", textAlign: "justify" }}>
+          <div className="fw-medium">
+            <p className="text-justify fw-medium" style={{ fontSize: "1.2rem", textAlign: "justify" }}>
               {companyInfo.long_description}
             </p>
 

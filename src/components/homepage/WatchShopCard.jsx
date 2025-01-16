@@ -34,7 +34,7 @@ const WatchShopCard = ({ watchShopProductInfo }) => {
                                 muted
                                 width="100%"
                                 height="100%"
-                                className="react-player video-container"
+                                className="rounded-3 react-player video-container"
                                 config={{
                                     youtube: {
                                         playerVars: { showinfo: 0, rel: 0 },

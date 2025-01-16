@@ -112,7 +112,7 @@ const Payment = () => {
                       alt="razor-pay"
                       style={{ padding: "9px" }}
                     />
-                    <h6 className="d-flex align-items-center font-medium">Razor Pay</h6>
+                    <h6 className="d-flex align-items-center fw-medium">Razor Pay</h6>
                   </div>
 
                   {/* Radio Button */}
@@ -133,7 +133,7 @@ const Payment = () => {
                     <span className="bg-design">
                       <CashONIcon2 />
                     </span>
-                    <h6 className="d-flex align-items-center font-medium">COD (Cash on Delivery)</h6>
+                    <h6 className="d-flex align-items-center fw-medium">COD (Cash on Delivery)</h6>
 
                   </div>
 

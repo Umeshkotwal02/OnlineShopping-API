@@ -344,7 +344,7 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
                 />
               </div>
             </div>
-            <div className="text-sm sm:text-lg font-medium !leading-none mb-4 font-color-global py-lg-3 py-xl-3 py-xxl-3">
+            <div className="text-sm sm:text-lg fw-medium !leading-none mb-4 font-color-global py-lg-3 py-xl-3 py-xxl-3">
               Don’t have an account?
               <span className="btn-link p-0 text-decoration-none text-dark ms-2">
                 Sign Up
@@ -414,10 +414,10 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
                 onClick={resendOtp}
               >
 
-                <span className="font-medium text-[#666464] underline">
+                <span className="fw-medium text-[#666464] underline">
                   {isOtpExpired ? "Resend OTP" : "Resend OTP"}
                 </span>
-                <span className="font-medium">
+                <span className="fw-medium">
                   {resendTimer > 0 && ` in ${resendTimer}s`}
                 </span>
               </button>

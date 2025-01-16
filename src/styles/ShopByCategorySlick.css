@@ -80,12 +80,13 @@
   }
 }
 
-@media (max-width: 430px) {
+@media (min-width: 0px) and (max-width: 1024px) {
   .mobile-category-slider {
-    padding-left: 12px !important;
+    padding-left: 10px !important;
     padding-right: 0px !important;
   }
 }
+
 
 /* Shop by color Start +++++++++++++++++++++++++++++++++++++++*/
 .shop-by-color-prev-arrow {

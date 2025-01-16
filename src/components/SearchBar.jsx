@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FaChevronRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import "../styles/SearchBar.css";
 import { SearchCloseIcon, SearchIcon } from "../assets/SvgIcons";
 import { FiSearch } from "react-icons/fi";
 import axios from "axios";
 import { API_URL } from "../Constant/constApi";
 import { STORAGE } from "../config/config";
+import "../styles/SearchBar.css";
 
 const SearchBar = () => {
   const navigate = useNavigate();
@@ -77,18 +77,18 @@ const SearchBar = () => {
   if (closeSearchBar) return null;
 
   return (
-    <Container className="w-100 px-sm-0 h-auto" style={{ zIndex: 999 }}>
+    <Container className="w-100 px-sm-0 h-auto " style={{ zIndex: 999 }}>
       <Row>
-        <Col xs={12} md={12} lg={12}>
+        <Col xs={12} md={12} lg={12} className="mobile-search-setting">
           <div className="w-100">
             <div className="search-bar-container w-100 d-flex align-items-center bg-opacity-10 px-3 search-bar">
               <div className="d-lg-none">
                 <FiSearch className="text-dark fs-3" />
               </div>
 
-              <div className="d-none d-lg-block">
+              <span className="d-none d-lg-block">
                 <SearchIcon className="text-dark p-0" />
-              </div>
+              </span>
 
               <input
                 type="text"
@@ -98,12 +98,14 @@ const SearchBar = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               {searchTerm && (
-                <SearchCloseIcon
-                  onClick={() => {
-                    setSearchTerm(""); // Clear the search input
-                    setSearchResults([]); // Clear the search results
-                  }}
-                />
+                <div className="cursor-pointer" role="button" onClick={() => {
+                  setSearchTerm(""); // Clear the search input
+                  setSearchResults([]); // Clear the search results
+                }}>
+                  <SearchCloseIcon
+
+                  />
+                </div>
               )}
               {searchTerm && (
                 <div

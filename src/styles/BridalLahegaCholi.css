@@ -52,7 +52,7 @@
 }
 
 .bridal-image-container:hover {
-  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0px 0px 40px 0px #0000004D; */
 }
 
 
@@ -60,6 +60,10 @@
 @media (max-width: 575.98px) {
   .mobile-paddin-fix {
     padding-left: 10px;
+  }
+
+  .overlay-buttons {
+    opacity: 1;
   }
 }
 

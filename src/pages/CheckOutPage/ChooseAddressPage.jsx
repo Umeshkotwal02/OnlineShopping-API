@@ -83,11 +83,11 @@ const AddressCard = ({ info, fetchAddresses, onSelectAddress }) => {
         <>
             <div className="bg-[#F6F6F6] border border-[#CACACA] rounded-[10px] p-4 md:p-5 xl:p-[18px]">
                 <div className="flex items-center gap-4 mb-5 xl:mb-[27px]">
-                    <h4 className="text-lg md:text-xl xl:text-[26px] font-medium !leading-none">
+                    <h4 className="text-lg md:text-xl xl:text-[26px] fw-medium !leading-none">
                         {info?.address_name}
                     </h4>
                     {Boolean(info?.address_is_default) && (
-                        <span className="inline-block text-[10px] xl:text-sm font-medium font-jost leading-4 text-[#E9B159] border border-[#E9B159] rounded-3xl bg-[#FFF9F0] px-2 xl:px-4 py-1.5 ">
+                        <span className="inline-block text-[10px] xl:text-sm fw-medium font-jost leading-4 text-[#E9B159] border border-[#E9B159] rounded-3xl bg-[#FFF9F0] px-2 xl:px-4 py-1.5 ">
                             DEFAULT
                         </span>
                     )}
@@ -97,7 +97,7 @@ const AddressCard = ({ info, fetchAddresses, onSelectAddress }) => {
                 </p>
                 <div className="flex items-center gap-[15px] flex-wrap">
                     <button
-                        className="inline-block bg-[#F4F4F4] border border-[#D1D1D1] rounded-[5px] text-black xl:text-lg !leading-none font-normal font-jost py-2.5 px-4 xl:px-8"
+                        className="inline-block bg-[#F4F4F4] border border-[#D1D1D1] rounded-[5px] text-black xl:text-lg !leading-none fw-normal font-jost py-2.5 px-4 xl:px-8"
                         onClick={() => editAddress(info)}
                     >
                         Edit
@@ -105,12 +105,12 @@ const AddressCard = ({ info, fetchAddresses, onSelectAddress }) => {
                     <button
                         type="button"
                         onClick={() => deleteAddress(info?.address_id)}
-                        className="inline-block bg-[#F4F4F4] border border-[#D1D1D1] rounded-[5px] text-black xl:text-lg !leading-none font-normal font-jost py-2.5 px-4 xl:px-8"
+                        className="inline-block bg-[#F4F4F4] border border-[#D1D1D1] rounded-[5px] text-black xl:text-lg !leading-none fw-normal font-jost py-2.5 px-4 xl:px-8"
                     >
                         Delete
                     </button>
                     <button
-                        className="inline-flex items-center gap-[7px] bg-black border border-[#D1D1D1] rounded-[5px] text-white xl:text-lg !leading-none font-normal font-jost py-2.5 px-4 xl:px-4"
+                        className="inline-flex items-center gap-[7px] bg-black border border-[#D1D1D1] rounded-[5px] text-white xl:text-lg !leading-none fw-normal font-jost py-2.5 px-4 xl:px-4"
                         onClick={() => onSelectAddress(info)}
                     >
                         Deliver Here <FaArrowRightLong />
@@ -129,7 +129,7 @@ const AddressCard = ({ info, fetchAddresses, onSelectAddress }) => {
                 >
                     <div className="w-screen max-w-[300px] lg:max-w-[450px] h-full bg-white absolute top-0 right-0">
                         <div className="bag-header flex justify-between items-center border-b border-[#C5C5C5] p-3">
-                            <h3 className="text-xl md:text-2xl xl:text-[26px] !leading-none font-medium">
+                            <h3 className="text-xl md:text-2xl xl:text-[26px] !leading-none fw-medium">
                                 {selectedAddress ? "Edit Address" : "New Address"}
                             </h3>
                             <button
@@ -144,7 +144,7 @@ const AddressCard = ({ info, fetchAddresses, onSelectAddress }) => {
                             className="h-[calc(100%-97px)]"
                         >
                             <div className="p-6 lg:pt-[30px] lg:pb-10 lg:px-11 h-[calc(100%-53px)] md:h-[calc(100%-101px)] lg:h-[calc(100%-133px)] xl:h-[calc(100%-165px)] overflow-auto scrollbar">
-                                <h4 className="text-xl md:text-2xl xl:text-[22px] !leading-none font-medium mb-3 xl:mb-6">
+                                <h4 className="text-xl md:text-2xl xl:text-[22px] !leading-none fw-medium mb-3 xl:mb-6">
                                     Address
                                 </h4>
                                 <div className="grid gap-y-3">
@@ -342,7 +342,7 @@ const AddressCard = ({ info, fetchAddresses, onSelectAddress }) => {
                             </div>
                             <div className="p-3 md:p-6 lg:px-11 2xl:py-10">
                                 <button
-                                    className="w-full bg-[#E9B159] p-2 lg:p- text-lg lg:text-2xl font-medium !leading-tight text-center text-white"
+                                    className="w-full bg-[#E9B159] p-2 lg:p- text-lg lg:text-2xl fw-medium !leading-tight text-center text-white"
                                     type="submit"
                                 >
                                     Ship to this address

@@ -1,0 +1,62 @@
+/* Section Styles */
+.online-shop-section {
+    margin-top: 50px;
+    margin-bottom: 60px;
+}
+
+/* Title Styles */
+.main-title {
+    font-size: 2rem;
+    display: inline-block;
+    font-weight: 400;
+}
+
+/* Divider Style */
+.divider {
+    border-bottom: 1px solid black;
+    margin-right: 11rem;
+    margin-left: 11rem;
+}
+
+/* Description Item Styles */
+.description-item {
+    margin-bottom: 1.25rem;
+}
+
+.description-title {
+    font-size: 1.125rem;
+    line-height: 1.25rem;
+    font-weight: 400;
+    color: black;
+    margin-bottom: 1rem;
+}
+
+.description-text {
+    font-size: 0.9rem;
+    line-height: 1.25rem;
+    color: #7A7A7A;
+    margin-bottom: 1.25rem;
+}
+
+@media (min-width: 0) and (max-width: 768px) {
+    .main-title {
+        font-size: 1.3rem;
+        padding-bottom: 0;
+        display: inline-block;
+        font-weight: 500;
+    }
+
+    .description-title {
+        font-size: 1.125rem;
+        line-height: 1.25rem;
+        font-weight: 500;
+        color: black;
+        margin-bottom: 1rem;
+    }
+
+    .divider {
+        border-bottom: 2px solid black;
+        margin-right: 2rem;
+        margin-left: 2rem;
+    }
+}

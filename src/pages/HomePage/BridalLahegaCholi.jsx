@@ -3,29 +3,7 @@ import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import "../../styles/BridalLahegaCholi.css";
 
-const BridalLahegaCholi = () => {
-    const BridalData = [
-        {
-            id: 1,
-            product_name: "Bridal Lahenga",
-            product_images: require("../../assets/images/Bridal-Lagenga/img1.png"),
-        },
-        {
-            id: 2,
-            product_name: "Bridal Lahenga",
-            product_images: require("../../assets/images/Bridal-Lagenga/img2.png"),
-        },
-        {
-            id: 3,
-            product_name: "Bridal Lahenga",
-            product_images: require("../../assets/images/Bridal-Lagenga/img3.png"),
-        },
-        {
-            id: 4,
-            product_name: "Bridal Lahenga",
-            product_images: require("../../assets/images/Bridal-Lagenga/img4.png"),
-        },
-    ];
+const BridalLahegaCholi = ({ data = [] }) => {
 
     const handleAddToCart = (e) => {
         e.preventDefault();
@@ -36,16 +14,24 @@ const BridalLahegaCholi = () => {
         return name.replace(/\s+/g, "-").toLowerCase();
     };
 
+    function CustStoryBtn() {
+        return (
+            <div
+                style={{ display: "none" }}
+            />
+        );
+    }
+
     const settings = {
         dots: false,
         infinite: true,
         speed: 500,
         slidesToShow: 4,
-        nextArrow: false,
-        prevArrow: false,
         slidesToScroll: 1,
         autoplay: false,
         autoplaySpeed: 2000,
+        nextArrow: <CustStoryBtn />,
+        prevArrow: <CustStoryBtn />,
         responsive: [
             {
                 breakpoint: 1200,
@@ -68,27 +54,27 @@ const BridalLahegaCholi = () => {
 
     return (
         <div className="bridal-container mt-4 px-lg-5 px-xl-5 px-xxl-5 mobile-paddin-fix">
-            <h3 className="text-center d-none d-lg-block mt-2" style={{ fontWeight: "400" }}>
+            <h3 className="fw-normal text-center fs-3 d-none d-lg-block mt-5">
                 Bridal Lehenga Choli
             </h3>
-            <h3 className="text-start font-bold d-lg-none my-3 ms-2 mt-4">
+            <h3 className="text-start fw-bold d-lg-none my-3 ms-2 mt-4">
                 Bridal Lehenga Choli
             </h3>
             <p className="text-center font-italic d-none d-lg-block">
                 <i> "Embrace the festival magic, let joy fill every moment."</i>
             </p>
             <Slider {...settings} className="bridal-slider">
-                {BridalData.map((product) => (
+                {data.map((product) => (
                     <Link
                         key={product.id}
-                        to={`/product/${productNameSlug(product.product_name)}`}
+                        to={`/product/${productNameSlug(product?.product_name)}`}
                         className="text-decoration-none"
                     >
                         <div className="bridal-image-container">
                             <img
-                                src={product.product_images}
+                                src={product?.product_image}
                                 className="slider-image bridal-img"
-                                alt={product.product_name}
+                                alt={product?.product_name}
                             />
                             <div className="overlay-buttons">
                                 <button

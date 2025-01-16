@@ -27,7 +27,10 @@ const NewArrivalOfferCard = ({ itemInfo }) => {
                     loading="lazy"
                 />
             </div>
-            <h3 className="new-on-online-name">
+            <h3
+                className="position-absolute start-0 bottom-0 text-center text-dark fw-medium text-rotate text-uppercase p-3"
+                style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", fontSize:"1rem" }}
+            >
                 {truncateProductName(itemInfo?.product_name || "")}
             </h3>
             <h3 className="new-on-online-discount">

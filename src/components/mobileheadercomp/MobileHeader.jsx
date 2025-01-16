@@ -30,10 +30,10 @@ const MainHeaderMobi = ({
   }
 
   return (
-    <header>
+    <header className="sticky-top">
       {/* Header for Small and Medium Screens Mobile and tablate view*/}
-      <div className="d-lg-none container-fluid web-bg-color">
-        <Row className="align-items-center py-1 px-0 ">
+      <div className="d-lg-none container-fluid web-bg-color py-1">
+        <Row className="align-items-center py-1 px-0">
           <Col xs={2} className="text-start">
             <button
               className="btn fs-2"
@@ -66,16 +66,6 @@ const MainHeaderMobi = ({
             </div>
           </Col>
         </Row>
-
-        <Row className="justify-content-center my-2 pb-3">
-          {/* Search Bar */}
-          <Col
-            className="d-flex justify-content-center align-items-center"
-          >
-            <SearchBar />
-          </Col>
-        </Row>
-
         {/* Offcanvas for Small Screens */}
         <Offcanvas
           show={showOffcanvas}

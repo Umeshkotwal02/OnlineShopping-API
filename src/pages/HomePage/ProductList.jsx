@@ -53,7 +53,7 @@ const NewArrivalCard = ({ info }) => {
         <ProductImageSlider imageList={info.product_images} />
         <div className="absolute z-10 left-0 bottom-2.5 w-full px-4 opacity-0 transition group-hover:opacity-100">
           <button
-            className="w-full border-none text-sm font-medium px-4 py-2 bg-white text-black border border-gray-300 hover:bg-yellow-500 rounded"
+            className="w-full border-none text-sm fw-medium px-4 py-2 bg-white text-black border border-gray-300 hover:bg-yellow-500 rounded"
             type="button"
             onClick={(e) => {
               e.stopPropagation();
@@ -92,13 +92,13 @@ const NewArrivalCard = ({ info }) => {
           )}
         </div>
         {info.product_discount > 0 && (
-          <div className="absolute z-10 right-1 -top-4 bg-yellow-400 text-white px-2 py-1 text-xs font-bold">
+          <div className="absolute z-10 right-1 -top-4 bg-yellow-400 text-white px-2 py-1 text-xs fw-bold">
             {info.product_discount}% OFF
           </div>
         )}
       </div>
       <div className="p-2">
-        <h3 className="text-sm font-medium mb-1">
+        <h3 className="text-sm fw-medium mb-1">
           {truncateProductName(info.product_name)}
         </h3>
         <div className="flex items-center gap-2">
@@ -106,7 +106,7 @@ const NewArrivalCard = ({ info }) => {
             {info.currency}
             {info.product_mrp}
           </span>
-          <span className="text-sm font-bold text-green-600">
+          <span className="text-sm fw-bold text-green-600">
             {info.currency}
             {info.product_price}
           </span>

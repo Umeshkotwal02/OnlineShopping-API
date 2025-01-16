@@ -6,9 +6,9 @@ import "../../styles/NewArrivalCard.css";
 import { FiHeart } from "react-icons/fi";
 import ProductImageSlider from "../../components/homepage/ProductImageSlider";
 
-const NewArrivalCard = ({ data }) => {
+const NewArrivalSection = ({ data }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const [visibleItems, setVisibleItems] = useState(10);
+  const [visibleItems, setVisibleItems] = useState(8);
   const navigate = useNavigate();
 
   // Check screen size to determine the number of visible items
@@ -65,20 +65,20 @@ const NewArrivalCard = ({ data }) => {
 
   return (
     <Container fluid className="new-arrival-container">
-      <h3 className="text-center d-none d-lg-block mt-2" style={{ fontWeight: "400" }}>
+      <h3 className="fw-normal text-center fs-3 d-none d-lg-block mt-5">
         New-Arrival
       </h3>
       <div className="d-flex justify-content-between align-items-center d-lg-none">
-        <h3 className="text-start font-bold my-3 ms-2 mt-4">
+        <h3 className="text-start fw-bold my-3 mt-4">
           New-Arrival
         </h3>
-        <div className="text-end font-bold my-3 ms-2 mt-4 align-items-center" onClick={handleViewMore}> View All</div>
+        <div className="text-end fw-bold my-3 ms-2 mt-4 align-items-center" onClick={handleViewMore}> View All</div>
       </div>
       <p className="text-center font-italic d-none d-lg-block mb-2">
         <i> "Embrace the festival magic, let joy fill every moment."</i>
       </p>
       <Row className="px-lg-5 px-xl-5 px-xxl-5">
-        {data?.newarrival?.map((product, index) => (
+        {data?.newarrival?.slice(0, visibleItems).map((product, index) => (
           <Col xs={6} sm={6} md={4} lg={2} xl={2} xxl={2} key={product.id}
             className="mb-4 rounded wishlist-column"
           >
@@ -129,8 +129,13 @@ const NewArrivalCard = ({ data }) => {
           </Col>
         ))}
       </Row>
+      <div className="text-center d-flex justify-content-center">
+        <Button variant="dark rounded-5 px-4 mb-4" onClick={handleViewMore} style={{ fontSize: "0.9rem" }} className="d-none d-lg-block">
+          View All
+        </Button>
+      </div>
     </Container>
   );
 };
 
-export default NewArrivalCard;
+export default NewArrivalSection;

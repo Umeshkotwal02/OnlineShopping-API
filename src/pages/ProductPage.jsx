@@ -88,13 +88,13 @@ const ProductPage = () => {
       underline="hover"
       key="1"
       color="inherit"
-      className="text-[#666666] text-base lg:text-md !leading-[1.16] font-normal font-jost  hover:underline capitalize"
+      className="text-[#666666] text-base lg:text-md !leading-[1.16] fw-normal font-jost  hover:underline capitalize"
     >
       Home
     </Link>,
     <p
       key={2}
-      className="text-[#A36300] text-base lg:text-md !leading-[1.16] font-normal font-jost  capitalize"
+      className="text-[#A36300] text-base lg:text-md !leading-[1.16] fw-normal font-jost  capitalize"
     >
       Product Page
     </p>,
@@ -357,7 +357,7 @@ const ProductPage = () => {
             <div className="max-w-[1810px] mx-auto px-3">
               <div className="flex flex-wrap -mx-3 gap-y-4">
                 <div className="hidden lg:block w-full lg:w-1/5 px-3">
-                  <h3 className="text-xl md:text-2xl md:leading-5 font-medium font-jost text-start mb-6">
+                  <h3 className="text-xl md:text-2xl md:leading-5 fw-medium font-jost text-start mb-6">
                     Filter
                   </h3>
 
@@ -394,7 +394,7 @@ const ProductPage = () => {
                               handleAccordionChange(filterdata.title)
                             }
                           >
-                            <span className="text-base leading-5 font-medium font-jost capitalize">
+                            <span className="text-base leading-5 fw-medium font-jost capitalize">
                               {filterdata.title}
                             </span>
                           </AccordionSummary>
@@ -434,7 +434,7 @@ const ProductPage = () => {
                 <div className="w-full lg:w-4/5 px-3">
                   <div className="flex flex-wrap justify-between mb-4 gap-y-3">
                     <div>
-                      <h3 className="text-xl md:text-2xl md:leading-5 font-medium font-jost text-start mb-6">
+                      <h3 className="text-xl md:text-2xl md:leading-5 fw-medium font-jost text-start mb-6">
                         Lehenga Wedding Dresses Collection
                       </h3>
                       <div className="flex flex-wrap gap-2.5">
@@ -494,7 +494,7 @@ const ProductPage = () => {
                       </div>
                     ) : (
                       <div className="text-center py-40">
-                        <h2 className="text-2xl font-medium">
+                        <h2 className="text-2xl fw-medium">
                           Product Unavailable
                         </h2>
                         <p className="text-base">

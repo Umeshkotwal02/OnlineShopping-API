@@ -1,6 +1,6 @@
 /* Wrapper for each new arrival offer card */
 .new-onKapoor-background-gradient {
-  background: linear-gradient(90deg, #eff4ff, #e2ecff);
+  background: linear-gradient(180deg, #EFF4FF 0%, #E2ECFF 100%);
 }
 
 .new-on-online {
@@ -15,7 +15,7 @@
 .new-on-online-image {
   aspect-ratio: 9 / 12;
   max-width: 100%;
-  height: 320px;
+  /* height: 320px; */
 }
 
 .new-on-online-img {
@@ -33,7 +33,7 @@
 .new-on-online-name {
   position: absolute;
   z-index: 10;
-  left: 18%;
+  left: 28%;
   transform: translateY(-50%);
   bottom: 0;
   height: 100%;
@@ -58,7 +58,7 @@
   bottom: 0px;
   width: 100%;
   text-align: center;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 500;
   line-height: 25px;
   font-family: 'Roboto', sans-serif;
@@ -195,7 +195,8 @@
   .swiper-slide-container {
     slides-per-view: 1.5;
   }
-  .new-onKapoor-background-gradient{
+
+  .new-onKapoor-background-gradient {
     background: white;
   }
 }
@@ -205,7 +206,7 @@
     slides-per-view: 2;
   }
 
-  .new-onKapoor-background-gradient{
+  .new-onKapoor-background-gradient {
     background: white;
   }
 }
@@ -214,12 +215,17 @@
   .swiper-slide-container {
     slides-per-view: 3.5;
   }
-  .new-onKapoor-background-gradient{
+
+  .new-onKapoor-background-gradient {
     background: white;
   }
 }
 
 @media screen and (min-width: 992px) {
+  .new-onKapoor-background-gradient {
+    background: linear-gradient(180deg, #EFF4FF 0%, #E2ECFF 100%);
+  }
+
   .swiper-slide-container {
     slides-per-view: 4;
   }

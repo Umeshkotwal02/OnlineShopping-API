@@ -25,23 +25,22 @@ const getEmbedUrl=(url)= > {
   if ( !url.includes("youtube.com/watch?v=")) return url; // Only modify YouTube URLs
   return url.replace("watch?v=", "embed/");
 }
-
 ;
-<div className="video-ratio" > <iframe width="560"
+<div className="video-ratio" >
+<iframe width="560"
 height="315"
-
 src= {
   getEmbedUrl(watchShopProductInfo.product_video_url)
 }
-
 title= {
   watchShopProductInfo.product_name
 }
-
 frameBorder="0"
 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 allowFullScreen referrerPolicy="strict-origin-when-cross-origin"
-> </iframe > </div > */
+>
+</iframe >
+</div > */
 /* ------------------------------------- Watch and Shop Card  Managed End *------------------------- */
 
 

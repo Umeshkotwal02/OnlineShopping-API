@@ -32,7 +32,7 @@ const MobileFooter = () => {
   return (
     <>
       <Container fluid className="mobile-footer">
-        <Row className="py-2 pt-3 fw-medium">
+        <Row className="pt-3 fw-medium">
           {/* Home */}
           <Col xxl={3} xl={3} lg={3} md={3} sm={3} xs={3}>
             <NavLink

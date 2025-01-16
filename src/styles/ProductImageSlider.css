@@ -78,7 +78,7 @@
 /* New Arrive  */
 /* Container background */
 .product-image-slider.swiper .swiper-pagination.swiper-pagination-bullets {
-  background: #0000004d;
+  background: #00000066;
   bottom: 72px !important;
   opacity: 0;
   padding: 3px 6px;
@@ -103,11 +103,11 @@
 }
 
 .product-image-slider.swiper .swiper-pagination-bullet {
-  background: #9c9c9c;
+  background: white;
   margin: 0 2px !important;
   opacity: 1;
 }
 
 .product-image-slider.swiper .swiper-pagination-bullet-active {
-  background-color: rgb(255, 255, 255);
+  background-color: #B51B3B;
 }

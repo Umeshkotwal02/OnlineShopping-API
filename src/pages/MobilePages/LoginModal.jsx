@@ -171,7 +171,7 @@ const LoginModal = ({ show, handleClose, setUser }) => {
                         </div>
                     </div>
                 </Modal.Body>
-                <div className=" d-flex justify-content-center text-sm sm:text-lg font-medium !leading-none mb-4 font-color-global py-lg-3 py-xl-3 py-xxl-3 fs-5 py-3">
+                <div className=" d-flex justify-content-center text-sm sm:text-lg fw-medium !leading-none mb-4 font-color-global py-lg-3 py-xl-3 py-xxl-3 fs-5 py-3">
                     Don’t have an account?
                     <span className="btn-link p-0 text-decoration-none text-dark ms-2">
                         Sign Up

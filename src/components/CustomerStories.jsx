@@ -10,8 +10,8 @@ const CustomerStories = ({ info }) => {
           alt="Customer"
         />
       </div>
-      <h5 className="customer-name">{info.testimonial_name}</h5>
-      <p className="customer-message">{info.testimonial_message}</p>
+      <h5 className="customer-name text-capitalize">{info.testimonial_name}</h5>
+      <p className="customer-message text-capitalize">{info.testimonial_message}</p>
     </div>
   );
 };

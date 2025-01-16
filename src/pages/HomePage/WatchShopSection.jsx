@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
-import "../../styles/WatchShopCard.css";
 import { Modal, Col, Container, Row } from "react-bootstrap";
 import Slider from "react-slick";
 import { CategoryPrevNextIcon, CategorySlickNextIcon } from "../../assets/SvgIcons";
 import Loader from "../../components/Loader";
-import "../../styles/WatchShopCard.css";
 import WatchShopCard from "../../components/homepage/WatchShopCard";
+import "../../styles/WatchShopCard.css";
 
 // Custom Next Arrow Component
 const NextCatArrow = ({ onClick }) => {
@@ -142,8 +141,8 @@ const WatchShopSection = ({ data }) => {
                 <>
                     <Container fluid className="watch-shop-card px-sm-0 px-lg-5 px-xl-5 px-xxl-5 ">
                         <div>
-                            <h4 className="text-center fs-4 font-medium d-none d-lg-block mt-2">Watch and Shop</h4>
-                            <h3 className="text-start font-bold d-lg-none my-3 ms-2">Watch and Shop</h3>
+                            <h4 className="fw-normal text-center fs-3 d-none d-lg-block mt-5">Watch and Shop</h4>
+                            <h3 className="text-start fw-bold d-lg-none my-3 ms-2">Watch and Shop</h3>
                             <p className="text-center font-italic d-none d-lg-block"><i> "Embrace the festival magic, let joy fill every moment."</i></p>
                         </div>
                         <Row>
@@ -163,15 +162,14 @@ const WatchShopSection = ({ data }) => {
                             <Modal.Body style={{ background: "transparent" }}>
                                 <Slider
                                     {...sliderSettings}
-                                    initialSlide={selectedVideo}
-                                    afterChange={(index) => setSelectedVideo(index)}
+                                    initialSlide={data.findIndex(product => product.product_video_url === selectedVideo)}
                                     style={{ background: "transparent" }}
                                 >
-                                    {data?.map((product, index) => (
+                                    {data?.map(product => (
                                         <div key={product.id} className="video-slide">
                                             <ReactPlayer
-                                                url={selectedVideo}
-                                                playing
+                                                url={product.product_video_url}
+                                                playing={product.product_video_url === selectedVideo}
                                                 controls
                                                 width="100%"
                                                 height="100%"
@@ -180,6 +178,7 @@ const WatchShopSection = ({ data }) => {
                                     ))}
                                 </Slider>
                             </Modal.Body>
+
                         </Modal>
                     </Container>
                 </>

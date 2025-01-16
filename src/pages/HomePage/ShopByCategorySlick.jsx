@@ -25,10 +25,12 @@ const PrevCatArrow = ({ onClick }) => {
     );
 };
 
-const ShopByCategorySlick = ({ data }) => {
+const ShopByCategorySlick = ({ data = [] }) => {
+    
     const [loading, setLoading] = useState(true);
     const [prevArrowPosition, setPrevArrowPosition] = useState(0);
     const sliderRef = useRef(null);
+
 
     useEffect(() => {
         const updateArrowPosition = () => {
@@ -52,6 +54,7 @@ const ShopByCategorySlick = ({ data }) => {
             window.removeEventListener("resize", updateArrowPosition);
         };
     }, []);
+
     // Slick slider settings
     const settings = {
         dots: false,
@@ -105,6 +108,9 @@ const ShopByCategorySlick = ({ data }) => {
                 fluid
                 className="shop-by-category-slick slider-container h-100 w-100 px-lg-5 px-xl-5 px-xxl-5"
             >
+                <h3 className="text-start fw-bold d-lg-none ms-1 my-3">
+                    Shop by Category
+                </h3>
                 <Row>
                     <Col xxl={2} xl={2} lg={2} className="px-2 d-none d-lg-block">
                         <div>
@@ -115,12 +121,13 @@ const ShopByCategorySlick = ({ data }) => {
                                         className="staic-slider-image"
                                         alt={"shop by cat"}
                                         loading="lazy"
+                                        style={{ aspectRatio: "9 / 11.8" }}
                                     />
                                 </div>
                             </Link>
                         </div>
                     </Col>
-                    <Col xxl={10} xl={10} lg={10} sm={12} xs={12} className="mobile-category-slider px-0">
+                    <Col xxl={10} xl={10} lg={10} sm={12} xs={12} className="mobile-category-slider px-lg-0 px-xl-0 px-xxl-0">
                         {/* Render the slider */}
                         <div ref={sliderRef}>
                             <Slider {...settings}>

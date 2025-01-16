@@ -17,6 +17,7 @@ import axios from "axios";
 import { API_URL } from "../../Constant/constApi";
 import ProfileModal from "../canvas/ProfileModal";
 import { UserProvider } from "../../context/UserContext ";
+import MainHeaderMobi from "../mobileheadercomp/MobileHeader";
 
 const Header = ({
   searchTerm,
@@ -138,8 +139,10 @@ const Header = ({
   return (
     <>
       <TopBar />
+      {/* <MainHeaderMobi /> */}
       <div className="sticky-top" style={{ backgroundColor: "#F3F3F3" }}>
-        <Container fluid className="px-lg-5 px-xl-5 px-xxl-5 pt-1">
+
+        <Container fluid className="px-lg-5 px-xl-5 px-xxl-5 pt-lg-1">
           <div className="d-none d-lg-block">
             <Row className="align-items-center pt-3">
               <Col xl={3} xxl={3} lg={3} className="d-flex align-items-center">
@@ -181,28 +184,28 @@ const Header = ({
                           <div className="dropdown-paper box-shadow">
                             <div className="flex flex-col px-3.5 m-2 fw-medium" style={{ color: "black" }}>
                               <div
-                                className="login-container  py-3.5 flex items-center gap-3.5 text-base font-medium text-font border-bottom"
+                                className="login-container  py-3.5 flex items-center gap-3.5 text-base fw-medium text-font border-bottom"
                                 onClick={handleProfileModals}
                               >
                                 <ProfileIcon />
                                 My Profile
                               </div>
                               <div
-                                className="login-container py-3.5 flex items-center gap-3.5 text-base font-medium text-font border-bottom"
+                                className="login-container py-3.5 flex items-center gap-3.5 text-base fw-medium text-font border-bottom"
                                 onClick={handleNotificationModals}
                               >
                                 <NotificationIcon />
                                 Notification
                               </div>
                               <div
-                                className="login-container py-3.5 flex items-center gap-3.5 text-base font-medium text-font border-bottom"
+                                className="login-container py-3.5 flex items-center gap-3.5 text-base fw-medium text-font border-bottom"
                                 onClick={handleMyOrder}
                               >
                                 <MyOrderIcon className="fs-4" />
                                 My Order
                               </div>
                               <div
-                                className="login-container py-3.5 flex items-center gap-3.5 text-base font-medium text-font"
+                                className="login-container py-3.5 flex items-center gap-3.5 text-base fw-medium text-font"
                                 onClick={handleLogout}
                               >
                                 <IoLogOutOutline className="fs-4" />
@@ -230,7 +233,7 @@ const Header = ({
                         <div className="dropdown-paper">
                           <div className="flex flex-col px-3.5 login-con">
                             <div
-                              className="login-container py-3.5 flex items-center gap-3.5 text-base font-medium text-font"
+                              className="login-container py-3.5 flex items-center gap-3.5 text-base fw-medium text-font"
                               onClick={handleShowLoginCanvas}
                             >
                               <LoginIcon />

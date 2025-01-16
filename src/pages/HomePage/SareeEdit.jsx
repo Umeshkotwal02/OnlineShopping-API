@@ -1,104 +1,101 @@
-import React from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom'; // Importing Link for navigation
-import SareeEditMobi from '../MobilePages/SareeEditMobi';
+import React from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { SarreEditIcon } from "../../assets/SvgIcons";
 
 const SareeEdit = ({ data }) => {
     return (
-        <>
-            <Container fluid className='px-md-2 d-none d-lg-block px-lg-5 px-xl-5 px-xxl-5 py-lg-5 py-xl-5 py-xxl-5'>
-                {/* Bridal Edit */}
-                <p className='text-center fs-2'>The Saree Edit</p>
-                <p className='text-center' style={{ fontFamily: "Jost" }}><i>""Embrace the festival magic, let joy fill every moment."</i></p>
-                <Row className=' ps-3 pe-3 p-md-12 SareeEdit'>
-                    <Col className='col-12 col-md-12' >
-                        <Row>
-                            <Col xxl={4} xl={4} lg={4} md={4} sm={4} xs={4}>
-                                <Row>
-                                    <Col>
-                                        <div className='p-0'>
-                                            <img
-                                                src={data?.multiple_images?.files[0]}
-                                                className='w-100'
-                                                alt="Bridal Edit-1"
-                                            />
-                                        </div>
-                                    </Col>
-                                </Row>
-                                <Row className='pt-4'>
-                                    <Col>
-                                        <div className='p-0'>
-                                            <img
-                                                src={data?.multiple_images?.files[1]}
-                                                className='w-100'
-                                                alt="Bridal Edit-2"
-                                            />
-                                        </div>
-                                    </Col>
-                                    <Col>
-                                        <div className='p-0'>
-                                            <img
-                                                src={data?.multiple_images?.files[2]}
-                                                className='w-100'
-                                                alt="Bridal Edit-3"
-                                            />
-                                        </div>
+        <Container fluid className='px-md-2 px-lg-5 px-xl-5 px-xxl-5 py-lg-5 py-xl-5 py-xxl-5'>
+            {/* Bridal Edit */}
+            <h3 className="text-start fw-bold my-3 ms-2 mt-4 d-lg-none">The Saree Edit</h3>
+            <p className='fw-normal text-center fs-3 d-none d-lg-block text-black'>The Saree Edit</p>
+            <p className='text-center fw-normal d-none d-lg-block' style={{ fontFamily: "Jost", color: "black" }}><i>"Embrace the festival magic, let joy fill every moment."</i></p>
+            <Row className="justify-content-center g-3">
+                {/* Left Section */}
+                <Col lg={4} md={4} className="d-grid gap-4">
+                    <Row className="g-3">
+                        <div className="col-12">
 
-                                    </Col>
+                            <img
+                                src={data?.multiple_images?.files?.[1]}
+                                className="img-fluid w-100 h-100 hover-scale rounded-4"
+                                alt=""
+                                loading="lazy"
+                            />
+                        </div>
+                        <div className="col-6">
 
-                                </Row>
-                            </Col>
-                            <Col xxl={4} xl={4} lg={4} md={4} sm={4} xs={4}>
-                                <div className='p-0'>
-                                    <img
-                                        src={data?.multiple_images?.files[4]}
-                                        className='w-100'
-                                        alt="Bridal Edit-4"
-                                    />
-                                </div>
-                            </Col>
-                            <Col xxl={4} xl={4} lg={4} md={4} sm={4} xs={4}>
-                                <Row>
-                                    <Col>
-                                        <div className='p-0'>
-                                            <img
-                                                src={data?.multiple_images?.files[4]}
-                                                className='w-100'
-                                                alt="Bridal Edit-5"
-                                            />
-                                        </div>
-                                    </Col>
-                                    <Col>
-                                        <div className='p-0'>
-                                            <img
-                                                src={data?.multiple_images?.files[5]}
-                                                className='w-100'
-                                                alt="Bridal Edit-6"
-                                            />
-                                        </div>
+                            <img
+                                src={data?.multiple_images?.files?.[0]}
+                                className="img-fluid w-100 h-100 hover-scale rounded-4"
+                                alt=""
+                                loading="lazy"
+                            />
+                        </div>
+                        <div className="col-6">
 
-                                    </Col>
+                            <img
+                                src={data?.multiple_images?.files?.[2]}
+                                className="img-fluid w-100 h-100 hover-scale rounded-4"
+                                alt=""
+                                loading="lazy"
+                            />
+                        </div>
+                    </Row>
+                </Col>
 
-                                </Row>
-                                <Row className='pt-4'>
-                                    <Col>
-                                        <div className='p-0'>
-                                            <img
-                                                src={data?.multiple_images?.files[6]}
-                                                className='w-100'
-                                                alt="Bridal Edit-7"
-                                            />
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-            </Container>
-            <SareeEditMobi />
-        </>
+                {/* Center Section */}
+                <Col lg={4} md={4}>
+                    <div className="position-relative overflow-hidden h-100">
+                        <img
+                            src={data?.multiple_images?.files?.[4]}
+                            className="img-fluid rounded-4 object-cover transition-transform scale-hover h-100"
+                            alt=""
+                            loading="lazy"
+                        />
+                        <div className="position-absolute bottom-0 start-0 end-0 bg-opacity-75 bg-dark text-white rounded-4">
+                            <h3 className="text-center my-2 fs-5">
+                                Pre Drape All Sarees <span className="ps-2"><SarreEditIcon /></span>
+                            </h3>
+                        </div>
+                    </div>
+                </Col>
+
+                {/* Right Section */}
+                <Col lg={4} md={4} className="d-grid gap-4">
+                    <Row className="g-3">
+                        <div className="col-6">
+
+                            <img
+                                src={data?.multiple_images?.files?.[3]}
+                                className="img-fluid w-100 h-100 hover-scale rounded-4"
+                                alt=""
+                                loading="lazy"
+                            />
+                        </div>
+                        <div className="col-6">
+
+                            <img
+                                src={data?.multiple_images?.files?.[5]}
+                                className="img-fluid w-100 h-100 hover-scale rounded-4"
+                                alt=""
+                                loading="lazy"
+                            />
+                        </div>
+                        <div className="col-12">
+
+                            <img
+                                src={data?.multiple_images?.files?.[6]}
+                                className="img-fluid w-100 h-100 hover-scale rounded-4"
+                                alt=""
+                                loading="lazy"
+                            />
+                        </div>
+                    </Row>
+                </Col>
+            </Row>
+        </Container>
     );
-}
+};
 
 export default SareeEdit;

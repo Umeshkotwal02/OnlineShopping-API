@@ -11,6 +11,9 @@ const ProductImageSlider = ({ imageList }) => {
   const nextclassName = `swiper-button-next-${id}`;
   const prevclassName = `swiper-button-prev-${id}`;
 
+  // Dynamically disable loop if there are not enough slides
+  const isLoopEnabled = imageList?.length > 1;
+
   return (
     <div className="product-slider-container">
       <button className={`slider-button slider-button-prev ${nextclassName}`}>
@@ -32,14 +35,12 @@ const ProductImageSlider = ({ imageList }) => {
           clickable: false,
         }}
         modules={[Navigation, Pagination]}
-        loop
-        autoplay={{
-          delay: 1000,
-        }}
+        loop={isLoopEnabled} // Enable loop only if there are enough slides
+        autoplay={isLoopEnabled ? { delay: 1000 } : false} // Disable autoplay if loop is off
       >
         {imageList?.map((image, index) => {
           return (
-            <SwiperSlide key={"productImage-" + index} className="slider-slide ">
+            <SwiperSlide key={"productImage-" + index} className="slider-slide">
               <div className="slider-image-container rounded-top-3">
                 <img
                   src={image}

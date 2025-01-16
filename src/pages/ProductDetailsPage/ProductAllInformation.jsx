@@ -77,10 +77,10 @@ const ProductAllInformation = () => {
                 <div className="row">
                   {item.details.map((detail, idx) => (
                     <div key={idx} className="col-lg-6 col-md-6 col-6 mb-2">
-                      <div className="text-black font-normal" style={{ fontSize: "1rem" }}>
+                      <div className="text-black fw-normal" style={{ fontSize: "1rem" }}>
                         {detail.title}
                       </div>
-                      <div className="font-normal" style={{ fontSize: "1.2rem", color: "#555555" }}>{detail.subtitle}</div>
+                      <div className="fw-normal" style={{ fontSize: "1.2rem", color: "#555555" }}>{detail.subtitle}</div>
                     </div>
                   ))}
                 </div>
@@ -119,7 +119,7 @@ const ProductAllInformation = () => {
                 <div className="row">
                   {items.details.map((detail, idx) => (
                     <div key={idx} className="col-lg-12 col-md-12 col-12 mb-2">
-                      <div className="font-normal" style={{ fontSize: "1.2rem", color: "#555555" }}>{detail.subtitle}</div>
+                      <div className="fw-normal" style={{ fontSize: "1.2rem", color: "#555555" }}>{detail.subtitle}</div>
                     </div>
                   ))}
                 </div>

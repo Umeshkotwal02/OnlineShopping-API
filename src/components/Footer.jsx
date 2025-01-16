@@ -13,6 +13,7 @@ import { IoIosMail } from "react-icons/io";
 import { RiTwitterXFill } from "react-icons/ri";
 import "../styles/Footer.css"
 import Loader from "./Loader";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
 
@@ -33,7 +34,7 @@ const Footer = () => {
       <Container fluid className="footer">
         <Container fluid className="py-0 mt-5">
           <Row>
-            <Col xs={12} md={4} lg={3} >
+            <Col xs={12} md={4} lg={3} className=" d-flex justify-content-center" >
               <div className="logo-div ps-lg-3 ps-xl-3 ps-xxl-3">
                 <img
                   src={require("../assets/images/Footer-img/footer-logo.png")}
@@ -45,79 +46,79 @@ const Footer = () => {
                 </p>
               </div>
             </Col>
-            <Col xs={6} md={4} lg={2} >
+            <Col xs={6} md={4} lg={2} className=" d-flex justify-content-center" >
               <div className="mb-4">
-                <div className=" fs-4" style={{ fontWeight: "600" }}>
+                <div className=" fs-4" style={{ fontWeight: "500" }}>
                   Company
                 </div>
                 <ul className="list-unstyled ">
                   <li className="my-1">
-                    <a href="/home" className="text-dark text-decoration-none  ">
+                    <Link to="/home" className="text-dark text-decoration-none  ">
                       Home
-                    </a>
+                    </Link>
                   </li>
                   <li className="my-1">
-                    <a
-                      href="/about-us"
+                    <Link
+                      to="/about-us"
                       className="text-dark text-decoration-none"
                     >
                       About Us
 
-                    </a>
+                    </Link>
                   </li>
                   <li className="my-1">
-                    <a
-                      href="/my-order"
+                    <Link
+                      to="/my-order"
                       className="text-dark text-decoration-none"
                     >
                       Your Orders
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
             </Col>
-            <Col xs={6} md={4} lg={2}>
+            <Col xs={6} md={4} lg={2} className=" d-flex justify-content-center">
               <div className=" mb-4">
-                <div className=" fs-4" style={{ fontWeight: "600" }}>
+                <div className=" fs-4" style={{ fontWeight: "500" }}>
                   Customer Service
                 </div>
                 <ul className="list-unstyled">
                  
                   <li className="my-1">
-                    <a
-                      href="/privacy-policy"
+                    <Link
+                      to="/privacy-policy"
                       className="text-dark text-decoration-none"
                     >
                       Privacy Policy
-                    </a>
+                    </Link>
                   </li>
                   <li className="my-1">
-                    <a
-                      href="/term-condition"
+                    <Link
+                      to="/term-condition"
                       className="text-dark text-decoration-none"
                     >
                       Terms & Conditions
-                    </a>
+                    </Link>
                   </li>
                   <li className="my-1">
-                    <a
-                      href="/contact-us"
+                    <Link
+                      to="/contact-us"
                       className="text-dark text-decoration-none"
                     >
-                      Contact Us
-                    </a>
+                      Contact With Us
+                    </Link>
                   </li>
                   <li className="my-1">
-                    <a href="/faq" className="text-dark text-decoration-none">
+                    <Link to="/faq" className="text-dark text-decoration-none">
                       FAQ
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
             </Col>
-            <Col xs={12} md={6} lg={3}>
+            <Col xs={12} md={6} lg={3} className=" d-flex justify-content-center">
               <div className="mb-4">
-                <div className=" fs-4" style={{ fontWeight: "600" }}>
+                <div className=" fs-4" style={{ fontWeight: "500" }}>
                   Contact Us
                 </div>
                 <p>
@@ -130,29 +131,29 @@ const Footer = () => {
                   <MdMailOutline /> info123@gmail.com
                 </p>
                 <div>
-                  <div className=" fs-4" style={{ fontWeight: "600" }}>
+                  <div className=" fs-4" style={{ fontWeight: "500" }}>
                     Follow Us On
                   </div>
                   <p>
-                    <a
-                      href="https://www.youtube.com"
+                    <Link
+                      to="https://www.youtube.com"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <FaYoutube style={{ color: "red" }} className="me-2 icon" />
-                    </a>
-                    <a
-                      href="https://www.twitter.com"
+                    </Link>
+                    <Link
+                      to="https://www.twitter.com"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <RiTwitterXFill className="icon" />
-                    </a>
+                    </Link>
 
-                    <a
-                      href="https://www.facebook.com"
+                    <Link
+                      to="https://www.facebook.com"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ textDecoration: "none", color: "inherit" }}
@@ -161,10 +162,10 @@ const Footer = () => {
                         style={{ color: "blue" }}
                         className="me-2 icon"
                       />
-                    </a>
+                    </Link>
 
-                    <a
-                      href="https://in.pinterest.com/"
+                    <Link
+                      to="https://in.pinterest.com/"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ textDecoration: "none", color: "inherit" }}
@@ -173,10 +174,10 @@ const Footer = () => {
                         style={{ color: "darkred" }}
                         className="me-2 icon"
                       />
-                    </a>
+                    </Link>
 
-                    <a
-                      href="https://mail.google.com/"
+                    <Link
+                      to="https://mail.google.com/"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ textDecoration: "none", color: "inherit" }}
@@ -185,10 +186,10 @@ const Footer = () => {
                         style={{ color: "lightskyblue" }}
                         className="me-2 icon"
                       />
-                    </a>
+                    </Link>
 
-                    <a
-                      href="https://www.instagram.com/"
+                    <Link
+                      to="https://www.instagram.com/"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ textDecoration: "none", color: "inherit" }}
@@ -197,16 +198,16 @@ const Footer = () => {
                         style={{ color: "#E1306C" }}
                         className="me-2 icon"
                       />
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </div>
             </Col>
-            <Col xs={12} md={6} lg={2}>
-              <div className="d-flex flex-md-column align-items-center justify-content-center mb-1">
-                <Button variant="dark" className="p-0 my-2">
-                  <a
-                    href="https://play.google.com/store/apps"
+            <Col xs={12} md={6} lg={2} className=" ">
+              <div className="d-flex flex-md-column align-items-end justify-content-center pe-lg-3 pe-xl-3 pe-xxl-3">
+                <Button variant="" className="p-0 my-2">
+                  <Link
+                    to="https://play.google.com/store/apps"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -216,14 +217,13 @@ const Footer = () => {
                       style={{
                         height: "40px",
                         width: "120px",
-                        borderRadius: "4px",
                       }}
                     />
-                  </a>
+                  </Link>
                 </Button>
-                <Button variant="dark" className="p-0 my-2">
-                  <a
-                    href="https://www.apple.com/in/app-store/"
+                <Button variant="" className="p-0 my-2">
+                  <Link
+                    to="https://www.apple.com/in/app-store/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -233,10 +233,9 @@ const Footer = () => {
                       style={{
                         height: "40px",
                         width: "120px",
-                        borderRadius: "4px",
                       }}
                     />
-                  </a>
+                  </Link>
                 </Button>
 
               </div>

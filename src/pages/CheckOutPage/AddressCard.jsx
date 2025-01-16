@@ -62,7 +62,7 @@ const AddressCard = ({ info, fetchAddresses, onSelectAddress }) => {
             <Row>
                 <Col xxl={7} xl={7} md={7} sm={12} xs={12}>
                     <Row>
-                        <h3 className="font-medium">Choose Address</h3>
+                        <h3 className="fw-medium">Choose Address</h3>
                         <p>Detailed address will help our delivery partner reach your <br /> doorstep quickly</p>
                         {staticAddresses.map((info) => (
                             <div key={info.address_id} className="col-md-6 mb-4">

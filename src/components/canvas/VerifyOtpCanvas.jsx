@@ -279,10 +279,10 @@ const VerifyOtpCanvas = ({ show, handleClose, setUser }) => {
                                 onClick={resendOtp}
                             >
 
-                                <span className="font-medium text-[#666464] underline">
+                                <span className="fw-medium text-[#666464] underline">
                                     {isOtpExpired ? "Resend OTP" : "Resend OTP"}
                                 </span>
-                                <span className="font-medium">
+                                <span className="fw-medium">
                                     {resendTimer > 0 && ` in ${resendTimer}s`}
                                 </span>
                             </button>

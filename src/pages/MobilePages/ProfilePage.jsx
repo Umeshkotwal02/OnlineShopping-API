@@ -156,7 +156,7 @@ const ProfilePage = () => {
 
                 {/* Logout Button */}
                 <div className="text-center my-4 mx-3">
-                    <button className="logout-btn font-medium" onClick={handleLogout}>
+                    <button className="logout-btn fw-medium" onClick={handleLogout}>
                         Logout
                     </button>
                 </div>
