@@ -22,7 +22,6 @@ import Breadcrumb from "../components/Breadcrumb";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { STORAGE } from "../config/config";
-import NewArrivalCard from "./HomePage/NewArrivalCard";
 import { API_URL } from "../Constant/constApi";
 import ProductFilter from "./ProductPage/ProductFilter";
 import Loader from "../components/Loader";
