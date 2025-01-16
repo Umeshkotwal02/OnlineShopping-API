@@ -26,6 +26,7 @@ import NewArrivalCard from "./HomePage/NewArrivalCard";
 import { API_URL } from "../Constant/constApi";
 import ProductFilter from "./ProductPage/ProductFilter";
 import Loader from "../components/Loader";
+import NewArrivalSection from "./HomePage/NewArrivalSection";
 
 const ProductPage = () => {
   const [productPageDetails, setProductPageDetails] = useState([]);
@@ -487,7 +488,7 @@ const ProductPage = () => {
                               className="new-arrival-card w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/5 2xl:w-1/5 px-3 py-3"
                               key={index}
                             >
-                              <NewArrivalCard data={data} />
+                              <NewArrivalSection data={data} />
                             </div>
                           )
                         )}
