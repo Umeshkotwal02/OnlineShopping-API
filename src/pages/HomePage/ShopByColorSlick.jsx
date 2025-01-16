@@ -68,7 +68,7 @@ const ShopByColorSlick = ({ data = [] }) => {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1.2,
+          slidesToShow: 1,
           slidesToScroll: 1,
           centerMode: true,
         },
@@ -81,9 +81,9 @@ const ShopByColorSlick = ({ data = [] }) => {
       <Container
         fluid
         className="shop-by-category-slick slider-container h-100 w-100 px-lg-5 px-xl-5 px-xxl-5">
-        <h3 className="text-start fw-bold my-3 ms-2 mt-4 d-lg-none">
+        <h4 className="text-start fw-bold my-3 ms-2 mt-4 d-lg-none">
           Shop by Color
-        </h3>
+        </h4>
         <div className="d-none d-lg-block">
           <h3 className="fw-normal text-center fs-3 d-none d-lg-block mt-5">Shop by Color</h3>
           <p className="text-center font-italic mb-2"><i>"Embrace the festival magic, let joy fill every moment."</i></p>

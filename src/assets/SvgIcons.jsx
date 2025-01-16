@@ -200,61 +200,8 @@ const AboutLinkArrow = (props) => (
       <path stroke="#4D4D4D" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.891} d="m13.856 8.223 11.245 11.245-11.245 11.244" />
    </svg>
 );
-const PinterestIcon = (props) => (
-   <svg xmlns="http://www.w3.org/2000/svg" width={15} height={17} fill="none" {...props}>
-      <g clipPath="url(#a)">
-         <path
-            fill="#000"
-            d="m13.44 4.9.46.789c.307.525.46 1.41.46 2.655a6.711 6.711 0 0 1-.92 3.444 6.83 6.83 0 0 1-2.496 2.496 6.711 6.711 0 0 1-3.443.92c-.661 0-1.31-.095-1.948-.286.352-.553.584-1.042.697-1.465.054-.202.214-.83.482-1.884.12.232.337.433.653.603.315.17.655.254 1.018.254.72 0 1.363-.204 1.93-.612.565-.408 1.003-.969 1.312-1.683.31-.715.465-1.519.465-2.412 0-.679-.178-1.316-.532-1.912-.354-.595-.868-1.08-1.54-1.456-.674-.375-1.433-.562-2.278-.562-.626 0-1.21.086-1.751.259a4.57 4.57 0 0 0-1.38.687 4.704 4.704 0 0 0-.974.987c-.27.373-.47.758-.598 1.157a3.898 3.898 0 0 0-.192 1.197c0 .62.119 1.164.357 1.635.238.47.587.8 1.045.991.179.072.292.012.34-.178l.071-.277c.036-.143.06-.233.071-.268a.407.407 0 0 0-.098-.384c-.303-.364-.455-.813-.455-1.35 0-.898.31-1.671.933-2.317.622-.646 1.437-.97 2.443-.97.9 0 1.6.245 2.104.733.503.489.754 1.123.754 1.903 0 1.012-.204 1.873-.611 2.581-.408.709-.93 1.063-1.568 1.063-.363 0-.655-.13-.875-.388-.22-.26-.29-.57-.206-.934.048-.208.127-.487.237-.835.11-.348.2-.655.268-.92s.103-.49.103-.674c0-.298-.08-.545-.242-.742-.16-.196-.39-.295-.687-.295-.37 0-.682.17-.938.51-.256.339-.384.762-.384 1.268 0 .435.074.798.223 1.09l-.884 3.733c-.102.417-.14.944-.117 1.581a6.838 6.838 0 0 1-2.974-2.51A6.65 6.65 0 0 1 .641 8.345a6.71 6.71 0 0 1 .92-3.443 6.83 6.83 0 0 1 2.496-2.497 6.71 6.71 0 0 1 3.444-.92 6.71 6.71 0 0 1 3.443.92 6.83 6.83 0 0 1 2.497 2.497Z"
-         />
-      </g>
-      <defs>
-         <clipPath id="a">
-            <path fill="#000" d="M.64 17h13.72V0H.64z" />
-         </clipPath>
-      </defs>
-   </svg>
-);
-const FacebookIcon = (props) => (
-   <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M7.72875 0.437188V2.79875H6.32434C5.81147 2.79875 5.46559 2.90609 5.28668 3.12078C5.10777 3.33547 5.01832 3.6575 5.01832 4.08687V5.77754H7.6393L7.29043 8.42535H5.01832V15.2148H2.28105V8.42535H0V5.77754H2.28105V3.82746C2.28105 2.71824 2.59116 1.858 3.21137 1.24674C3.83158 0.635475 4.65753 0.329844 5.68922 0.329844C6.56586 0.329844 7.2457 0.365625 7.72875 0.437188Z" fill="white" />
-   </svg>
 
-);
 
-const FacebookBgIcon = (props) => {
-
-}
-const TweeterIcon = (props) => (
-   <svg xmlns="http://www.w3.org/2000/svg" width={15} height={17} fill="none" {...props}>
-      <g clipPath="url(#a)">
-         <path fill="#000" d="M14.207 3.986a6.042 6.042 0 0 1-1.447 1.492 8.192 8.192 0 0 1-.33 2.692 8.373 8.373 0 0 1-1.032 2.22 8.72 8.72 0 0 1-1.647 1.879c-.637.545-1.405.98-2.304 1.304a8.434 8.434 0 0 1-2.885.487 8.01 8.01 0 0 1-4.43-1.295c.21.024.441.035.697.035 1.34 0 2.534-.41 3.581-1.232a2.812 2.812 0 0 1-1.678-.576 2.821 2.821 0 0 1-1.019-1.424c.197.03.379.044.545.044.256 0 .51-.032.76-.098a2.838 2.838 0 0 1-1.657-.996 2.787 2.787 0 0 1-.657-1.835v-.036c.405.227.84.349 1.304.367a2.881 2.881 0 0 1-.938-1.027A2.81 2.81 0 0 1 .722 4.61c0-.524.131-1.009.393-1.455a8.177 8.177 0 0 0 2.63 2.13 8.037 8.037 0 0 0 3.318.888 3.204 3.204 0 0 1-.072-.66c0-.798.282-1.479.844-2.041a2.78 2.78 0 0 1 2.04-.844 2.78 2.78 0 0 1 2.108.91 5.656 5.656 0 0 0 1.831-.696 2.8 2.8 0 0 1-1.268 1.59 5.746 5.746 0 0 0 1.66-.447Z" />
-      </g>
-      <defs>
-         <clipPath id="a">
-            <path fill="#000" d="M.133 17h14.86V0H.133z" />
-         </clipPath>
-      </defs>
-   </svg>
-);
-const InstagramIcon = (props) => (
-   <svg xmlns="http://www.w3.org/2000/svg" width={15} height={17} fill="none" {...props}>
-      <g clipPath="url(#a)">
-         <path fill="#000" d="M13.115 13.078V7.29h-1.206c.12.375.179.765.179 1.17 0 .75-.19 1.443-.572 2.077a4.168 4.168 0 0 1-1.554 1.505c-.655.37-1.37.554-2.144.554-1.173 0-2.176-.404-3.01-1.21-.834-.807-1.25-1.782-1.25-2.926 0-.405.059-.795.178-1.17h-1.26v5.788c0 .155.053.285.157.389a.528.528 0 0 0 .389.156h9.548a.532.532 0 0 0 .384-.156.52.52 0 0 0 .161-.389ZM9.77 10.207l.404-.391c.27-.26.404-.76.404-1.499 0-.738-.27-1.368-.808-1.889a2.706 2.706 0 0 0-1.952-.781c-.756 0-1.404.26-1.943.781a2.532 2.532 0 0 0-.808 1.89c0 .738.27 1.367.808 1.889a2.695 2.695 0 0 0 1.943.781c.762 0 1.413-.26 1.952-.781Zm3.345-5.105V3.628a.6.6 0 0 0-.179-.433.588.588 0 0 0-.437-.183h-1.555a.588.588 0 0 0-.437.183.6.6 0 0 0-.179.433v1.474c0 .172.06.318.179.437.119.12.265.179.438.179h1.554c.172 0 .318-.06.437-.179a.595.595 0 0 0 .179-.437Zm1.554-1.858v10.2c0 .483-.173.897-.518 1.242-.345.345-.76.518-1.241.518H2.709c-.482 0-.896-.173-1.242-.518a1.694 1.694 0 0 1-.518-1.242v-10.2c0-.483.173-.896.518-1.242.346-.345.76-.518 1.242-.518h10.2c.483 0 .897.173 1.242.518.345.346.518.76.518 1.242Z" />
-      </g>
-      <defs>
-         <clipPath id="a">
-            <path fill="#000" d="M.95 17h13.72V0H.95z" />
-         </clipPath>
-      </defs>
-   </svg>
-);
-const InfoIcon = (props) => (
-   <svg xmlns="http://www.w3.org/2000/svg" width={21} height={20} fill="none" {...props}>
-      <path fill="#000" d="M10.338 11.333c-.333 0-.583-.25-.666-.666V9.5c0-.333.25-.667.666-.667.5 0 1-.416 1-.916s-.416-1-.916-1-1 .416-1 .916c0 .334-.25.667-.667.667-.416 0-.583-.167-.583-.583 0-1.25 1-2.167 2.25-2.167s2.166 1 2.166 2.25c0 1-.666 1.833-1.583 2.083v.667c-.083.333-.333.583-.667.583ZM10.338 13.667a.667.667 0 1 0 0-1.333.667.667 0 0 0 0 1.333Z" />
-      <path fill="#000" fillRule="evenodd" d="M2.84 10c0-4.167 3.333-7.5 7.5-7.5s7.5 3.333 7.5 7.5-3.333 7.5-7.5 7.5a7.469 7.469 0 0 1-7.5-7.5Zm13.75 0c0-3.417-2.833-6.25-6.25-6.25S4.09 6.583 4.09 10s2.833 6.25 6.25 6.25 6.25-2.833 6.25-6.25Z" clipRule="evenodd" />
-   </svg>
-);
 const AppDownloadIcon = (props) => (
    <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} fill="#fff" {...props}>
       <path fill="#000" d="M10.83 5H9.165a.625.625 0 1 1 0-1.25h1.667a.625.625 0 1 1 0 1.25ZM10.83 15.4a.833.833 0 1 1-1.666 0 .833.833 0 0 1 1.667 0Z" />
@@ -349,21 +296,21 @@ const AddPhotoIcon = (props) => (
    </svg>
 );
 
-const 
+const
 
-CategorySlickNextIcon = (props) => (
-   <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clipPath="url(#clip0_1_126)">
-         <path d="M28 56C43.464 56 56 43.464 56 28C56 12.536 43.464 0 28 0C12.536 0 0 12.536 0 28C0 43.464 12.536 56 28 56Z" fill="#EDEDED" />
-         <path d="M24.2397 35.9988C23.995 36.0014 23.7552 35.9308 23.551 35.7961C23.3468 35.6613 23.1876 35.4686 23.0938 35.2427C22.9999 35.0167 22.9758 34.7679 23.0246 34.5281C23.0733 34.2884 23.1926 34.0687 23.3671 33.8973L29.266 28.0106L23.3671 22.124C23.2525 22.0062 23.1623 21.867 23.1015 21.7143C23.0407 21.5616 23.0106 21.3984 23.0129 21.2341C23.0152 21.0698 23.0498 20.9075 23.1148 20.7565C23.1798 20.6056 23.2739 20.4689 23.3917 20.3543C23.5095 20.2398 23.6487 20.1495 23.8014 20.0887C23.9541 20.0279 24.1173 19.9978 24.2816 20.0001C24.446 20.0024 24.6082 20.037 24.7592 20.102C24.9101 20.167 25.0468 20.2611 25.1614 20.3789L31.9206 27.1381C32.0354 27.2525 32.1266 27.3885 32.1888 27.5382C32.251 27.688 32.283 27.8485 32.283 28.0106C32.283 28.1728 32.251 28.3333 32.1888 28.4831C32.1266 28.6328 32.0354 28.7688 31.9206 28.8832L25.1614 35.6424C25.0408 35.7623 24.8966 35.856 24.7379 35.9173C24.5793 35.9786 24.4096 36.0064 24.2397 35.9988Z" fill="black" />
-      </g>
-      <defs>
-         <clipPath id="clip0_1_126">
-            <rect width="56" height="56" fill="white" />
-         </clipPath>
-      </defs>
-   </svg>
-)
+   CategorySlickNextIcon = (props) => (
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+         <g clipPath="url(#clip0_1_126)">
+            <path d="M28 56C43.464 56 56 43.464 56 28C56 12.536 43.464 0 28 0C12.536 0 0 12.536 0 28C0 43.464 12.536 56 28 56Z" fill="#EDEDED" />
+            <path d="M24.2397 35.9988C23.995 36.0014 23.7552 35.9308 23.551 35.7961C23.3468 35.6613 23.1876 35.4686 23.0938 35.2427C22.9999 35.0167 22.9758 34.7679 23.0246 34.5281C23.0733 34.2884 23.1926 34.0687 23.3671 33.8973L29.266 28.0106L23.3671 22.124C23.2525 22.0062 23.1623 21.867 23.1015 21.7143C23.0407 21.5616 23.0106 21.3984 23.0129 21.2341C23.0152 21.0698 23.0498 20.9075 23.1148 20.7565C23.1798 20.6056 23.2739 20.4689 23.3917 20.3543C23.5095 20.2398 23.6487 20.1495 23.8014 20.0887C23.9541 20.0279 24.1173 19.9978 24.2816 20.0001C24.446 20.0024 24.6082 20.037 24.7592 20.102C24.9101 20.167 25.0468 20.2611 25.1614 20.3789L31.9206 27.1381C32.0354 27.2525 32.1266 27.3885 32.1888 27.5382C32.251 27.688 32.283 27.8485 32.283 28.0106C32.283 28.1728 32.251 28.3333 32.1888 28.4831C32.1266 28.6328 32.0354 28.7688 31.9206 28.8832L25.1614 35.6424C25.0408 35.7623 24.8966 35.856 24.7379 35.9173C24.5793 35.9786 24.4096 36.0064 24.2397 35.9988Z" fill="black" />
+         </g>
+         <defs>
+            <clipPath id="clip0_1_126">
+               <rect width="56" height="56" fill="white" />
+            </clipPath>
+         </defs>
+      </svg>
+   )
 
 
 const CategoryPrevNextIcon = (props) => (
@@ -479,4 +426,4 @@ const OnOnlinebtn = (props) => (
 )
 
 
-export { AddPhotoIcon, AmazonIcon, CheckBadgeIcon, WalletIcon, CopyIcon, ShareIcon, ArrowRightXlIcon, CameraIcon, TimeIcon, TimeIconRed, CallingIcon, LocationIcon, AppDownloadIcon, InfoIcon, TweeterIcon, InstagramIcon, PinterestIcon, FacebookIcon, AboutLinkArrow, ReturnIcon, AccountIcon, WishlistIcon, CartIcon, RightAngle, LikePlus, CouponIcon, RightArrow, CashOnDelIcon, ExchangeIcon, StitchingIcon, ShippingIcon, TruckIcon, PlusIcon, MinusIcon, XClose, ProfileIcon, NotificationIcon, MyOrderIcon, LogoutIcon, SearchIcon, DropdownUp, DropdownDown, LoginIcon, offcanvaceMobiIcon, LgBagIcon, CategorySlickNextIcon, CategoryPrevNextIcon, HomeIcon, CategoryIcon, ExclaimIcon, WalletIcon2, CashONIcon2, ReviewClose, OffCanvaArrowIcon, HeartIcon, HomeActiveIcon, ProfileTwoIcon, WishlistProfileIcon, MyOrderProIcon, NotificationProIcon, AddressProIcon, SearchCloseIcon, SarreEditIcon, OnOnlinebtn };
+export { AddPhotoIcon, AmazonIcon, CheckBadgeIcon, WalletIcon, CopyIcon, ShareIcon, ArrowRightXlIcon, CameraIcon, TimeIcon, TimeIconRed, CallingIcon, LocationIcon, AppDownloadIcon, AboutLinkArrow, ReturnIcon, AccountIcon, WishlistIcon, CartIcon, RightAngle, LikePlus, CouponIcon, RightArrow, CashOnDelIcon, ExchangeIcon, StitchingIcon, ShippingIcon, TruckIcon, PlusIcon, MinusIcon, XClose, ProfileIcon, NotificationIcon, MyOrderIcon, LogoutIcon, SearchIcon, DropdownUp, DropdownDown, LoginIcon, offcanvaceMobiIcon, LgBagIcon, CategorySlickNextIcon, CategoryPrevNextIcon, HomeIcon, CategoryIcon, ExclaimIcon, WalletIcon2, CashONIcon2, ReviewClose, OffCanvaArrowIcon, HeartIcon, HomeActiveIcon, ProfileTwoIcon, WishlistProfileIcon, MyOrderProIcon, NotificationProIcon, AddressProIcon, SearchCloseIcon, SarreEditIcon, OnOnlinebtn };

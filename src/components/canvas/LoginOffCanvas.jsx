@@ -21,6 +21,7 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
   const [isCounting, setIsCounting] = useState(false);
   const [isOtpExpired, setIsOtpExpired] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  
   const referralCode = searchParams.get("code");
 
 

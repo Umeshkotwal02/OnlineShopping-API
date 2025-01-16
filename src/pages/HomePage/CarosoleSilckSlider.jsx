@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import "../../styles/CarosoleSilck.css";
 import { Container } from "react-bootstrap";
 import Loader from "../../components/Loader";
+import { Link } from "react-router-dom";
 
 // Custom Next Arrow Component
 const NextArrow = ({ onClick }) => {
@@ -57,7 +58,7 @@ const CarosoleSilckSlider = ({ bannerList }) => {
                     <Loader />
                 ) : (
                     <>
-                       
+
                         <Container
                             fluid
                             className="d-none d-lg-block CarosoleSlickSlider py-3 px-lg-5 px-xl-5 px-xxl-5"
@@ -65,11 +66,13 @@ const CarosoleSilckSlider = ({ bannerList }) => {
                             <Slider {...settings}>
                                 {bannerList?.map((item, index) => (
                                     <div key={index} className="slider-item">
-                                        <img
-                                            src={item?.webfile}
-                                            alt={`Slide ${index + 1}`}
-                                            className="caro-img"
-                                        />
+                                        <Link to="/products-page">
+                                            <img
+                                                src={item?.webfile}
+                                                alt={`Slide ${index + 1}`}
+                                                className="caro-img"
+                                            />
+                                        </Link>
                                     </div>
                                 ))}
                             </Slider>

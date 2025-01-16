@@ -62,8 +62,8 @@
     padding-left: 10px;
   }
 
-  .overlay-buttons {
-    opacity: 1;
+  .bridal-image-container .overlay-buttons {
+    opacity: 1 !important;
   }
 }
 

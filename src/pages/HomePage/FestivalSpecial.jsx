@@ -8,7 +8,7 @@ const FestivalSpecialSection = ({ data }) => {
                 {/* Festival Special */}
                 <div>
                     <h3 className="text-center fw-normal d-none d-lg-block mt-5" >Festival Special </h3>
-                    <h3 className="text-start fw-bold d-lg-none my-3 ms-2 mt-4">Festival Special</h3>
+                    <h4 className="text-start fw-bold d-lg-none my-3 ms-2 mt-4">Festival Special</h4>
                     <p className="text-center font-italic d-none d-lg-block"><i> "Embrace the festival magic, let joy fill every moment."</i></p>
                 </div>
                 <div className="row g-4">

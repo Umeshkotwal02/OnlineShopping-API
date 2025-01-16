@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import { MdOutlineLocationOn, MdMailOutline } from "react-icons/md";
-import { IoCallOutline } from "react-icons/io5";
+import { LuMail } from "react-icons/lu";
+import { TbMapPin } from "react-icons/tb";
+import { FiPhone } from "react-icons/fi";
 import {
   FaYoutube,
   FaFacebook,
@@ -14,6 +15,7 @@ import { RiTwitterXFill } from "react-icons/ri";
 import "../styles/Footer.css"
 import Loader from "./Loader";
 import { Link } from "react-router-dom";
+import { FaInstagram } from "react-icons/fa6";
 
 const Footer = () => {
 
@@ -39,16 +41,16 @@ const Footer = () => {
                 <img
                   src={require("../assets/images/Footer-img/footer-logo.png")}
                   alt="footer-logo"
-                  className="w-75 mb-3"
+                  className="w-75 mb-3 footer-main-logo"
                 />
                 <p>
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
                 </p>
               </div>
             </Col>
-            <Col xs={6} md={4} lg={2} className=" d-flex justify-content-center" >
-              <div className="mb-4">
-                <div className=" fs-4" style={{ fontWeight: "500" }}>
+            <Col xs={6} md={4} lg={2} className=" d-flex d-sm-block d-lg-flex justify-content-lg-center" >
+              <div className=" mb-sm-0 mb-xs-0 mb-lg-4 mb-xl-4 mb-xxl-4">
+                <div className=" fs-4 fs-sm-5 fs-xs-5" style={{ fontWeight: "500" }}>
                   Company
                 </div>
                 <ul className="list-unstyled ">
@@ -77,13 +79,13 @@ const Footer = () => {
                 </ul>
               </div>
             </Col>
-            <Col xs={6} md={4} lg={2} className=" d-flex justify-content-center">
-              <div className=" mb-4">
-                <div className=" fs-4" style={{ fontWeight: "500" }}>
+            <Col xs={6} md={4} lg={2} className=" d-flex d-sm-block d-lg-flex justify-content-lg-center">
+              <div className=" mb-sm-0 mb-xs-0 mb-lg-4 mb-xl-4 mb-xxl-4">
+                <div className=" fs-4 fs-sm-5 fs-xs-5" style={{ fontWeight: "500" }}>
                   Customer Service
                 </div>
                 <ul className="list-unstyled">
-                 
+
                   <li className="my-1">
                     <Link
                       to="/privacy-policy"
@@ -117,24 +119,24 @@ const Footer = () => {
               </div>
             </Col>
             <Col xs={12} md={6} lg={3} className=" d-flex justify-content-center">
-              <div className="mb-4">
-                <div className=" fs-4" style={{ fontWeight: "500" }}>
-                  Contact Us
+              <div className="mb-0 mb-lg-4">
+                <div className=" fs-4 fs-sm-5 fs-xs-5 fw-medium">
+                  Contact With Us
                 </div>
                 <p>
-                  <MdOutlineLocationOn /> A115-120 Millennium Textile Market-1, Ring Road, Surat, Gujarat 395002
+                  <TbMapPin className="fs-5" /> A115-120 Millennium Textile Market-1, Ring Road, Surat, Gujarat 395002
                 </p>
                 <p>
-                  <IoCallOutline /> +91 9876543210
+                  <FiPhone className="fs-5" /> +91 9876543210
                 </p>
                 <p>
-                  <MdMailOutline /> info123@gmail.com
+                  <LuMail className="fs-5" /> info123@gmail.com
                 </p>
                 <div>
-                  <div className=" fs-4" style={{ fontWeight: "500" }}>
+                  <div className=" fs-4 fs-sm-5 fs-xs-5 fw-medium">
                     Follow Us On
                   </div>
-                  <p>
+                  <p className="d-flex gap-2">
                     <Link
                       to="https://www.youtube.com"
                       target="_blank"
@@ -171,7 +173,7 @@ const Footer = () => {
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <FaPinterest
-                        style={{ color: "darkred" }}
+                        style={{ color: "red" }}
                         className="me-2 icon"
                       />
                     </Link>
@@ -183,7 +185,7 @@ const Footer = () => {
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <IoIosMail
-                        style={{ color: "lightskyblue" }}
+                        style={{ color: "black" }}
                         className="me-2 icon"
                       />
                     </Link>
@@ -194,18 +196,23 @@ const Footer = () => {
                       rel="noopener noreferrer"
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
-                      <FaInstagramSquare
-                        style={{ color: "#E1306C" }}
-                        className="me-2 icon"
+                      <FaInstagram
+                        className="icon"
+                        style={{
+                          background: "linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5)",
+                          borderRadius: "7px",
+                          padding: "0.1em",
+                          color: "white",
+                          fontSize: "1.7em",
+                        }}
                       />
                     </Link>
                   </p>
                 </div>
               </div>
             </Col>
-            <Col xs={12} md={6} lg={2} className=" ">
-              <div className="d-flex flex-md-column align-items-end justify-content-center pe-lg-3 pe-xl-3 pe-xxl-3">
-                <Button variant="" className="p-0 my-2">
+            <Col sm={12} xs={12} md={6} lg={2} className=" ">
+              <div className="d-flex flex-md-column align-items-end justify-content-center gap-3 pe-lg-3 pe-xl-3 pe-xxl-3 pb-4 pb-sm-4">
                   <Link
                     to="https://play.google.com/store/apps"
                     target="_blank"
@@ -214,14 +221,9 @@ const Footer = () => {
                     <img
                       src={require("../assets/images/Footer-img/google-play.png")}
                       alt="error"
-                      style={{
-                        height: "40px",
-                        width: "120px",
-                      }}
+                      className="img-fluid"
                     />
                   </Link>
-                </Button>
-                <Button variant="" className="p-0 my-2">
                   <Link
                     to="https://www.apple.com/in/app-store/"
                     target="_blank"
@@ -230,13 +232,9 @@ const Footer = () => {
                     <img
                       src={require("../assets/images/Footer-img/apple-play.png")}
                       alt="error"
-                      style={{
-                        height: "40px",
-                        width: "120px",
-                      }}
+                      className="img-fluid"
                     />
                   </Link>
-                </Button>
 
               </div>
             </Col>

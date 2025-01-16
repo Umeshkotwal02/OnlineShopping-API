@@ -2,14 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import { FaHeart } from "react-icons/fa6";
-import { productData } from "../config/productData";
 import Breadcrumb from "../components/Breadcrumb";
 import "../styles/NewArrivalCard.css";
 import ProductImageSlider from "../components/homepage/ProductImageSlider";
 import Loader from "../components/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../redux/cart/cartThunk";
+import toast from "react-hot-toast";
+import { STORAGE } from "../config/config";
+import addToWishlist, { fetchWishlistItem, removeFromWishlist } from "../redux/wishlist/wishlistThunk";
+import { FiHeart } from "react-icons/fi";
 
 const WishlistPage = () => {
-  const [isWishlisted, setIsWishlisted] = useState(productData[0].is_wishlist);
+  const dispatch = useDispatch();
+  const { wishlist } = useSelector((state) => state.wishlist); // Get wishlist from Redux store
 
   const breadcrumbArray = [
     <Link
@@ -34,15 +40,29 @@ const WishlistPage = () => {
     return name;
   };
 
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    alert("Product added to cart!");
+  // Fetch wishlist items on mount
+  useEffect(() => {
+    dispatch(fetchWishlistItem());
+  }, [dispatch]);
+
+  const handleAddToCart = async (id, stitchingOptions) => {
+    dispatch(addToCart(id, stitchingOptions));
   };
 
-  const handleWishlistToggle = (e) => {
-    e.preventDefault();
-    setIsWishlisted((prev) => !prev);
-    alert(isWishlisted ? "Removed from wishlist!" : "Added to wishlist!");
+  const handleWishlistToggle = (product) => {
+    const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+    if (!userProfile?.id) {
+      toast.error("Please log in to manage your wishlist.");
+      return;
+    }
+    const wishlistItem = wishlist.find((item) => item.id === product.id);
+    if (wishlistItem) {
+      // Remove from wishlist
+      dispatch(removeFromWishlist(product.id))
+    } else {
+      // Add to wishlist
+      dispatch(addToWishlist(product.id));
+    }
   };
 
   const productNameSlug = (name) => {
@@ -70,26 +90,50 @@ const WishlistPage = () => {
             <Breadcrumb list={breadcrumbArray} />
 
             <Row className="px-lg-5 px-xl-5 px-xxl-5 g-4">
-              {productData.map((product) => (
-                <Col xs={6} sm={6} md={4} lg={2} xl={2} xxl={2} key={product.id}
-                  className="mb-1 rounded wishlist-column"
-                >
+              {wishlist.map((product) => ( // Map over the wishlist array from Redux state
+                <Col xs={6} sm={6} md={4} lg={2} xl={2} xxl={2} key={product.id} className="mb-1 rounded wishlist-column">
                   <Link to={`/product/${productNameSlug(product.product_name)}`} className="text-decoration-none">
                     <div className="new-arrival-card">
                       {/* Product Image Section */}
                       <div className="image-container rounded">
-                        <ProductImageSlider imageList={product.product_images} />
+                        <ProductImageSlider imageList={[product.product_image]} />
                         <div className="overlay-buttons">
-                          <button className="add-to-cart-btn" onClick={handleAddToCart}>
+                          <button className="add-to-cart-btn" onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            handleAddToCart(product.id, product.stitchingOptions)
+                          }}>
                             MOVE TO BAG
                           </button>
                         </div>
 
                         {/* Wishlist Button */}
-                        <div className="wishlist-page-btn rounded-circle">
-                          <button onClick={handleWishlistToggle} className="rounded-circle">
-                            <FaHeart className="icon heart-icon fs-5" />
-                          </button>
+                        <div className="wishlist-btn">
+                          {wishlist.some((item) => item.id === product.id) ? (
+                            <button
+                              type="button"
+                              className="flex items-center justify-center bg-white p-2 rounded-full"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                handleWishlistToggle(product);
+                              }}
+                            >
+                              <FaHeart className="icon heart-icon" />
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="flex items-center justify-center bg-white p-2 rounded-full"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                handleWishlistToggle(product);
+                              }}
+                            >
+                              <FiHeart className="icon" />
+                            </button>
+                          )}
                         </div>
 
                         {/* Discount Badge */}

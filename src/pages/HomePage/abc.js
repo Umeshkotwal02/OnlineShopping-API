@@ -1,145 +1,44 @@
-import {
-    Accordion,
-    AccordionDetails,
-    Checkbox,
-    FormControlLabel,
-    FormGroup,
-  } from "@mui/material";
-  import React from "react";
-  import { MdOutlineFilterList } from "react-icons/md";
-  
-  const ProductFilter = ({
-    handleFilterClick,
-    handleFilterChange,
-    selectedFilters,
-    handleCheckboxLocalChange,
-    showFilterOverlay,
-    filterOptions,
-    activeFilterIndex,
-    handleCloseClick,
-    handleApplyFilters,
-  }) => {
-    return (
-      <>
-        {/* Filter Button */}
-        <div className="d-block d-lg-none fixed-bottom bg-warning px-3">
-          <div className="d-flex justify-content-center align-items-center gap-2 text-center py-3">
-            <MdOutlineFilterList size="24" />
-            <div className="text-uppercase fw-bold" onClick={handleFilterClick}>
-              Filter
-            </div>
+import React, { lazy } from "react";
+import { Link } from "react-router-dom";
+
+const NewArrivalCard = lazy(() => import("../NewArrivalCard"));
+
+const NewArrivalSection = ({ data }) => {
+  return (
+    <section className="my-[30px]">
+      <div className="max-w-[1804px] mx-auto px-3">
+        <div className="text-center mb-[30px]">
+          <h2 className="text-2xl sm:text-3xl md:text-3xl 2xl:text-4xl !leading-none font-normal mb-3">
+            New Arrival
+          </h2>
+          <p className="xl:text-sm 2xl:text-lg !leading-none font-normal italic">
+            &quot;Embrace the festival magic, let joy fill every moment.&quot;
+          </p>
+        </div>
+        <div className="flex flex-wrap -mx-3 gap-y-[25px]">
+          {Boolean(data?.newarrival) &&
+            data?.newarrival?.map((item, index) => {
+              return (
+                <div
+                  key={"newarrival-" + index}
+                  className="new-arrival-card w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/5 2xl:w-1/5 px-3"
+                >
+                  <NewArrivalCard info={item} />
+                </div>
+              );
+            })}
+          <div className="w-full text-center">
+            <Link
+              className="2xl:text-lg font-medium px-4 xl:px-[33px] py-2.5 lg:py-[11px] bg-[#E9B159] text-white font-jost inline-flex items-center gap-2.5 3xl:gap-4 hover:bg-black hover:text-white"
+              to="/product-page"
+            >
+              View All
+            </Link>
           </div>
         </div>
-  
-        {/* Filter Overlay */}
-        {showFilterOverlay && (
-          <div className="d-block d-lg-none position-fixed top-0 start-0 w-100 h-100 bg-white d-flex flex-column">
-            {/* Header */}
-            <div className="fs-4 fw-bold p-3 border-bottom">Filter By</div>
-  
-            {/* Filter Content */}
-            <div className="d-flex flex-grow-1">
-              {/* Sidebar */}
-              <div className="w-25 border-end bg-light">
-                {filterOptions?.map((filterdata, index) => {
-                  if (filterdata.name.toLowerCase() !== "sort") {
-                    return (
-                      <div
-                        key={index}
-                        className={`p-3 border-bottom text-capitalize ${
-                          activeFilterIndex === index ? "fw-bold bg-white" : ""
-                        }`}
-                        onClick={() => handleFilterChange(index)}
-                        style={{
-                          wordWrap: "break-word",
-                          whiteSpace: "normal",
-                          cursor: "pointer",
-                        }}
-                      >
-                        {filterdata.title}
-                      </div>
-                    );
-                  }
-                  return null;
-                })}
-              </div>
-  
-              {/* Filter Details */}
-              <div className="w-75 p-3">
-                {filterOptions?.map((filterdata, index) => {
-                  if (
-                    filterdata.name.toLowerCase() !== "sort" &&
-                    activeFilterIndex === index
-                  ) {
-                    const sortedItems = filterdata.data?.sort((a, b) => {
-                      const isCheckedA = selectedFilters[filterdata.name]?.includes(
-                        a.value
-                      );
-                      const isCheckedB = selectedFilters[filterdata.name]?.includes(
-                        b.value
-                      );
-                      return isCheckedB - isCheckedA;
-                    });
-  
-                    return (
-                      <div key={index}>
-                        <Accordion defaultExpanded>
-                          <AccordionDetails>
-                            <FormGroup className="overflow-auto" style={{ maxHeight: "240px" }}>
-                              {sortedItems?.map((item, itemIndex) => (
-                                <FormControlLabel
-                                  onClick={() =>
-                                    handleCheckboxLocalChange(
-                                      filterdata.name,
-                                      item.value
-                                    )
-                                  }
-                                  key={item.value + itemIndex}
-                                  className="text-capitalize"
-                                  control={
-                                    <Checkbox
-                                      checked={
-                                        selectedFilters[filterdata.name]?.indexOf(
-                                          item.value
-                                        ) >= 0
-                                      }
-                                      style={{ color: "#E9B159" }}
-                                    />
-                                  }
-                                  label={item.label}
-                                />
-                              ))}
-                            </FormGroup>
-                          </AccordionDetails>
-                        </Accordion>
-                      </div>
-                    );
-                  }
-                  return null;
-                })}
-              </div>
-            </div>
-  
-            {/* Footer Buttons */}
-            <div className="d-flex justify-content-center gap-3 py-2 border-top">
-              <button
-                className="btn btn-outline-dark"
-                onClick={handleCloseClick}
-              >
-                Close
-              </button>
-              <button
-                className="btn btn-warning"
-                onClick={handleApplyFilters}
-              >
-                Apply
-              </button>
-            </div>
-          </div>
-        )}
-      </>
-    );
-  };
-  
-  export default ProductFilter;
-  
+      </div>
+    </section>
+  );
+};
+
+export default NewArrivalSection;

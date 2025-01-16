@@ -8,6 +8,7 @@
   padding-bottom: 100px;
   width: 100%;
 }
+
 .footer::before {
   position: absolute;
   background-image: url("../assets/images/Footer-img/footer-bg.png");
@@ -16,10 +17,12 @@
   background-position: center;
   z-index: -10;
 }
+
 .footer .full-logo {
   height: 66px;
   width: 173px;
 }
+
 .footer .button-2 {
   background-color: #da212b;
   height: 2.5rem;
@@ -37,24 +40,29 @@
   background-size: cover;
   z-index: 1;
 }
+
 .footer .div-img {
   height: 50px;
   width: 90px;
   margin-bottom: 0.5rem;
 }
+
 .list-unstyled li a:hover {
   color: #da212b !important;
 }
+
 .footer .image-box img:hover {
   transform: scale(1.2);
   transition: transform 0.3s ease;
 }
+
 .footer .button-2:hover {
   background-color: black;
   transition: all 1s ease-in-out;
 }
+
 .footer .icon {
-  font-size: 20px;
+  font-size: 2rem;
   gap: 2;
 }
 
@@ -67,6 +75,7 @@
   border-radius: 20px;
   background-color: #000000;
 }
+
 .footer .know-more-button:hover {
   background-color: #da212b;
 }
@@ -89,14 +98,21 @@
     height: 116px;
     background-size: cover;
   }
+
   .footer .div-img {
     height: 40px;
     width: 73px;
   }
+
   .footer .button-2 {
     margin-left: 10px !important;
   }
+
+  .footer-main-logo {
+    width: 50% !important;
+  }
 }
+
 @media only screen and (max-width: 768px) {
   .footer::after {
     height: 116px;
@@ -109,18 +125,22 @@
     padding-top: 1rem !important;
   }
 }
+
 @media screen and (max-width: 378px) {
   .footer .div-img {
     width: 66px;
   }
 }
+
 @media screen and (max-width: 991px) {
   .footer .button-2 {
     width: 7.5rem;
   }
+
   .footer .button-2 span {
     font-size: 0.96rem;
   }
+
   .footer::after {
     height: 106px;
   }

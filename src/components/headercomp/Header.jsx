@@ -18,6 +18,9 @@ import { API_URL } from "../../Constant/constApi";
 import ProfileModal from "../canvas/ProfileModal";
 import { UserProvider } from "../../context/UserContext ";
 import MainHeaderMobi from "../mobileheadercomp/MobileHeader";
+import { STORAGE } from "../../config/config";
+import { setCartInfo, setCartItems } from "../../redux/cart/cartSlice";
+import { useDispatch } from "react-redux";
 
 const Header = ({
   searchTerm,
@@ -36,11 +39,16 @@ const Header = ({
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
 
 
   // Logout handler
   const handleLogout = () => {
+    localStorage.removeItem(STORAGE?.USERDETAIL);
+    localStorage.removeItem(STORAGE?.DEVICEID);
+    dispatch(setCartInfo(null));
+    dispatch(setCartItems([]));
     setUser(null);
     setIsOpen(!isOpen);
     signOut(auth).then(() => {

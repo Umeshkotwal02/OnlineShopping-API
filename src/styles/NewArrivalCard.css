@@ -191,6 +191,10 @@
     margin-top: 4px;
     font-size: 0.7rem;
   }
+
+  .new-arrival-card .wishlist-btn {
+    opacity: 1;
+  }
 }
 
 .new-arrival-container {

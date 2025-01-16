@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import "../../styles/CustomerStories.css";
 import CustomerStories from "../../components/CustomerStories";
 import Slider from "react-slick";
 import { Container } from "react-bootstrap";
+import "../../styles/CustomerStories.css";
 
 function CustStoryBtn() {
     return (
@@ -21,7 +21,7 @@ const CustomerStoriesSection = ({ data }) => {
         speed: 500,
         slidesToShow: 3,
         slidesToScroll: 1,
-        autoplay: true,
+        autoplay: false,
         autoplaySpeed: 2000,
         nextArrow: <CustStoryBtn />,
         prevArrow: <CustStoryBtn />,
@@ -53,7 +53,7 @@ const CustomerStoriesSection = ({ data }) => {
             {
                 breakpoint: 480,
                 settings: {
-                    slidesToShow: 1.1,
+                    slidesToShow: 1.155,
                     slidesToScroll: 1,
                     centerMode: true,
                 },
@@ -64,7 +64,7 @@ const CustomerStoriesSection = ({ data }) => {
     return (
         <section className="customer-stories-section">
             <h2 className="customer-section-title d-none d-lg-block">Customer Stories</h2>
-            <h3 className="text-start fw-bold my-3 ms-2 mt-4 d-lg-none">Customer Stories</h3>
+            <h4 className="text-start fw-bold my-3 ms-2 mt-4 d-lg-none">Customer Stories</h4>
             
                 <div className="customer-stories-arrows" ref={sliderRef}>
                     <Slider {...settings} className="customer-stories-slider">

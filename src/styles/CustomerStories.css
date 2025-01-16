@@ -89,8 +89,8 @@
   }
 
   .customer-image {
-    width: 100%;
-    height: 57%;
+    /* width: 100%; */
+    height: 66%;
     margin: -68px auto 10px;
 
   }
@@ -114,7 +114,12 @@
   .customer-stories-section .customer-stories-arrows .slick-list {
     padding-top: 3.5rem !important;
   }
-  
+
+  .customer-message {
+    color: #000;
+    font-size: .68rem;
+    line-height: 1.5;
+  }
 }
 
 .customer-message {
@@ -127,15 +132,19 @@
 
 /* Text Truncate ----------------------------------------------- */
 @media (max-width: 768px) {
+
   /* Mobile View */
   .customer-message {
-    -webkit-line-clamp: 7; /* Limit to 8 lines */
+    -webkit-line-clamp: 7;
+    /* Limit to 8 lines */
   }
 }
 
 @media (min-width: 769px) {
+
   /* Web View */
   .customer-message {
-    -webkit-line-clamp: 5; /* Limit to 5 lines */
+    -webkit-line-clamp: 5;
+    /* Limit to 5 lines */
   }
 }

@@ -1,252 +1,166 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Button } from "react-bootstrap";
-import { MdOutlineLocationOn, MdMailOutline } from "react-icons/md";
-import { IoCallOutline } from "react-icons/io5";
-import {
-  FaYoutube,
-  FaFacebook,
-  FaPinterest,
-  FaInstagramSquare,
-} from "react-icons/fa";
-import { IoIosMail } from "react-icons/io";
-import { RiTwitterXFill } from "react-icons/ri";
-import "../styles/Footer.css"
-import Loader from "./Loader";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Row, Col, Container, Button } from "react-bootstrap";
+import { FaHeart } from "react-icons/fa6";
+import "../../styles/NewArrivalCard.css";
+import { FiHeart } from "react-icons/fi";
+import ProductImageSlider from "../../components/homepage/ProductImageSlider";
+import { STORAGE } from "../../config/config";
+import { useDispatch, useSelector } from "react-redux";
+import { addWishlistItem, removeWishlistItem, fetchWishlistItem } from "../../redux/wishlist/wishlistThunk";
+import { addToCart, fetchCartItems } from "../../redux/cart/cartThunk";
+import toast from "react-hot-toast";
 
-const Footer = () => {
+const NewArrivalSection = ({ data }) => {
+  const [visibleItems, setVisibleItems] = useState(8);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(true);
+  const { wishlist } = useSelector((state) => state.wishlist);
 
-  // Simulating loading for 2 seconds
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
+    dispatch(fetchWishlistItem());
+    dispatch(fetchCartItems());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const updateVisibleItems = () => {
+      const screenWidth = window.innerWidth;
+
+      if (screenWidth < 576) {
+        setVisibleItems(4);
+      } else if (screenWidth >= 576 && screenWidth < 768) {
+        setVisibleItems(6);
+      } else if (screenWidth >= 768 && screenWidth < 992) {
+        setVisibleItems(6);
+      } else {
+        setVisibleItems(10);
+      }
+    };
+
+    updateVisibleItems();
+    window.addEventListener("resize", updateVisibleItems);
+    return () => window.removeEventListener("resize", updateVisibleItems);
   }, []);
 
-  if (loading) {
-    return <Loader />;
-  }
+  const handleViewMore = () => {
+    navigate("/products-page");
+  };
+
+  const truncateProductName = (name = "") => {
+    if (name.length > 35) {
+      return name.substring(0, 35) + "...";
+    }
+    return name;
+  };
+
+  const handleAddToCart = (id) => {
+    const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+    const firstStitchingOption = data?.stitchingOptions?.[0];
+    const stitchingLabel = firstStitchingOption?.label || "unstitched";
+    const stitchingPrice = firstStitchingOption?.price || 0;
+
+    const payload = {
+      user_type: userProfile?.user_type ?? STORAGE?.B2C,
+      device_id: localStorage.getItem(STORAGE?.DEVICEID),
+      is_mobile: "0",
+      product_id: id,
+      product_quantity: 1,
+      stching: stitchingLabel,
+      is_admin: "0",
+      user_id: userProfile?.id,
+    };
+
+    dispatch(addToCart(payload))
+      .unwrap()
+      .then((response) => {
+        toast.success(response.message || "Product added to cart.");
+      })
+      .catch((error) => {
+        toast.error(error.message || "Failed to add to cart.");
+      });
+  };
+
+  const handleWishlistToggle = (product) => {
+    if (wishlist.some((item) => item.id === product.id)) {
+      dispatch(removeWishlistItem(product.id))
+        .unwrap()
+        .then(() => {
+          toast.success("Removed from wishlist!");
+        })
+        .catch((error) => {
+          toast.error(error.message || "Failed to remove from wishlist.");
+        });
+    } else {
+      dispatch(addWishlistItem(product))
+        .unwrap()
+        .then(() => {
+          toast.success("Added to wishlist!");
+        })
+        .catch((error) => {
+          toast.error(error.message || "Failed to add to wishlist.");
+        });
+    }
+  };
+
+  const productNameSlug = (name = "") => {
+    return name.replace(/\s+/g, "-").toLowerCase();
+  };
 
   return (
-    <div>
-      <Container fluid className="footer">
-        <Container fluid className="py-0 mt-5">
-          <Row>
-            <Col xs={12} md={4} lg={3} >
-              <div className="logo-div ps-lg-3 ps-xl-3 ps-xxl-3">
-                <img
-                  src={require("../assets/images/Footer-img/footer-logo.png")}
-                  alt="footer-logo"
-                  className="w-75 mb-3"
-                />
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                </p>
-              </div>
-            </Col>
-            <Col xs={6} md={4} lg={2} >
-              <div className="mb-4">
-                <div className=" fs-4" style={{ fontWeight: "600" }}>
-                  Company
-                </div>
-                <ul className="list-unstyled ">
-                  <li className="my-1">
-                    <Link href="/home" className="text-dark text-decoration-none  ">
-                      Home
-                    </Link>
-                  </li>
-                  <li className="my-1">
-                    <Link
-                      href="/about-us"
-                      className="text-dark text-decoration-none"
-                    >
-                      About Us
-
-                    </Link>
-                  </li>
-                  <li className="my-1">
-                    <Link
-                      href="/my-order"
-                      className="text-dark text-decoration-none"
-                    >
-                      Your Orders
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </Col>
-            <Col xs={6} md={4} lg={2}>
-              <div className=" mb-4">
-                <div className=" fs-4" style={{ fontWeight: "600" }}>
-                  Customer Service
-                </div>
-                <ul className="list-unstyled">
-                 
-                  <li className="my-1">
-                    <Link
-                      href="/privacy-policy"
-                      className="text-dark text-decoration-none"
-                    >
-                      Privacy Policy
-                    </Link>
-                  </li>
-                  <li className="my-1">
-                    <Link
-                      href="/term-condition"
-                      className="text-dark text-decoration-none"
-                    >
-                      Terms & Conditions
-                    </Link>
-                  </li>
-                  <li className="my-1">
-                    <Link
-                      href="/contact-us"
-                      className="text-dark text-decoration-none"
-                    >
-                      Contact Us
-                    </Link>
-                  </li>
-                  <li className="my-1">
-                    <Link href="/faq" className="text-dark text-decoration-none">
-                      FAQ
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </Col>
-            <Col xs={12} md={6} lg={3}>
-              <div className="mb-4">
-                <div className=" fs-4" style={{ fontWeight: "600" }}>
-                  Contact Us
-                </div>
-                <p>
-                  <MdOutlineLocationOn /> A115-120 Millennium Textile Market-1, Ring Road, Surat, Gujarat 395002
-                </p>
-                <p>
-                  <IoCallOutline /> +91 9876543210
-                </p>
-                <p>
-                  <MdMailOutline /> info123@gmail.com
-                </p>
-                <div>
-                  <div className=" fs-4" style={{ fontWeight: "600" }}>
-                    Follow Us On
+    <Container fluid className="new-arrival-container">
+      <h3 className="fw-normal text-center fs-3 d-none d-lg-block mt-5">New-Arrival</h3>
+      <Row className="px-lg-5 px-xl-5 px-xxl-5">
+        {data?.newarrival?.slice(0, visibleItems).map((product) => (
+          <Col xs={6} sm={6} md={4} lg={2} xl={2} xxl={2} key={product.id} className="mb-4 rounded wishlist-column">
+            <Link to={`/products/${productNameSlug(product.product_name)}`} className="text-decoration-none">
+              <div className="new-arrival-card rounded-top-3">
+                <div className="image-container rounded-top-3">
+                  <ProductImageSlider imageList={[product.product_image]} />
+                  <div className="overlay-buttons">
+                    <button className="add-to-cart-btn" onClick={() => handleAddToCart(product.id)}>
+                      ADD TO CART
+                    </button>
                   </div>
-                  <p>
-                    <Link
-                      href="https://www.youtube.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <FaYoutube style={{ color: "red" }} className="me-2 icon" />
-                    </Link>
-                    <Link
-                      href="https://www.twitter.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <RiTwitterXFill className="icon" />
-                    </Link>
-
-                    <Link
-                      href="https://www.facebook.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <FaFacebook
-                        style={{ color: "blue" }}
-                        className="me-2 icon"
-                      />
-                    </Link>
-
-                    <Link
-                      href="https://in.pinterest.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <FaPinterest
-                        style={{ color: "darkred" }}
-                        className="me-2 icon"
-                      />
-                    </Link>
-
-                    <Link
-                      href="https://mail.google.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <IoIosMail
-                        style={{ color: "lightskyblue" }}
-                        className="me-2 icon"
-                      />
-                    </Link>
-
-                    <Link
-                      href="https://www.instagram.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <FaInstagramSquare
-                        style={{ color: "#E1306C" }}
-                        className="me-2 icon"
-                      />
-                    </Link>
-                  </p>
+                  <div className="wishlist-btn">
+                    <button onClick={() => handleWishlistToggle(product)}>
+                      {wishlist.some((item) => item.id === product.id) ? (
+                        <FaHeart className="icon heart-icon" />
+                      ) : (
+                        <FiHeart className="icon" />
+                      )}
+                    </button>
+                  </div>
+                  {product.product_discount > 0 && (
+                    <div className="discount-badge">
+                      <p className="discount-p">{product.product_discount}% OFF</p>
+                    </div>
+                  )}
+                </div>
+                <div className="product-info">
+                  <h3 className="text-start text-dark">{truncateProductName(product.product_name)}</h3>
+                  <div className="price-section">
+                    <span className="mrp text-start">{product.currency}{product.product_mrp}</span>
+                    <span className="discounted-price">{product.currency}{product.product_price}</span>
+                  </div>
                 </div>
               </div>
-            </Col>
-            <Col xs={12} md={6} lg={2}>
-              <div className="d-flex flex-md-column align-items-center justify-content-center mb-1">
-                <Button variant="dark" className="p-0 my-2">
-                  <Link
-                    href="https://play.google.com/store/apps"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img
-                      src={require("../assets/images/Footer-img/google-play.png")}
-                      alt="error"
-                      style={{
-                        height: "40px",
-                        width: "120px",
-                        borderRadius: "4px",
-                      }}
-                    />
-                  </Link>
-                </Button>
-                <Button variant="dark" className="p-0 my-2">
-                  <Link
-                    href="https://www.apple.com/in/app-store/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img
-                      src={require("../assets/images/Footer-img/apple-play.png")}
-                      alt="error"
-                      style={{
-                        height: "40px",
-                        width: "120px",
-                        borderRadius: "4px",
-                      }}
-                    />
-                  </Link>
-                </Button>
-
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </Container>
-    </div>
+            </Link>
+          </Col>
+        ))}
+      </Row>
+      <div className="text-center d-flex justify-content-center">
+        <Button
+          variant="dark rounded-5 px-4 mb-4"
+          onClick={handleViewMore}
+          style={{ fontSize: "0.9rem" }}
+          className="d-none d-lg-block"
+        >
+          View All
+        </Button>
+      </div>
+    </Container>
   );
 };
 
-export default Footer;
+export default NewArrivalSection;

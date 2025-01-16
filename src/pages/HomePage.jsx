@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Banner from './HomePage/Banner'
 import Motion from './HomePage/Motion'
-import CarosoleSilckSlider from './HomePage/CarosoleSilck'
 import FestivalSpecial from './HomePage/FestivalSpecial'
 import SareeEdit from './HomePage/SareeEdit'
 import SareeEditMobi from './MobilePages/SareeEditMobi'
@@ -22,6 +21,7 @@ import { fetchHomePageDetails } from '../redux/homepage/homeThunk'
 import ShopByCategorySlick from './HomePage/ShopByCategorySlick'
 import NewArrivalSection from './HomePage/NewArrivalSection'
 import SearchBar from '../components/SearchBar'
+import CarosoleSilckSlider from './HomePage/CarosoleSilckSlider'
 
 
 function HomePage() {

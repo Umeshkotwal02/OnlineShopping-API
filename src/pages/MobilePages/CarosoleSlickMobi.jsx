@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import "../../styles/CarosoleSilckMobi.css";
 import { Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const CarosoleSlickMobi = ({ bannerList }) => {
     var settings = {
@@ -18,11 +19,13 @@ const CarosoleSlickMobi = ({ bannerList }) => {
                 <Slider {...settings}>
                     {bannerList?.map((item, index) => (
                         <div key={index} className="slider-item">
-                            <img
-                                src={item?.webfile}
-                                alt={`Slide ${index + 1}`}
-                                className="slider-image"
-                            />
+                            <Link to="/products-page">
+                                <img
+                                    src={item?.webfile}
+                                    alt={`Slide ${index + 1}`}
+                                    className="slider-image"
+                                />
+                            </Link>
                         </div>
                     ))}
                 </Slider>
