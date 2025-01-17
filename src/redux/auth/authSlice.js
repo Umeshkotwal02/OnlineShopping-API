@@ -1,70 +1,92 @@
+// src/redux/authSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { sendOtpThunk, verifyOtpThunk, googleLoginThunk } from './authThunks';
+import { sendOtp, verifyOtp, googleLogin } from './authThunk';
 
 const initialState = {
   mobileNumber: '',
   otp: ['', '', '', '', '', ''],
-  isOtpVerified: false,
-  otpCanvasVisible: false,
-  error: null,
+  otpCanvas: false,
+  error: '',
   resendTimer: 59,
-  isCounting: false,
+  isOtpExpired: false,
   success: false,
+  isCounting: false,
+  touched: {
+    mobileNumber: false,
+    password: false
+  },
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setMobileNumber(state, action) {
-      state.mobileNumber = action.payload;
+    clearAll: (state) => {
+      state.mobileNumber = '';
+      state.otpCanvas = false;
+      state.otp = ['', '', '', '', '', ''];
+      state.error = '';
+      state.resendTimer = 59;
+      state.touched = { mobileNumber: false, password: false };
+      state.success = false;
     },
-    setOtp(state, action) {
-      state.otp = action.payload;
+    setOtpCanvas: (state, action) => {
+      state.otpCanvas = action.payload;
     },
-    toggleOtpCanvas(state, action) {
-      state.otpCanvasVisible = action.payload;
-    },
-    setError(state, action) {
+    setError: (state, action) => {
       state.error = action.payload;
     },
-    resetAuthState(state) {
-      return { ...initialState };
+    setOtp: (state, action) => {
+      state.otp = action.payload;
+    },
+    setMobileNumber: (state, action) => {
+      state.mobileNumber = action.payload;
+    },
+    setResendTimer: (state, action) => {
+      state.resendTimer = action.payload;
+    },
+    setSuccess: (state, action) => {
+      state.success = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
-      // Send OTP
-      .addCase(sendOtpThunk.fulfilled, (state, action) => {
-        state.otpCanvasVisible = true;
-        state.error = null;
+      .addCase(sendOtp.fulfilled, (state, action) => {
+        state.otpCanvas = true;
+        state.resendTimer = 59;
         state.isCounting = true;
+        state.error = '';
       })
-      .addCase(sendOtpThunk.rejected, (state, action) => {
-        state.error = action.error.message;
+      .addCase(sendOtp.rejected, (state, action) => {
+        state.error = action.payload;
       })
-
-      // Verify OTP
-      .addCase(verifyOtpThunk.fulfilled, (state, action) => {
-        state.isOtpVerified = true;
+      .addCase(verifyOtp.fulfilled, (state, action) => {
         state.success = true;
-        state.otpCanvasVisible = false;
+        state.otpCanvas = false;
+        state.otp = ['', '', '', '', '', ''];
       })
-      .addCase(verifyOtpThunk.rejected, (state, action) => {
-        state.error = action.error.message;
+      .addCase(verifyOtp.rejected, (state, action) => {
+        state.error = action.payload;
       })
-
-      // Google Login
-      .addCase(googleLoginThunk.fulfilled, (state, action) => {
+      .addCase(googleLogin.fulfilled, (state, action) => {
         state.success = true;
+        state.otpCanvas = false;
+        state.otp = ['', '', '', '', '', ''];
       })
-      .addCase(googleLoginThunk.rejected, (state, action) => {
-        state.error = action.error.message;
+      .addCase(googleLogin.rejected, (state, action) => {
+        state.error = action.payload;
       });
   },
 });
 
-export const { setMobileNumber, setOtp, toggleOtpCanvas, setError, resetAuthState } =
-  authSlice.actions;
+export const {
+  clearAll,
+  setOtpCanvas,
+  setError,
+  setOtp,
+  setMobileNumber,
+  setResendTimer,
+  setSuccess
+} = authSlice.actions;
 
 export default authSlice.reducer;

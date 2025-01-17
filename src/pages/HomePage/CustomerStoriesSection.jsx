@@ -65,7 +65,24 @@ const CustomerStoriesSection = ({ data }) => {
         <section className="customer-stories-section">
             <h2 className="customer-section-title d-none d-lg-block">Customer Stories</h2>
             <h4 className="text-start fw-bold my-3 ms-2 mt-4 d-lg-none">Customer Stories</h4>
-            
+
+            <div className="d-none d-lg-block">
+                {/* For large screens and above */}
+                <Container>
+                    <div className="customer-stories-arrows" ref={sliderRef}>
+                        <Slider {...settings} className="customer-stories-slider">
+                            {data?.testimonials?.map((item, index) => (
+                                <div className="customer-card-wrapper" key={index}>
+                                    <CustomerStories info={item} />
+                                </div>
+                            ))}
+                        </Slider>
+                    </div>
+                </Container>
+            </div>
+
+            <div className="d-lg-none">
+                {/* For mobile screens */}
                 <div className="customer-stories-arrows" ref={sliderRef}>
                     <Slider {...settings} className="customer-stories-slider">
                         {data?.testimonials?.map((item, index) => (
@@ -75,7 +92,9 @@ const CustomerStoriesSection = ({ data }) => {
                         ))}
                     </Slider>
                 </div>
+            </div>
         </section>
+
     );
 };
 

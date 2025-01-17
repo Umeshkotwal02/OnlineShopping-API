@@ -1,166 +1,571 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Row, Col, Container, Button } from "react-bootstrap";
-import { FaHeart } from "react-icons/fa6";
-import "../../styles/NewArrivalCard.css";
-import { FiHeart } from "react-icons/fi";
-import ProductImageSlider from "../../components/homepage/ProductImageSlider";
-import { STORAGE } from "../../config/config";
-import { useDispatch, useSelector } from "react-redux";
-import { addWishlistItem, removeWishlistItem, fetchWishlistItem } from "../../redux/wishlist/wishlistThunk";
-import { addToCart, fetchCartItems } from "../../redux/cart/cartThunk";
+import React, { useEffect, useState } from "react";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import { PlusIcon, MinusIcon, XClose } from "../assets/SvgIcons";
+import {
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Typography,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import { Stack, Pagination } from "@mui/material";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+
+import Breadcrumb from "../components/Breadcrumb";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { STORAGE } from "../config/config";
+import ProductFilter from "./ProductPage/ProductFilter";
+import NewArrivalCard from "../components/homepage/NewArriveCard";
+import { API_URL } from "../Constant/constApi";
 
-const NewArrivalSection = ({ data }) => {
-  const [visibleItems, setVisibleItems] = useState(8);
+
+const ProductPage = () => {
+  const [productPageDetails, setProductPageDetails] = useState([]);
+  const [filterOptions, setFilterOptions] = useState([]);
+
+  const category = new URLSearchParams(window.location.search)?.get("category");
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const [showPagination, setShowPagination] = useState(true);
+  const [appliedfilterData, setAppliedFilterData] = useState({
+    ...location?.state,
+  });
+  // console.log("appliedfillterdata", appliedfilterData);
+  const [valueLabelMapping, setValueLabelMapping] = useState({});
+  const [selectedSortValue, setSelectedSortValue] = useState("");
+
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const { wishlist } = useSelector((state) => state.wishlist);
+  const handleNavigate = () => {
+    navigate("/product-page");
+    window.scrollTo(0, 0);
+  };
+
+  const [isExpanded, setIsExpanded] = useState([]);
 
   useEffect(() => {
-    dispatch(fetchWishlistItem());
-    dispatch(fetchCartItems());
-  }, [dispatch]);
-
-  useEffect(() => {
-    const updateVisibleItems = () => {
-      const screenWidth = window.innerWidth;
-
-      if (screenWidth < 576) {
-        setVisibleItems(4);
-      } else if (screenWidth >= 576 && screenWidth < 768) {
-        setVisibleItems(6);
-      } else if (screenWidth >= 768 && screenWidth < 992) {
-        setVisibleItems(6);
-      } else {
-        setVisibleItems(10);
+    const initialExpanded = ["Price"];
+    filterOptions.forEach((filter) => {
+      if (
+        appliedfilterData[filter.name]?.length > 0 &&
+        !initialExpanded.includes(filter.title)
+      ) {
+        initialExpanded.push(filter.title);
       }
-    };
+    });
+    setIsExpanded(initialExpanded);
+  }, [filterOptions, appliedfilterData]);
 
-    updateVisibleItems();
-    window.addEventListener("resize", updateVisibleItems);
-    return () => window.removeEventListener("resize", updateVisibleItems);
+  const handleAccordionChange = (id) => {
+    setIsExpanded((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((prevId) => prevId !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
+  };
+
+  const handleCheckboxChange = (key, value) => {
+    changeFilterData({ key, val: value });
+    if (!isExpanded.includes(key)) {
+      setIsExpanded([...isExpanded, key]);
+    }
+  };
+
+  const breadcrumbArray = [
+    <Link
+      to={"/"}
+      underline="hover"
+      key="1"
+      color="inherit"
+      className="text-[#666666] text-base lg:text-md !leading-[1.16] font-normal font-jost  hover:underline capitalize"
+    >
+      Home
+    </Link>,
+    <p
+      key={2}
+      className="text-[#A36300] text-base lg:text-md !leading-[1.16] font-normal font-jost  capitalize"
+    >
+      Product Page
+    </p>,
+  ];
+  const pageSize = 12;
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalpageset, setTotalpageset] = useState(0);
+  const [pageset, setpageset] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProductPageDetails = async (page = 1) => {
+    try {
+      setLoading(true);
+      const userProfile = JSON.parse(
+        localStorage?.getItem(STORAGE?.USERDETAIL)
+      );
+
+      const response = await axios.post(`${API_URL}productsfilter`, {
+        user_type: userProfile?.user_type ?? STORAGE?.B2C,
+        user_id: userProfile?.id,
+        filter: appliedfilterData,
+        page: page,
+        limit: "15",
+      });
+
+      if (response && response.data && response.data.STATUS === 200) {
+        setProductPageDetails({ ...response.data.DATA });
+
+        setTotalpageset(response.data.TOTAL_PRODUCTS);
+        setpageset(response.data.COUNT);
+      } else {
+        throw new Error("Unexpected response format");
+      }
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.MESSAGE ||
+        err?.message ||
+        "Failed to fetch information."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const totalPages = Math.ceil(totalpageset / pageSize);
+
+  const handlePaginationChange = (event, value) => {
+    setCurrentPage(value);
+
+    fetchProductPageDetails(value).then(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  };
+
+  const fetchFilterOptions = async () => {
+    try {
+      const { data } = await axios.post(`${API_URL}productsvarients`, {
+        device_id: localStorage.getItem(STORAGE?.DEVICEID),
+        is_mobile: "1",
+      });
+
+      if (data && data.STATUS === 200) {
+        setFilterOptions(data.DATA);
+        // console.log("dt", data.DATA);
+
+        const mapping = {};
+        data.DATA.forEach((filter) => {
+          filter.data.forEach((item) => {
+            mapping[item.value] = item.label;
+          });
+        });
+
+        setValueLabelMapping(mapping);
+      }
+
+      if (data.DATA[0]?.data?.length > 0) {
+        setSelectedSortValue(data.DATA[0].data[0].value);
+      }
+    } catch (err) {
+      console.error(err);
+      console.error(err.response);
+      toast.error(
+        err?.response?.data?.MESSAGE ||
+        err?.message ||
+        "Failed to fetch information."
+      );
+    }
+  };
+
+  useEffect(() => {
+    fetchProductPageDetails();
+    fetchFilterOptions();
   }, []);
 
-  const handleViewMore = () => {
-    navigate("/products-page");
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [loading]);
+
+  const getProduct = async () => {
+    // console.log("appliedfilterData :: ", appliedfilterData);
   };
 
-  const truncateProductName = (name = "") => {
-    if (name.length > 35) {
-      return name.substring(0, 35) + "...";
+  const changeFilterData = (obj) => {
+    if (obj?.key) {
+      // console.log("obj ::", obj);
+
+      const oldData = Array.isArray(appliedfilterData[obj?.key])
+        ? appliedfilterData[obj?.key]
+        : [];
+      const updateData =
+        oldData?.indexOf(obj?.val) >= 0
+          ? oldData?.filter((e) => e != obj?.val)
+          : [...oldData, obj?.val];
+
+      appliedfilterData[obj?.key] = updateData?.filter(
+        (e, i) => updateData.indexOf(e) == i
+      );
+
+      if (obj?.key === "sort") {
+        appliedfilterData[obj?.key] = obj?.val;
+      }
+
+      setAppliedFilterData({ ...appliedfilterData });
+      fetchProductPageDetails();
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    return name;
   };
 
-  const handleAddToCart = (id) => {
+  const clearFilters = () => {
+    setAppliedFilterData({});
+    fetchProductPageDetails();
+  };
+
+  useEffect(() => {
+    getProduct();
+  }, []);
+
+  const [data, setData] = useState([]);
+
+  const fetchHomePageDetails = async () => {
     const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
-    const firstStitchingOption = data?.stitchingOptions?.[0];
-    const stitchingLabel = firstStitchingOption?.label || "unstitched";
-    const stitchingPrice = firstStitchingOption?.price || 0;
-
-    const payload = {
-      user_type: userProfile?.user_type ?? STORAGE?.B2C,
-      device_id: localStorage.getItem(STORAGE?.DEVICEID),
-      is_mobile: "0",
-      product_id: id,
-      product_quantity: 1,
-      stching: stitchingLabel,
-      is_admin: "0",
-      user_id: userProfile?.id,
-    };
-
-    dispatch(addToCart(payload))
-      .unwrap()
-      .then((response) => {
-        toast.success(response.message || "Product added to cart.");
-      })
-      .catch((error) => {
-        toast.error(error.message || "Failed to add to cart.");
+    try {
+      setLoading(true);
+      const { data } = await axios.post(`${API_URL}`, {
+        user_type: userProfile?.user_type ?? STORAGE?.B2C,
+        device_id: localStorage.getItem(STORAGE?.DEVICEID),
+        user_id: userProfile?.id,
+        is_mobile: "0",
+        is_admin: "0",
       });
-  };
 
-  const handleWishlistToggle = (product) => {
-    if (wishlist.some((item) => item.id === product.id)) {
-      dispatch(removeWishlistItem(product.id))
-        .unwrap()
-        .then(() => {
-          toast.success("Removed from wishlist!");
-        })
-        .catch((error) => {
-          toast.error(error.message || "Failed to remove from wishlist.");
-        });
-    } else {
-      dispatch(addWishlistItem(product))
-        .unwrap()
-        .then(() => {
-          toast.success("Added to wishlist!");
-        })
-        .catch((error) => {
-          toast.error(error.message || "Failed to add to wishlist.");
-        });
+      if (data && data.STATUS === 200) {
+        setData(data.DATA || []);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const productNameSlug = (name = "") => {
-    return name.replace(/\s+/g, "-").toLowerCase();
+  useEffect(() => {
+    fetchHomePageDetails();
+  }, []);
+
+  useEffect(() => {
+    const searchTerm = location.state?.search;
+    if (searchTerm) {
+      // console.log("Search term:", searchTerm);
+    }
+  }, [location]);
+
+  const ShowFilterTitles = () => {
+    const checkAppliedData = { ...appliedfilterData };
+
+    delete checkAppliedData.sort;
+    delete checkAppliedData.search;
+
+    const appliedKeys = Object.keys(checkAppliedData);
+
+    const dataArr = filterOptions
+      ?.filter((e) => appliedKeys.includes(e.name))
+      ?.map((e) => ({
+        name: e.name,
+        data: e.data?.filter((r) =>
+          appliedfilterData[e.name]?.includes(r.key || r.value)
+        ),
+      }))
+      ?.flatMap((e) => e.data?.map((x) => ({ ...x, fillName: e.name })));
+
+    return dataArr?.map((e) => (
+      <button
+        key={`${e.fillName}-${e.value}`}
+        className="flex gap-2 py-1.5 md:py-2.5 px-2.5 border border-dashed border-[#898989] rounded-3xl"
+        onClick={() => changeFilterData({ key: e.fillName, val: e.value })}
+      >
+        <span className="text-sm md:text-base md:leading-5 font-jost text-[#898989]">
+          {e.fillName} : {e.label}
+        </span>
+        <span>
+          <XClose />
+        </span>
+      </button>
+    ));
+  };
+
+  const [showFilterOverlay, setShowFilterOverlay] = useState(false);
+  const [activeFilterIndex, setActiveFilterIndex] = useState(0);
+  const [selectedFilters, setSelectedFilters] = useState(appliedfilterData);
+
+  const handleFilterClick = () => {
+    const firstFilterIndex = filterOptions.findIndex(
+      (filterdata) => filterdata.name.toLowerCase() !== "sort"
+    );
+    setActiveFilterIndex(firstFilterIndex);
+    setShowFilterOverlay(true);
+  };
+
+  const handleCloseClick = () => {
+    setShowFilterOverlay(false);
+  };
+
+  const handleFilterChange = (index) => {
+    setActiveFilterIndex(index);
+  };
+
+  const handleCheckboxLocalChange = (filterName, value) => {
+    const updatedFilters = { ...selectedFilters };
+    const currentValues = updatedFilters[filterName] || [];
+    if (currentValues.includes(value)) {
+      updatedFilters[filterName] = currentValues.filter((v) => v !== value);
+    } else {
+      updatedFilters[filterName] = [...currentValues, value];
+    }
+    setSelectedFilters(updatedFilters);
+  };
+
+  const handleApplyFilters = () => {
+    for (const filterName in selectedFilters) {
+      selectedFilters[filterName].forEach((value) => {
+        handleCheckboxChange(filterName, value);
+      });
+    }
+
+    setShowFilterOverlay(false);
   };
 
   return (
-    <Container fluid className="new-arrival-container">
-      <h3 className="fw-normal text-center fs-3 d-none d-lg-block mt-5">New-Arrival</h3>
-      <Row className="px-lg-5 px-xl-5 px-xxl-5">
-        {data?.newarrival?.slice(0, visibleItems).map((product) => (
-          <Col xs={6} sm={6} md={4} lg={2} xl={2} xxl={2} key={product.id} className="mb-4 rounded wishlist-column">
-            <Link to={`/products/${productNameSlug(product.product_name)}`} className="text-decoration-none">
-              <div className="new-arrival-card rounded-top-3">
-                <div className="image-container rounded-top-3">
-                  <ProductImageSlider imageList={[product.product_image]} />
-                  <div className="overlay-buttons">
-                    <button className="add-to-cart-btn" onClick={() => handleAddToCart(product.id)}>
-                      ADD TO CART
-                    </button>
-                  </div>
-                  <div className="wishlist-btn">
-                    <button onClick={() => handleWishlistToggle(product)}>
-                      {wishlist.some((item) => item.id === product.id) ? (
-                        <FaHeart className="icon heart-icon" />
-                      ) : (
-                        <FiHeart className="icon" />
-                      )}
-                    </button>
-                  </div>
-                  {product.product_discount > 0 && (
-                    <div className="discount-badge">
-                      <p className="discount-p">{product.product_discount}% OFF</p>
-                    </div>
-                  )}
+    <>
+      {loading ? (
+        <div className="loader-overlay">
+          <div className="loader-container">
+            <div className="loader-circle-9">
+              Kapoor
+              <span></span>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* <TopBar />
+          <Header /> */}
+          <Breadcrumb list={breadcrumbArray} />
+          <section className="my-[30px]">
+            <div className="max-w-[1810px] mx-auto px-3">
+              <div className="flex flex-wrap -mx-3 gap-y-4">
+                <div className="hidden lg:block w-full lg:w-1/5 px-3">
+                  <h3 className="text-xl md:text-2xl md:leading-5 font-medium font-jost text-start mb-6">
+                    Filter
+                  </h3>
+
+                  {filterOptions?.map((filterdata, index) => {
+                    if (filterdata.name.toLowerCase() !== "sort") {
+                      const sortedItems = filterdata.data?.sort((a, b) => {
+                        const isCheckedA = appliedfilterData[
+                          filterdata.name
+                        ]?.includes(a.value);
+                        const isCheckedB = appliedfilterData[
+                          filterdata.name
+                        ]?.includes(b.value);
+                        return isCheckedB - isCheckedA;
+                      });
+
+                      return (
+                        <Accordion
+                          key={index}
+                          className="!shadow-none !border-0 !border-b border-[#dcdcdc] rounded-none my-0 accordion-main"
+                          expanded={isExpanded.includes(filterdata.title)}
+                        >
+                          <AccordionSummary
+                            className="h-[60px] accordion-btn"
+                            expandIcon={
+                              isExpanded.includes(filterdata.title) ? (
+                                <MinusIcon />
+                              ) : (
+                                <PlusIcon />
+                              )
+                            }
+                            aria-controls={`panel-content-${index}`}
+                            id={`panel-header-${index}`}
+                            onClick={() =>
+                              handleAccordionChange(filterdata.title)
+                            }
+                          >
+                            <span className="text-base leading-5 font-medium font-jost capitalize">
+                              {filterdata.title}
+                            </span>
+                          </AccordionSummary>
+                          <AccordionDetails className="bg-[#F6F6F6] p-4">
+                            <FormGroup className="accordion-list max-h-52 overflow-y-auto !flex-nowrap">
+                              {sortedItems?.map((item, itemIndex) => (
+                                <FormControlLabel
+                                  onClick={() =>
+                                    handleCheckboxChange(
+                                      filterdata.name,
+                                      item.value
+                                    )
+                                  }
+                                  key={item.value + itemIndex}
+                                  className="text-base leading-5 font-jost text-black capitalize"
+                                  control={
+                                    <Checkbox
+                                      checked={
+                                        appliedfilterData[
+                                          filterdata.name
+                                        ]?.indexOf(item.value) >= 0
+                                      }
+                                      style={{ color: "#E9B159" }}
+                                    />
+                                  }
+                                  label={item.label}
+                                />
+                              ))}
+                            </FormGroup>
+                          </AccordionDetails>
+                        </Accordion>
+                      );
+                    }
+                    return null;
+                  })}
                 </div>
-                <div className="product-info">
-                  <h3 className="text-start text-dark">{truncateProductName(product.product_name)}</h3>
-                  <div className="price-section">
-                    <span className="mrp text-start">{product.currency}{product.product_mrp}</span>
-                    <span className="discounted-price">{product.currency}{product.product_price}</span>
+                <div className="w-full lg:w-4/5 px-3">
+                  <div className="flex flex-wrap justify-between mb-4 gap-y-3">
+                    <div>
+                      <h3 className="text-xl md:text-2xl md:leading-5 font-medium font-jost text-start mb-6">
+                        Lehenga Wedding Dresses Collection
+                      </h3>
+                      <div className="flex flex-wrap gap-2.5">
+                        <button
+                          className="font-jost leading-5 py-1.5 md:py-2.5 px-2.5 md:px-5 bg-[#F5F4F4] border border-[#C6C6C6] rounded-3xl"
+                          onClick={clearFilters}
+                        >
+                          Clear All
+                        </button>
+                        <ShowFilterTitles />
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <span>Sort by:</span>
+                      <div className="z-50 relative">
+                        <Select
+                          value={selectedSortValue}
+                          onChange={(e) => setSelectedSortValue(e.target.value)}
+                        >
+                          {filterOptions &&
+                            filterOptions[0] &&
+                            filterOptions[0].data.length >= 0 &&
+                            filterOptions[0].data.map((e, i) => {
+                              // console.log("e", e);
+                              return (
+                                <MenuItem
+                                  onClick={() =>
+                                    changeFilterData({
+                                      key: filterOptions[0].name,
+                                      val: e?.value,
+                                    })
+                                  }
+                                  key={i}
+                                  value={e.value}
+                                >
+                                  {e.label}{" "}
+                                </MenuItem>
+                              );
+                            })}
+                        </Select>
+                      </div>
+                    </div>
                   </div>
+                  <div>
+                    {productPageDetails?.CATEGORY_PRODUCT?.length > 0 ? (
+                      <div className="flex flex-wrap -mx-3">
+                        {productPageDetails?.CATEGORY_PRODUCT?.map(
+                          (item, index) => (
+                            <div
+                              className="new-arrival-card w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/5 2xl:w-1/5 px-3 py-3"
+                              key={index}
+                            >
+                              <NewArrivalCard product={item} />
+                            </div>
+                          )
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-center py-40">
+                        <h2 className="text-2xl font-medium">
+                          Product Unavailable
+                        </h2>
+                        <p className="text-base">
+                          No products match the current filter criteria.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="w-full mt-10 lg:mt-[70px]">
+                  <Stack spacing={2} alignItems="center" className="font-jost">
+                    {productPageDetails?.CATEGORY_PRODUCT?.length >=
+                      pageset && (
+                        <Pagination
+                          count={totalPages}
+                          page={currentPage}
+                          variant="outlined"
+                          shape="rounded"
+                          nextIconButtonText="Next"
+                          nextIconButtonProps={{
+                            sx: {
+                              backgroundColor: "blue",
+                              color: "white",
+                            },
+                          }}
+                          sx={{
+                            "& .MuiPaginationItem-root": {
+                              border: "none",
+                            },
+                            "& .Mui-selected": {
+                              backgroundColor: "#5C5C5C !important",
+                              color: "#fff",
+                            },
+                            "& .MuiButtonBase-root": {
+                              borderRadius: "0",
+                              height: "40px",
+                              width: "40px",
+                              fontSize: "20px",
+                            },
+                          }}
+                          onChange={handlePaginationChange}
+                        />
+                      )}
+                  </Stack>
                 </div>
               </div>
-            </Link>
-          </Col>
-        ))}
-      </Row>
-      <div className="text-center d-flex justify-content-center">
-        <Button
-          variant="dark rounded-5 px-4 mb-4"
-          onClick={handleViewMore}
-          style={{ fontSize: "0.9rem" }}
-          className="d-none d-lg-block"
-        >
-          View All
-        </Button>
-      </div>
-    </Container>
+            </div>
+          </section>
+          <ProductFilter
+            handleFilterClick={handleFilterClick}
+            showFilterOverlay={showFilterOverlay}
+            filterOptions={filterOptions}
+            handleCloseClick={handleCloseClick}
+            handleApplyFilters={handleApplyFilters}
+            activeFilterIndex={activeFilterIndex}
+            handleFilterChange={handleFilterChange}
+            selectedFilters={selectedFilters}
+            handleCheckboxLocalChange={handleCheckboxLocalChange}
+          />
+        </>
+      )}
+    </>
   );
 };
 
-export default NewArrivalSection;
+export default ProductPage;

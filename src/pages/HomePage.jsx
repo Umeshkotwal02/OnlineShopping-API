@@ -42,7 +42,6 @@ function HomePage() {
     return <div>Error: {error}</div>;
   }
 
-
   return (
     <div>
       <MainHeaderMobi />

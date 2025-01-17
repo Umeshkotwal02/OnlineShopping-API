@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import { CategoryPrevNextIcon, CategorySlickNextIcon } from "../../assets/SvgIcons";
 import { Col, Container, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/ShopbyCatCard.css"
 import "../../styles/ShopByCategorySlick.css";
 
@@ -26,9 +26,10 @@ const PrevCatArrow = ({ onClick }) => {
 };
 
 const ShopByCategorySlick = ({ data = [] }) => {
-    
+
     const [loading, setLoading] = useState(true);
     const [prevArrowPosition, setPrevArrowPosition] = useState(0);
+    const navigate = useNavigate();
     const sliderRef = useRef(null);
 
 
@@ -101,7 +102,7 @@ const ShopByCategorySlick = ({ data = [] }) => {
             },
         ],
     };
-
+    const productNameSlug = (name) => name.replace(/\s+/g, "-").toLowerCase();
     return (
         <>
             <Container
@@ -133,10 +134,17 @@ const ShopByCategorySlick = ({ data = [] }) => {
                             <Slider {...settings}>
                                 {data.map((product) => (
                                     <div key={product.id}>
+                                        {/* to={`/product/${productNameSlug(product.text)}`} */}
                                         <Link
-                                            // to={`/product/${productNameSlug(product.text)}`}
-                                            to={`/products-page`}
+                                            to="javascript:void(0);"
                                             className="shop-by-category-slick text-decoration-none"
+                                            onClick={() => {
+                                                navigate("/products-page", {
+                                                    state: {
+                                                        category: [product?.id],
+                                                    },
+                                                });
+                                            }}
                                         >
                                             <div className="shop-by-category-slick position-relative h-100 overflow-hidden rounded-4">
                                                 <div className="img-container h-100 group">

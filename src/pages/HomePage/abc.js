@@ -1,44 +1,123 @@
-import React, { lazy } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { FaHeart } from "react-icons/fa6";
+import { FiHeart } from "react-icons/fi";
+import ProductImageSlider from "../../components/homepage/ProductImageSlider";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchWishlistItem,
+  addToWishlist,
+  removeFromWishlist,
+} from "../../redux/wishlist/wishlistThunk";
+import { addToCart, fetchCartItems } from "../../redux/cart/cartThunk";
+import { STORAGE } from "../../config/config";
+import toast from "react-hot-toast";
+import "../../styles/NewArrivalCard.css";
 
-const NewArrivalCard = lazy(() => import("../NewArrivalCard"));
+const NewCard = ({ product }) => {
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const dispatch = useDispatch();
 
-const NewArrivalSection = ({ data }) => {
+  const { wishlist } = useSelector((state) => state.wishlist);
+  const { cart } = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    dispatch(fetchWishlistItem());
+    dispatch(fetchCartItems());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const wishlistItem = wishlist.some((item) => item.id === product.id);
+    setIsWishlisted(wishlistItem);
+  }, [wishlist, product]);
+
+  const handleAddToCart = () => {
+    const cartItem = cart.find((item) => item.id === product.id);
+    if (cartItem) {
+      toast.error("Product is already in the cart.");
+    } else {
+      dispatch(addToCart(product.id, product.stitchingOptions));
+      toast.success("Product added to cart.");
+    }
+  };
+
+  const handleWishlistToggle = () => {
+    const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+    if (!userProfile?.id) {
+      toast.error("Please log in to manage your wishlist.");
+      return;
+    }
+
+    if (isWishlisted) {
+      dispatch(removeFromWishlist(product.id));
+      toast.success("Removed from wishlist.");
+    } else {
+      dispatch(addToWishlist(product.id));
+      toast.success("Added to wishlist.");
+    }
+
+    setIsWishlisted(!isWishlisted);
+  };
+
+  const truncateProductName = (name = "") =>
+    name.length > 35 ? name.substring(0, 35) + "..." : name;
+
   return (
-    <section className="my-[30px]">
-      <div className="max-w-[1804px] mx-auto px-3">
-        <div className="text-center mb-[30px]">
-          <h2 className="text-2xl sm:text-3xl md:text-3xl 2xl:text-4xl !leading-none font-normal mb-3">
-            New Arrival
-          </h2>
-          <p className="xl:text-sm 2xl:text-lg !leading-none font-normal italic">
-            &quot;Embrace the festival magic, let joy fill every moment.&quot;
-          </p>
+    <div className="new-arrival-card rounded-top-3">
+      <div className="image-container rounded-top-3">
+        <ProductImageSlider imageList={[product.product_image]} />
+        <div className="overlay-buttons">
+          <button
+            className="add-to-cart-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleAddToCart();
+            }}
+          >
+            ADD TO CART
+          </button>
         </div>
-        <div className="flex flex-wrap -mx-3 gap-y-[25px]">
-          {Boolean(data?.newarrival) &&
-            data?.newarrival?.map((item, index) => {
-              return (
-                <div
-                  key={"newarrival-" + index}
-                  className="new-arrival-card w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/5 2xl:w-1/5 px-3"
-                >
-                  <NewArrivalCard info={item} />
-                </div>
-              );
-            })}
-          <div className="w-full text-center">
-            <Link
-              className="2xl:text-lg font-medium px-4 xl:px-[33px] py-2.5 lg:py-[11px] bg-[#E9B159] text-white font-jost inline-flex items-center gap-2.5 3xl:gap-4 hover:bg-black hover:text-white"
-              to="/product-page"
-            >
-              View All
-            </Link>
+        <div className="wishlist-btn">
+          <button
+            type="button"
+            className="flex items-center justify-center bg-white p-2 rounded-full"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleWishlistToggle();
+            }}
+          >
+            {isWishlisted ? (
+              <FaHeart className="icon heart-icon" />
+            ) : (
+              <FiHeart className="icon" />
+            )}
+          </button>
+        </div>
+
+        {product.product_discount > 0 && (
+          <div className="discount-badge">
+            <p className="discount-p">{product.product_discount}% OFF</p>
           </div>
+        )}
+      </div>
+      <div className="product-info">
+        <h3 className="text-start text-dark">
+          {truncateProductName(product.product_name)}
+        </h3>
+        <div className="price-section">
+          <span className="mrp text-start">
+            {product.currency}
+            {product.product_mrp}
+          </span>
+          <span className="discounted-price">
+            {product.currency}
+            {product.product_price}
+          </span>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default NewArrivalSection;
+export default NewCard;

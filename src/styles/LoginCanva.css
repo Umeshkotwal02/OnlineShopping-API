@@ -51,15 +51,6 @@
     cursor: pointer;
 }
 
-.btn-continue {
-    background-color: #e9b159;
-    color: white;
-    font-size: 18px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-}
-
 .btn-continue:disabled {
     background-color: #ddd;
     color: #aaa;

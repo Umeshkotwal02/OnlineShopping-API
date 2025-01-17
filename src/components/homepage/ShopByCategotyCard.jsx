@@ -29,7 +29,7 @@ const ShopByCategotyCard = () => {
                         <p className="card-text fw-bold" style={{ fontSize: "0.7rem" }}>
                             "Browse, explore, and indulge in endless possibilities by category."
                         </p>
-                        <Link to="#" className="btn btn-dark rounded-3 mx-3 d-flex align-items-center">
+                        <Link to="products-page" className="btn btn-dark rounded-3 mx-3 d-flex align-items-center">
                             SHOP HERE <span className='text-white d-flex'> <IoIosArrowForward /></span> <i className="bi bi-arrow-right"></i>
                         </Link>
                     </div>

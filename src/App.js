@@ -13,6 +13,7 @@ import ScrollUp from "./components/ScrollUp";
 import { publicRoutes } from "./routes/allRoutes";
 import AutoScrollToTop from "./components/AutoScrollToTop";
 import { STORAGE } from "./config/config";
+import NotFoundPage from "./pages/NoFoundPage";
 
 function App() {
 
@@ -49,14 +50,14 @@ function App() {
           <Header />
           <MobileFooter />
           <Routes>
-            {publicRoutes.map(({ path, component: Component, redirect }, idx) =>
-              redirect ? (
-                <Route key={idx} path={path} element={<Navigate to={redirect} />} />
-              ) : (
-                <Route key={idx} path={path} element={<Component />} />
-              )
-            )}
-            <Route path="*" element={<Navigate to="/home" />} />
+            {publicRoutes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+              />
+            ))}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
           <Footer />
           <ScrollUp />

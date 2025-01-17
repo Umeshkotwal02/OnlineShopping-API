@@ -13,26 +13,22 @@ import ProductPage from "../pages/ProductPage";
 import TermAndConditionPage from "../pages/TermAndConditionPage";
 import WishlistPage from "../pages/WishlistPage";
 
-const authProtectedRoutes = [
-];
-
 const publicRoutes = [
-    { path: '/home', component: HomePage },
-    // { path: "/products/:category", component: ProductPage },
-    // { path: "/products/details/:productId", component: ProductDetails },
-    { path: "/products-page", component: ProductPage },
-    { path: "/products/details", component: ProductDetails },
-    { path: "/my-order", component: MyOrderPage },
-    { path: "/wishlist", component: WishlistPage },
-    { path: "/checkout-page", component: CheckOutPage },
-    { path: "/my-order/order-details", component: OrderDetails },
-    { path: "/about-us", component: AboutUsPage },
-    { path: "/privacy-policy", component: PrivancyPolicy },
-    { path: "/term-condition", component: TermAndConditionPage },
-    { path: "/faq", component: FaqsPage },
-    { path: "/contact-us", component: ContactUsPage },
-    { path: "/profile", component: ProfilePage },
-    { path: "/mobile-category", component: CategoryMobile },
+    { path: '/', element: <HomePage /> },
+    { path: '/products-page', element: <ProductPage /> },
+    { path: '/product/:id/:name', element: <ProductDetails /> },
+    { path: '/my-order', element: <MyOrderPage /> },
+    { path: '/wishlist', element: <WishlistPage /> },
+    { path: '/checkout-page', element: <CheckOutPage /> },
+    { path: '/my-order/order-details', element: <OrderDetails /> },
+    { path: '/about-us', element: <AboutUsPage /> },
+    { path: '/privacy-policy', element: <PrivancyPolicy /> },
+    { path: '/term-condition', element: <TermAndConditionPage /> },
+    { path: '/faq', element: <FaqsPage /> },
+    { path: '/contact-us', element: <ContactUsPage /> },
+    { path: '/profile', element: <ProfilePage /> },
+    { path: '/mobile-category', element: <CategoryMobile /> },
 ];
 
-export { authProtectedRoutes, publicRoutes };
+
+export { publicRoutes };
