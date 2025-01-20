@@ -23,12 +23,6 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   
   const referralCode = searchParams.get("code");
-
-
-
-  // setUser(true);
-  // setSuccess(true);
-  // handleClose(true);
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({

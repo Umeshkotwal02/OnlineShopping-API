@@ -6,22 +6,30 @@ import { STORAGE } from '../../config/config';
 const fetchHomePageDetails = () => async (dispatch) => {
   dispatch(fetchHomeStart());
   try {
-    const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+    const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL)) || {};
+    const deviceId = localStorage.getItem(STORAGE?.DEVICEID);
+
+    // Validate required parameters
+    if (!deviceId) {
+      throw new Error("Device ID is missing");
+    }
+
     const { data } = await axios.post(`${API_URL}home`, {
       user_type: userProfile?.user_type ?? STORAGE?.B2C,
-      device_id: localStorage.getItem(STORAGE?.DEVICEID),
-      user_id: userProfile?.id,
+      device_id: deviceId,
+      user_id: userProfile?.id || null,
       is_mobile: "0",
       is_admin: "0",
     });
 
     if (data?.STATUS === 200) {
-      dispatch(fetchHomeSuccess(data.DATA) || []);
+      dispatch(fetchHomeSuccess(data.DATA));
     } else {
-      dispatch(fetchHomeFailure('Failed to fetch home data.'));
+      dispatch(fetchHomeFailure(data?.MESSAGE || 'Failed to fetch home data.'));
     }
   } catch (error) {
-    dispatch(fetchHomeFailure(error.message));
+    console.error('Error fetching home page details:', error);
+    dispatch(fetchHomeFailure(error?.message || 'An error occurred while fetching home data.'));
   }
 };
 

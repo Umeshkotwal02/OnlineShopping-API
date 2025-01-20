@@ -7,7 +7,8 @@ const Banner = ({ saleBanner }) => {
     <Container fluid className='px-lg-5 px-xl-5 px-xxl-5'>
       <Row>
         <Col className='px-0'>
-          <Link to='/' className='d-none d-md-block'>
+          <Link to={`/products-page?category=${saleBanner?.AllBanners?.banner4[0]?.category_id || 'default-category'}`}
+            className='d-none d-md-block'>
             {saleBanner?.map((item, index) => (
               <img
                 key={item}
@@ -21,7 +22,8 @@ const Banner = ({ saleBanner }) => {
               />
             ))}
           </Link>
-          <Link to='/' className='d-block d-md-none'>
+          <Link to={`/products-page?category=${saleBanner?.AllBanners?.banner4[0]?.category_id || 'default-category'}`}
+            className='d-block d-md-none'>
             {saleBanner?.map((item, index) => (
               <img
                 key={index}

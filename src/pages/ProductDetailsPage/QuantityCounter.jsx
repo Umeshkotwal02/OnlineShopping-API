@@ -30,7 +30,7 @@ const QuantityCounter = ({ onChange, quantity }) => {
         onClick={handleIncrement}
         className="px-3  qut-btn"
       >
-        1
+        {countValue}
       </button>
       <button
         onClick={handleIncrement}

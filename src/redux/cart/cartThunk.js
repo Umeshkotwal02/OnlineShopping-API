@@ -16,7 +16,7 @@ export const fetchCartItems = () => async (dispatch) => {
     const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
     const { data } = await axios.post(`${API_URL}viewcart`, {
       device_id: localStorage.getItem(STORAGE?.DEVICEID),
-      user_id: userProfile?.id || null, 
+      user_id: userProfile?.id || null,
       user_type: userProfile?.user_type ?? STORAGE?.B2C,
     });
 

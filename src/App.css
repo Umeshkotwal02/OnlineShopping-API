@@ -48,11 +48,6 @@ body {
 }
 
 
-
-
-
-
-
 /* banner */
 .banner {
   background-image: url("./assets/images/Banner/Banner.png");
@@ -128,7 +123,6 @@ body {
   border-radius: 10px;
   /* Scrollbar track color */
 }
-
 
 /* Payment Form */
 .custom-check-form .form-check-input:checked[type=radio] {

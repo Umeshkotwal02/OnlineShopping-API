@@ -76,7 +76,6 @@ const WishlistPage = () => {
     const timer = setTimeout(() => setLoading(false), 2205);
     return () => clearTimeout(timer);
   }, []);
-
   return (
     <>
       {loading ? (
@@ -88,11 +87,10 @@ const WishlistPage = () => {
           </div>
           <Container fluid className="new-arrival-container mb-4">
             <Breadcrumb list={breadcrumbArray} />
-
             <Row className="px-lg-5 px-xl-5 px-xxl-5 g-4">
-              {wishlist.map((product) => ( // Map over the wishlist array from Redux state
-                <Col xs={6} sm={6} md={4} lg={2} xl={2} xxl={2} key={product.id} className="mb-1 rounded wishlist-column">
-                  <Link to={`/product/${productNameSlug(product.product_name)}`} className="text-decoration-none">
+              {wishlist.map((product) => (
+                < Col xs={6} sm={6} md={4} lg={2} xl={2} xxl={2} key={product.id} className="mb-1 rounded wishlist-column" >
+                  <Link to={`/product/${product?.id}/${product?.product_name}`} className="text-decoration-none">
                     <div className="new-arrival-card">
                       {/* Product Image Section */}
                       <div className="image-container rounded">
@@ -165,7 +163,8 @@ const WishlistPage = () => {
             </Row>
           </Container>
         </>
-      )}
+      )
+      }
     </>
   );
 };

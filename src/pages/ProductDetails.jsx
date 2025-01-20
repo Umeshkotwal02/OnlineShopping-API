@@ -1,45 +1,100 @@
-import React, { useState } from "react";
-import { IoBagOutline, IoStar } from "react-icons/io5";
-import { Button, Form } from "react-bootstrap";
-import { RiHeartAddLine } from "react-icons/ri";
-import ProductDetailsSlider from "./ProductDetailsPage/ProductDetailsSlider";
-import QuantityCounter from "./ProductDetailsPage/QuantityCounter";
-import {
-  CashOnDelIcon,
-  ExchangeIcon,
-  ShippingIcon,
-  StitchingIcon,
-} from "../assets/SvgIcons";
-import { Container, Row, Col } from 'react-bootstrap';
-import CustomerReview from "./ProductDetailsPage/CustomerReview"
-import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { AddCartProDetIcon, CashOnDelIcon, ExchangeIcon, ShippingIcon, StitchingIcon, } from "../assets/SvgIcons";
 import Breadcrumb from "../components/Breadcrumb";
+import { Accordion } from 'react-bootstrap';
+import { FormControlLabel, Radio, RadioGroup, } from "@mui/material";
+import { RiHeartAddLine } from "react-icons/ri";
+import { Row, Col, Button, Tooltip, OverlayTrigger, Container } from "react-bootstrap";
+import { TiStarFullOutline } from "react-icons/ti";
+import { FaRegCircleCheck, FaHeart } from "react-icons/fa6";
+import { styled } from "@mui/material/styles";
+import LinearProgress, {
+  linearProgressClasses,
+} from "@mui/material/LinearProgress";
+import axios from "axios";
+import { STORAGE } from "../config/config";
+import QuantityCounter from "./ProductDetailsPage/QuantityCounter";
+import ProductDetailsSlider from "./ProductDetailsPage/ProductDetailsSlider";
+import CustomerReview from "./ProductDetailsPage/CustomerReview";
+import { API_URL } from "../Constant/constApi";
 import Loader from "../components/Loader";
-import ProductAllInformation from "./ProductDetailsPage/ProductAllInformation";
+import SimilarProduct from "../components/SimilarProduct";
 import "../styles/ProductDetails.css";
-import SimilarProduct from "./ProductDetailsPage/SimilarProduct";
-import OnlineShopDesignStudio from "./HomePage/OnlineShopDesignStudio";
+import { useDispatch } from "react-redux";
+import { addToCart, fetchCartItems } from "../redux/cart/cartThunk";
+import { FiHeart } from "react-icons/fi";
+import { addToWishlist, removeFromWishlist } from "../redux/wishlist/wishlistThunk";
 
-const ProductDetails = () => {
+const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+  height: 16,
+  borderRadius: 25,
+  border: "1px solid #B0B0B0",
+  [`&.${linearProgressClasses.colorPrimary}`]: {
+    backgroundColor:
+      theme.palette.grey[theme.palette.mode === "light" ? 200 : 800],
+  },
+  [`& .${linearProgressClasses.bar}`]: {
+    borderRadius: 25,
+    backgroundColor: "#11B455",
+  },
+}));
 
-  const bagShowOff = [
-    {
-      icon: <CashOnDelIcon />,
-      title: "CASH ON DELIVERY",
-    },
-    {
-      icon: <ExchangeIcon />,
-      title: "SIMPLE EXCHANGE",
-    },
-    {
-      icon: <StitchingIcon />,
-      title: "stitching services",
-    },
-    {
-      icon: <ShippingIcon />,
-      title: "WORLDWIDE SHIPPING",
-    },
-  ];
+const ProductDetailsPage = () => {
+  const { id } = useParams();
+
+  const [productInfo, setProductInfo] = useState([]);
+  const [stitchingOptions, setStitchingOptions] = useState([]);
+  const [selectedColor, setSelectedColor] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  // const { setShowLogin } = useContext(LoginDrawerContext);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const fetchProductInfo = async () => {
+    const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+    try {
+      setLoading(true);
+      const { data } = await axios.post(`${API_URL}productdetail`, {
+        user_type: userProfile?.user_type ?? STORAGE?.B2C,
+        device_id: localStorage.getItem(STORAGE?.DEVICEID),
+        product_quantity: quantity || 1,
+        is_mobile: "0",
+        product_id: id,
+        is_admin: "0",
+      });
+
+      if (data && data?.STATUS === 200) {
+        setProductInfo(data?.DATA);
+
+        setStitchingOptions(data?.DATA?.stiching_price);
+        if (data?.DATA?.colorist_images?.length > 0) {
+          const firstColor = data?.DATA?.colorist_images[0];
+          setSelectedColor(firstColor.varient_name);
+          setSelectedColorImages(firstColor.multiple_image);
+        } else {
+          setSelectedColorImages(data?.DATA?.default_images);
+        }
+      }
+      // console.log("productInfo", data?.DATA);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const [activeKey, setActiveKey] = useState("0");
+
+  useEffect(() => {
+    if (id) {
+      fetchProductInfo();
+    }
+  }, [id]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [loading]);
 
   const breadcrumbArray = [
     <Link to="/" key="1" className="text-dark fw-light text-decoration-none">
@@ -52,275 +107,654 @@ const ProductDetails = () => {
       Product Details Page
     </span>
   ];
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [selectedColorImages, setSelectedColorImages] = useState([]);
-  const [stitchingValue, setStitchingValue] = useState("female");
-  const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  const [showAllOffers, setShowAllOffers] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  // Static Data
-  const productInfo = {
-    product_name: "Pink Ethnic",
-    product_detail: "Sea Green Georgette Semi-Stitched Lehenga and Unstitched Blouse with Dupatta (Set of 3)",
-    product_sku_code: "SKU12345",
-    average_rating: 3.5,
-    total_rating: 55,
-    product_price: 5400,
-    product_discount: 40,
-    colorist_images: [
-      { varient_name: "Green", multiple_image: [require('../assets/images/ProductDetails/GreenSelect.png'), "image2.jpg"] },
-      { varient_name: "Orange", multiple_image: [require('../assets/images/ProductDetails/orange.png'), "image4.jpg"] },
-      { varient_name: "Blue", multiple_image: [require('../assets/images/ProductDetails/blue.png'), "image4.jpg"] },
-      { varient_name: "Black", multiple_image: [require('../assets/images/ProductDetails/black.png'), "image4.jpg"] },
-      { varient_name: "Blue", multiple_image: [require('../assets/images/ProductDetails/orange.png'), "image4.jpg"] },
-    ],
-    sizechart: true,
-  };
-
-  const availableOffers = [
-    { heading: "GET FLAT 20% OFF", name: "NEW20", price: 100 },
+  const colorOptions = [
+    {
+      color: "purple",
+      image: "/images/products/purplecholi.jpeg",
+    },
+    {
+      color: "black",
+      image: "/images/products/blackcholi.jpeg",
+    },
+    {
+      color: "blue",
+      image: "/images/products/bluecholi.jpeg",
+    },
+    {
+      color: "orange",
+      image: "/images/products/orangecholi.jpeg",
+    },
+    {
+      color: "green",
+      image: "/images/products/greencholi.jpeg",
+    },
   ];
 
-  const handleAddToCartClick = (id) => {
-    // Add to cart logic
-    console.log("Added to cart:", id);
+  const bagShowOff = [
+    {
+      icon: <CashOnDelIcon />,
+      title: "CASH ON DELIVERY",
+    },
+    {
+      icon: <ExchangeIcon />,
+      title: "SIMPLE EXCHANGE",
+    },
+    {
+      icon: <StitchingIcon />,
+      title: "SIMPLE EXCHANGE",
+    },
+    {
+      icon: <ShippingIcon />,
+      title: "SIMPLE EXCHANGE",
+    },
+  ];
+  const [openWriteReview, setOpenWriteReview] = useState(false);
+  const handleWriteReviewOpen = () => setOpenWriteReview(true);
+  const [selectedColorImages, setSelectedColorImages] = useState([]);
+  const [ratingValue, setRatingValue] = useState(0);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleWishlistToggle = (productId) => {
+    const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+    if (!userProfile?.id) {
+      toast.error("Please log in to manage your wishlist.");
+      return;
+    }
+    if (isWishlisted) {
+      dispatch(removeFromWishlist(productId));
+    } else {
+      dispatch(addToWishlist(productId));
+    }
+    setIsWishlisted(!isWishlisted);
   };
 
-  const handleChange = (e) => {
-    setStitchingValue(e.target.value);
+  const isLoggedIn = localStorage.getItem(STORAGE?.ISLOGIN);
+  useEffect(() => {
+    if (productInfo?.is_wishlist) setIsWishlisted(true);
+    else setIsWishlisted(false);
+  }, [productInfo]);
+
+  const handleAddToCartClick = (productId, stitchingOptions) => {
+    if (!productId) {
+      toast.error("Product ID is required.");
+      return;
+    }
+    dispatch(addToCart(productId, stitchingOptions));
   };
+
+  // const [stitchingValue, setStitchingValue] = useState(0);
+  const [stitchingValue, setStitchingValue] = useState("");
+  const [stitchingPrice, setStitchingPrice] = useState(0);
+
+  useEffect(() => {
+    if (stitchingOptions && stitchingOptions.length > 0) {
+      setStitchingValue(stitchingOptions[0].label);
+      setStitchingPrice(stitchingOptions[0].price);
+    }
+  }, [stitchingOptions]);
+
+  const handleChange = (event) => {
+    const selectedOption = stitchingOptions.find(
+      (option) => option.label === event.target.value
+    );
+    setStitchingValue(event.target.value);
+    setStitchingPrice(selectedOption?.price || 0);
+  };
+
+
+  // ------------------- privacy-policy Start ------------------------
+
+  const [policy, setPolicy] = useState({});
+
+  const fetchpolicyApi = async () => {
+    try {
+      const response = await axios.get(`${API_URL}Infopages`);
+      setPolicy(response.data.DATA);
+    } catch (error) {
+      console.error("There was an error fetching the policy!", error);
+    }
+  };
+  useEffect(() => {
+    fetchpolicyApi();
+  }, []);
+
+  // ------------------- privacy-policy End ------------------------
+
+  // ------------------- Coupon Start ------------------------------
+
+  const [showAllOffers, setShowAllOffers] = useState(false);
+
+  const availableOffers = productInfo?.available_offers || [];
+
+  const visibleOffers = showAllOffers
+    ? availableOffers
+    : availableOffers.slice(0, 2);
+
+  const handleCopy = (code) => {
+    navigator.clipboard
+      .writeText(code)
+      .then(() => {
+        toast.success("Code copied to clipboard!");
+      })
+      .catch((err) => {
+        toast.error("Failed to copy code.");
+      });
+  };
+  /*---------------------- Coupon _end ---------------------- */
+
+
+
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const stickyStyle = isLargeScreen
+    ? {
+      position: "sticky",
+      top: "133px",
+      height: "max-content",
+      zIndex: 2,
+    }
+    : {};
+
+  const truncateProductName = (name) => {
+    if (name.length > 8) {
+      return name.substring(0, 8) + "";
+    }
+    return name;
+  };
+
+  const truncateProductHeading = (name) => {
+    if (name.length > 29) {
+      return name.substring(0, 29) + "...";
+    }
+    return name;
+  };
+
+  const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+  useEffect(() => {
+    dispatch(fetchCartItems());
+  }, [dispatch]);
 
   return (
     <>
-      {loading ? (
+      {loading && (
         <Loader />
-      ) : (
-        <>
-          <Breadcrumb list={breadcrumbArray} />
-          <Container>
-            <Row className="py-3">
-              {/* Product Image Slider */}
-              <Col lg={6}>
-                {/* <ProductDetailsSlider /> */}
-                <ProductDetailsSlider />
-              </Col>
+      )}
+      <Breadcrumb list={breadcrumbArray} />
+      <Container>
+        <Row className="d-flex flex-wrap py-sm-0 py-md-2 py-lg-3 py-xl-3 py-xxl-3">
+          <Col lg={6}
+            style={stickyStyle}
+            className="px-0"
+          >
+            <div className="w-100">
+              <ProductDetailsSlider images={selectedColorImages} />
+            </div>
+          </Col>
+          <Col lg={6}>
+            <div>
+              <h4 className="text-capitalize product-details-name">{productInfo?.product_name}</h4>
+              <p style={{ color: "#555555", fontSize: "1rem" }} className="text-capitalize">
+                {productInfo?.product_detail}
+              </p>
 
-              {/* Product Details */}
-              <Col lg={6}>
-                <h4 className="">{productInfo.product_name}</h4>
-                <p style={{ color: "#555555", fontSize: "1.3rem" }}>{productInfo.product_detail}</p>
+              {/* Rating */}
+              <div className="d-flex align-items-center mb-3">
+                <div className="border border-dark rounded px-2 py-1 d-flex align-items-center fw-bold">
+                  <span> {parseFloat(productInfo?.average_rating).toFixed(1)}</span>
+                  <TiStarFullOutline className="ms-2" />
+                </div>
+                <p className="mx-2 text-center m-0 fw-medium" style={{ color: "#555555" }}>Based on {productInfo?.total_rating} ratings</p>
+              </div>
 
-                {/* Rating */}
-                <div className="d-flex align-items-center mb-3">
-                  <div className="border border-dark rounded px-2 py-1 d-flex align-items-center fw-bold">
-                    <span>{productInfo.average_rating.toFixed(1)}</span>
-                    <IoStar className="ms-2" />
+              {/* Price */}
+              <div className="mb-4 common-border">
+                <h3>
+                  ₹{productInfo?.product_price}{" "}
+                  <span className="text-success ms-2">
+                    {productInfo?.product_discount}% Off
+                  </span>
+                </h3>
+                <p className="my-2" style={{ color: "#555555", fontSize: "1.3rem" }}>
+                  Inclusive of all taxes
+                </p>
+              </div>
+              {Boolean(productInfo?.colorist_images?.length) && (
+                <div>
+                  {/* Divider */}
+                  <div className="border-bottom my-2" style={{ borderColor: "#acacac" }}></div>
+
+                  {/* Select Color Header */}
+                  <div className="my-4 fw-medium fs-4 text-dark">
+                    Select Color
                   </div>
-                  <p className="ms-1 text-center m-0">Based on {productInfo.total_rating} ratings</p>
-                </div>
 
-                {/* Price */}
-                <div className="mb-4 common-border">
-                  <h3>
-                    ₹{productInfo.product_price}{" "}
-                    <span className="text-success ms-2">
-                      {productInfo.product_discount}% Off
-                    </span>
-                  </h3>
-                  <p>
-
-                    Inclusive of all taxes
-                  </p>
-                </div>
-
-                {/* Select Color */}
-                <div className="">
-                  <h4>Select Color</h4>
-                  <h5 style={{ color: "#555555", fontWeight: "400" }}>Green</h5>
-                  <Row className=" common-border">
-                    <h3 className="d-flex d-col">
-                      {productInfo.colorist_images?.map((item, index) => (
-                        <Col
-                          key={index}
-                          className="position-relative ps-0 p-2"
-                          style={{ width: "120px", height: "160px" }}
+                  {/* Color Options */}
+                  <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
+                    {productInfo?.colorist_images?.map((item, index) => {
+                      return (
+                        <div
+                          className="position-relative border border-3"
+                          style={{
+                            height: "110px",
+                            width: "80px",
+                            maxWidth: "130px",
+                            maxHeight: "160px",
+                            cursor: "pointer",
+                          }}
+                          key={item.varient_name}
                           onClick={() => {
                             setSelectedColor(item.varient_name);
                             setSelectedColorImages(item.multiple_image);
                           }}
                         >
-                          {/* <p className="text-center">{item.varient_name}</p>  */}
                           <img
                             src={item.multiple_image[0]}
-                            alt={item.varient_name}
-                            className="w-100 h-100 object-cover rounded"
+                            alt=""
+                            className="w-100 h-100"
+                            style={{ objectFit: "cover" }}
+                            loading="lazy"
                           />
-
-                          {/* {selectedColor === item.varient_name && (
-                        <div
-                          className="position-absolute bg-dark bg-opacity-50"
-                          style={{
-                            top: "5%",
-                            right: "6%",
-                            padding: "47px",
-                            paddingTop: "59%",
-                            borderRadius: "7px",
-                            border: "2px solid black",
-                          }}
-                        >
-                          <FaRegCircleCheck className="text-white" />
-                        </div>
-                      )} */}
-                        </Col>
-                      ))}
-                    </h3>
-                  </Row>
-                </div>
-
-                {/* Available Offers */}
-                {availableOffers.length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="mt-4" >Available Offers:</h4>
-                    {availableOffers.map((item, index) => (
-                      <div key={index} className="border border-light mb-2 p-4 discount-coupon">
-                        <Row className="align-items-center">
-                          <Col xs={2} className="text-center">
-                            <div className="text-white px-3 py-1 rounded">
-                              <img
-                                src={require("../assets/images/ProductDetails/discount-bag.png")}
-                                alt="Product"
-                                className="discount-bag"
-                              />
+                          <p className="text-center text-capitalize mt-2">
+                            {item.varient_name}
+                          </p>
+                          {selectedColor === item.varient_name && (
+                            <div
+                              className="position-absolute top-0 end-0 w-100 h-100 d-flex align-items-center justify-content-end"
+                              style={{
+                                backgroundColor: "rgba(0, 0, 0, 0.3)",
+                                padding: "0.5rem",
+                              }}
+                            >
+                              <FaRegCircleCheck className="text-white" />
                             </div>
-                          </Col>
-                          <Col xs={6}>
-                            <h2 className="fw-bolder">{item.heading}</h2>
-                            <h5 style={{ color: "#515151" }}>Use Code: {item.name}</h5>
-                          </Col>
-                          <Col xs={4} className="text-center">
-                            <button className="coupon-btn" onClick={() => alert(`Copied: ${item.name}`)}>
-                              COPY
-                            </button>
-                          </Col>
-                        </Row>
-                      </div>
-                    ))}
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {userProfile?.user_type === "btoc" ? (
+                <>
+                  <div className="mb-3">
+                    <h4
+                      className="my-3 text-xl font-medium text-black"
+                    >
+                      Available Offers:
+                    </h4>
+                    {visibleOffers.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="mb-2 coupon-card"
+                          style={{ borderColor: "#e1e1e1" }}
+                        >
+                          {/* Left Rounded Gap */}
+                          <div className="ticket-hole left"></div>
+
+                          {/* Right Rounded Gap */}
+                          <div className="ticket-hole right"></div>
+
+                          <div className="d-flex w-100">
+                            <Col xs={3} className="text-center rounded-end">
+                              <div className="text-white rounded">
+                                <img
+                                  src={require("../assets/images/ProductDetails/discount-bag.png")}
+                                  alt="Product"
+                                  className="discount-bag"
+                                />
+                              </div>
+                            </Col>
+                            <Col
+                              xs={6}
+                              className="d-flex flex-column justify-content-center align-items-start text-responsive"
+                            >
+                              <div className="coupon-heading-text fw-bold text-dark text-capitalize text-start">
+                                {truncateProductHeading(item?.heading || "")}
+                                <span className="mx-2">{truncateProductName(item?.title || "")}</span>
+                              </div>
+                              <h5
+                                className="text-muted text-sm text-center"
+                                style={{ color: "#515151" }}
+                              >
+                                Use Code: {item?.name}
+                              </h5>
+                            </Col>
+                            <Col xs={2} className="d-flex justify-content-center align-items-center">
+                              <button className="coupon-btn" onClick={() => handleCopy(item?.name)}>
+                                COPY
+                              </button>
+                            </Col>
+                          </div>
+                        </div>
+
+                      );
+                    })}
                     {!showAllOffers && availableOffers.length > 2 && (
-                      <div className="text-end">
-                        <Button variant="link" onClick={() => setShowAllOffers(true)}>
+                      <div className="d-flex justify-content-end">
+                        <button
+                          onClick={() => setShowAllOffers(true)}
+                          className="btn btn-light text-dark text-xs font-weight-bold px-4 py-2 rounded-3 mt-2"
+                          style={{ backgroundColor: "#f1f1f1" }}
+                        >
                           See All Offers
-                        </Button>
+                        </button>
                       </div>
                     )}
                   </div>
-                )}
+                </>
+              ) : (
+                ""
+              )}
 
-                {!showAllOffers && availableOffers.length > 2 && (
-                  <div className="text-end">
-                    <Button variant="link" onClick={() => setShowAllOffers(true)}>
-                      See All Offers
-                    </Button>
-                  </div>
-                )}
-                {/* Stitching Options */}
-                <div className="mb-4">
-                  <h5>Lehenga Choli:</h5>
-                  <Row>
-                    <Col>
-                      <Form className="custom-check-form">
-                        {["Unstitched Lehenga Choli", "Standard Stitching", "Customize Stitching"].map((stitching, index) => (
-                          <Form.Check
-                            key={index}
-                            type="radio"
-                            label={stitching}
-                            value={stitching}
-                            checked={stitchingValue === stitching}
-                            onChange={handleChange}
-                            inline
-                            className=""
+              {/* Lehenga Choli: */}
+              <div className="mb-3">
+                <h5 className="my-2 fw-medium text-black">
+                  Lehenga Choli:
+                </h5>
+                <RadioGroup
+                  aria-labelledby="demo-radio-buttons-group-label"
+                  defaultValue="female"
+                  name="radio-buttons-group"
+                  value={stitchingValue}
+                  onChange={handleChange}
+                >
+                  {stitchingOptions &&
+                    stitchingOptions.map((stitching, index) => {
+                      return (
+                        <div
+                          key={"stitching-" + index}
+                          className="d-flex align-items-center justify-content-between text-capitalize"
+                        >
+                          <FormControlLabel
+                            value={stitching?.label}
+                            control={
+                              <Radio
+                                sx={{
+                                  "&.Mui-checked": {
+                                    color: "#000000",
+                                  },
+                                }}
+                              />
+                            }
+                            label={stitching?.label}
+                            checked={stitching?.label === stitchingValue}
                           />
-                        ))}
-                      </Form>
-                    </Col>
-                    <Col>
-                      <div className="text-end">₹0</div>
-                      <div className="text-end">₹1499</div>
-                      <div className="text-end">₹1899</div>
-                    </Col>
-                  </Row>
-                </div>
+                          <div className="fw-normal text-muted text-end">
+                            ₹{stitching?.price}
+                          </div>
+                        </div>
+                      );
+                    })}
+                </RadioGroup>
+              </div>
 
-                {/* Quantity and Size Chart */}
-                <div className="d-flex align-items-center mb-4">
-                  <h5 className="me-2">Quantity: </h5>
-                  <QuantityCounter />
-                </div>
+              {/* Quantity */}
+              <div className="d-flex align-items-center gap-3 mb-3">
+                <h5 className="fw-medium text-black mb-0">
+                  Quantity:
+                </h5>
+                <QuantityCounter
+                  onChange={(value) => setQuantity(value)}
+                  quantity={quantity}
+                />
+              </div>
 
-                {/* Wishlist and Cart */}
-
-                <div className="d-flex gap-3 mb-4">
+              <Row className="gy-3">
+                <Col md={5} lg={2} xl={12} xxl={2} className="d-none d-lg-block">
                   <Button
                     variant=""
-                    className={` ${isWishlisted ? "disabled" : ""} `}
-                    onClick={() => setIsWishlisted(!isWishlisted)}
-                    style={{ backgroundColor: "#EDEDED", borderRadius: "5px" }}
+                    className="w-100"
+                    style={{
+                      backgroundColor: "#EDEDED", borderRadius: "5px",
+                      border: "none",
+                      width: "100%",
+                      paddingBottom: "0.8rem",
+                      paddingTop: "0.8rem",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      handleWishlistToggle(productInfo?.id || productInfo?.product_id);
+                    }}
                   >
-                    <RiHeartAddLine className="fs-4" />
+                    {isWishlisted ? (
+                      <FaHeart className="icon heart-icon" />
+                    ) : (
+                      <RiHeartAddLine className="icon fs-4" />
+                    )}
                   </Button>
-                  <Button className="btn" onClick={() => handleAddToCartClick(productInfo.product_sku_code)} style={{ backgroundColor: "#B51B3B", borderRadius: "5px", border: "none", width: "50%", paddingBottom: "0.8rem", paddingTop: "0.8rem" }}>
-                    <IoBagOutline /> Add to Bag
-                  </Button>
-                  <Button className="btn" onClick={() => handleAddToCartClick(productInfo.product_sku_code)} style={{ backgroundColor: "#03A685", borderRadius: "5px", border: "none", width: "50%" }}>
-                    <IoBagOutline /> Buy Now
-                  </Button>
-                  &nbsp;
-                </div>
+                </Col>
 
-                <Container className="py-3 mb-4 rounded" style={{ backgroundColor: "#EDEDED" }}>
-                  <Row className="d-flex justify-content-between align-items-center">
-                    {bagShowOff.map((item, index) => (
-                      <Col
-                        key={index}
-                        xs={6}
-                        md={3}
-                        className="text-center d-flex flex-column align-items-center"
+                {/* Add-to-Cart Button */}
+                <Col xs={12} sm={12} md={12} lg={5} xl={5} xxl={5} className="gap-3 ">
+                  <Button
+                    className="w-100 btn gap-2"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      if (isLoggedIn) {
+                        handleAddToCartClick(productInfo?.id || productInfo?.product_id, productInfo?.stitchingOptions);
+                      } else {
+                        // setShowLogin(true);
+                      }
+                    }}
+                    style={{
+                      backgroundColor: "#B51B3B",
+                      borderRadius: "5px",
+                      border: "none",
+                      width: "100%",
+                      paddingBottom: "0.8rem",
+                      paddingTop: "0.8rem",
+                      display: "flex",
+                      justifyContent: "center", // Centers horizontally
+                      alignItems: "center", // Centers vertically
+                    }}
+                  >
+                    <span style={{ marginRight: "8px" }}>
+                      <AddCartProDetIcon />
+                    </span>
+                    Add to Bag
+                  </Button>
+                </Col>
+
+                <Col xs={12} sm={12} md={12} lg={5} xl={5} xxl={5}>
+                  <Button className="btn justify-content-centre"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      if (isLoggedIn) {
+                        handleAddToCartClick(productInfo?.id || productInfo?.product_id, productInfo?.stitchingOptions);
+                        navigate("/checkout-page");
+                      } else {
+                        // setShowLogin(true);
+                      }
+                    }}
+                    style={{
+                      backgroundColor: "#03A685", borderRadius: "5px",
+                      border: "none",
+                      width: "100%",
+                      paddingBottom: "0.8rem",
+                      paddingTop: "0.8rem",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}>
+                    Buy Now
+                  </Button>
+                </Col>
+              </Row>
+
+              <div className="border-bottom my-3" style={{ borderColor: "#ACACAC", fontSize: "1px" }}></div>
+
+              <Container className="py-3 mb-4 rounded" style={{ backgroundColor: "#EDEDED" }}>
+                <Row className="d-flex justify-content-between align-items-center">
+                  {bagShowOff.map((item, index) => (
+                    <Col
+                      key={index}
+                      className="text-center d-flex flex-column align-items-center"
+                    >
+                      <div
+                        className="icon mb-2 d-flex justify-content-center align-items-center product-details-bagShowOff"                      
                       >
-                        <div
-                          className="icon mb-2 d-flex justify-content-center align-items-center"
-                          style={{
-                            width: "80px",
-                            height: "55px",
-                          }}
-                        >
-                          {item.icon}
-                        </div>
-                        <div className="text-sm text-uppercase fw-medium" style={{ fontSize: "1rem", marginTop: "5px" }}>
-                          {item.title}
-                        </div>
-                      </Col>
-                    ))}
-                  </Row>
-                </Container>
+                        {item.icon}
+                      </div>
+                      <div className="text-sm text-uppercase fw-medium product-details-bagShowOff-text" >
+                        {item.title}
+                      </div>
+                    </Col>
+                  ))}
+                </Row>
+              </Container>
+              <div>
+                <h5 className="fw-bold fs-5 text-black mb-2 text-capitalize">
+                  Product Information
+                </h5>
 
+                {/* Accordion 1 */}
+                <Accordion activeKey={activeKey}
+                  onSelect={(key) => setActiveKey(key)}
+                  className="shadow-none bg-none">
+                  <Accordion.Item eventKey="panel1">
+                    <Accordion.Header>
+                      <div className="d-flex align-items-center gap-3">
+                        <img
+                          src={require("../assets/images/ProductDetails/boxicon2.png")}
+                          alt=""
+                          className="img-fluid"
+                          style={{ width: "40px", height: "40px" }}
+                          loading="lazy"
+                        />
+                        <div>
+                          <h4 className="fw-bold fs-5 text-capitalize text-black mb-1">
+                            Product Details
+                          </h4>
+                          <p className="text-muted text-sm mb-0 text-capitalize">
+                            Care instructions, Pack contains
+                          </p>
+                        </div>
+                      </div>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <div className="ps-3 ps-md-5">
+                        <div className="row">
+                          {productInfo?.variation?.map((item, index) => (
+                            <div key={item?.label + index} className="col-6 mb-3">
+                              <div className="text-black fw-medium text-capitalize" style={{ fontSize: "1rem" }}>
+                                {item?.label}
+                              </div>
+                              <div className="fw-normal text-capitalize" style={{ fontSize: "1.2rem", color: "#555555" }}>
+                                {item?.value}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
 
-                {/* Product Information */}
-                <ProductAllInformation />
-              </Col>
-              <hr />
-              &nbsp;
-              <SimilarProduct />
-            </Row>
-          </Container>
-          <CustomerReview />
-          <OnlineShopDesignStudio />
-        </>
-      )
-      }
+                {/* Accordion 2 */}
+                <Accordion
+                  activeKey={activeKey}
+                  onSelect={(key) => setActiveKey(key)}
+                  className="shadow-none bg-none"
+                >
+                  <Accordion.Item eventKey="panel2">
+                    <Accordion.Header>
+                      <div className="d-flex align-items-center gap-3">
+                        <img
+                          src={require("../assets/images/ProductDetails/exclaimed.png")}
+                          alt=""
+                          className="object-contain"
+                          style={{ width: "2.8rem" }}
+                          loading="lazy"
+                        />
+                        <div>
+                          <h4 className="fs-5 fw-medium text-black mb-1">
+                            Know your product
+                          </h4>
+                          <p className="text-muted text-sm mb-0 text-capitalize">
+                            Description
+                          </p>
+                        </div>
+                      </div>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <div className="ps-3 ps-md-5">
+                        <p className="text-muted text-sm text-capitalize mb-0">
+                          {productInfo?.product_detail}
+                        </p>
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+
+                {/* Accordion 3 */}
+                <Accordion activeKey={activeKey}
+                  onSelect={(key) => setActiveKey(key)}
+                  className="shadow-none bg-none">
+                  <Accordion.Item eventKey="panel4">
+                    <Accordion.Header>
+                      <div className="d-flex align-items-center gap-3">
+                        <img
+                          src={require("../assets/images/ProductDetails/return-box.png")}
+                          alt="Return and exchange policy"
+                          className="img-fluid"
+                          style={{ width:" 2.8rem;" }}
+                          loading="lazy"
+                        />
+                        <div>
+                          <h4 className="fw-bold fs-5 text-capitalize text-black mb-1">
+                            Return and exchange policy
+                          </h4>
+                          <p className="text-muted text-sm mb-0 text-capitalize">
+                            Know more about return and exchange
+                          </p>
+                        </div>
+                      </div>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <div className="ps-3 ps-md-5">
+                        <p className="text-muted text-sm text-capitalize text-justify mb-0">
+                          {policy?.return_and_exchange_policy}
+                        </p>
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+
+      <SimilarProduct
+        title={"Similar Products"}
+        info={productInfo?.similar_product}
+      />
+
+      <CustomerReview productInfo={productInfo} BorderLinearProgress={BorderLinearProgress} />
     </>
   );
 };
 
-
-export default ProductDetails;
+export default ProductDetailsPage;

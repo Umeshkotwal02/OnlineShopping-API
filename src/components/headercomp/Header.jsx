@@ -20,16 +20,11 @@ import { UserProvider } from "../../context/UserContext ";
 import MainHeaderMobi from "../mobileheadercomp/MobileHeader";
 import { STORAGE } from "../../config/config";
 import { setCartInfo, setCartItems } from "../../redux/cart/cartSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWishlistItem } from "../../redux/wishlist/wishlistThunk";
+import { fetchCartItems } from "../../redux/cart/cartThunk";
 
-const Header = ({
-  searchTerm,
-  handleKeyUp,
-  handleChange,
-  suggestions,
-  handleSuggestionClick,
-  showSuggestions,
-}) => {
+const Header = () => {
 
   const [showLoginCanvas, setShowLoginCanvas] = useState(false); // Login OffCanvas
   const [showCartCanvas, setShowCartCanvas] = useState(false); // Cart OffCanvas
@@ -40,8 +35,8 @@ const Header = ({
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-
+  const wishlistCount = useSelector((state) => state.wishlist.wishlistCount);
+  const cartCount = useSelector((state) => state.cart.cartCount);
 
   // Logout handler
   const handleLogout = () => {
@@ -82,12 +77,10 @@ const Header = ({
 
   // Cart
   const handleOpenCartCanvas = () => {
-    document.body.classList.add("body-lock");
     setIsOpen(false);
     setShowCartCanvas(true);
   };
   const handleCloseCartCanvas = () => {
-    document.body.classList.add("body-lock");
     setShowCartCanvas(false);
   }
 
@@ -137,12 +130,14 @@ const Header = ({
 
   // Monitor authentication state
   useEffect(() => {
+    dispatch(fetchWishlistItem());
+    dispatch(fetchCartItems());
     fetchHeaderButtons();
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
     });
     return () => unsubscribe(); // Cleanup subscription
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -255,47 +250,64 @@ const Header = ({
                   )}
                 </div>
 
-                <div className="text-dark d-flex align-items-center gap-1 position-relative" onClick={handleNavigateToWishlist} style={{ cursor: "pointer" }}>
+                {/* Wishlist count */}
+                <div
+                  className="text-dark d-flex align-items-center gap-1 position-relative"
+                  onClick={handleNavigateToWishlist}
+                  style={{ cursor: 'pointer' }}
+                >
                   <WishlistIcon />
-                  {/* <span className="header-badge badge position-absolute d-inline-block bg-danger rounded-pill badge-position " */}
-                  <span className="cart badge  bg-danger rounded-pill text-white"
-                    style={{
-                      fontSize: '0.7rem',
-                      width: '18px',
-                      height: '18px',
-                      position: 'absolute',
-                      top: '9px',
-                      left: '14px',
-                      textAlign: 'center',
-                      display: 'grid',
-                      placeItems: 'center',
-                    }}
-                  >3</span>
-                  <span className="d-none d-xl-inline-block text-size ms-1 pt-1" style={{ fontSize: "0.9rem" }}>Wishlist</span>
+                  {wishlistCount > 0 && (
+                    <span
+                      className="cart badge bg-danger rounded-pill text-white"
+                      style={{
+                        fontSize: '0.7rem',
+                        width: '18px',
+                        height: '18px',
+                        position: 'absolute',
+                        top: '9px',
+                        left: '14px',
+                        textAlign: 'center',
+                        display: 'grid',
+                        placeItems: 'center',
+                      }}
+                    >
+                      {wishlistCount}
+                    </span>
+                  )}
+                  <span
+                    className="d-none d-xl-inline-block text-size ms-1 pt-1"
+                    style={{ fontSize: '0.9rem' }}
+                  >
+                    Wishlist
+                  </span>
                 </div>
 
+                {/* Cart count */}
                 <div
                   className="text-dark d-flex align-items-center gap-1 position-relative"
                   style={{ cursor: "pointer" }}
                   onClick={handleOpenCartCanvas}
                 >
                   <LgBagIcon />
-                  <span
-                    className="cart badge bg-danger rounded-pill"
-                    style={{
-                      fontSize: '0.7rem',
-                      width: '18px',
-                      height: '18px',
-                      position: 'absolute',
-                      top: '13px',
-                      right: '32px',
-                      textAlign: 'center',
-                      display: 'grid',
-                      placeItems: 'center',
-                    }}
-                  >
-                    5
-                  </span>
+                  {cartCount > 0 && (
+                    <span
+                      className="cart badge bg-danger rounded-pill text-white"
+                      style={{
+                        fontSize: "0.7rem",
+                        width: "18px",
+                        height: "18px",
+                        position: "absolute",
+                        top: "13px",
+                        right: "32px",
+                        textAlign: "center",
+                        display: "grid",
+                        placeItems: "center",
+                      }}
+                    >
+                      {cartCount}
+                    </span>
+                  )}
                   <span className="d-none d-xl-inline-block text-size ms-1 pt-1">Cart</span>
                 </div>
 

@@ -33,6 +33,10 @@
     border: 1px solid #C7C7C7 !important;
 }
 
+.sort-by-accordion .accordion {
+    --bs-accordion-border-width: 0px !important;
+}
+
 .custom-column {
     width: 21% !important;
 }
@@ -90,4 +94,3 @@
     background-color: white;
     /* Scrollbar track color */
 }
-

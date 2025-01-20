@@ -75,6 +75,9 @@ const ShopByColorSlick = ({ data = [] }) => {
       },
     ],
   };
+  const productNameSlug = (name) => {
+    return name.replace(/\s+/g, "-").toLowerCase();
+  };
 
   return (
     <>
@@ -96,8 +99,7 @@ const ShopByColorSlick = ({ data = [] }) => {
                 {data.map((product) => (
                   <div key={product.id}>
                     <Link
-                      // to={`/product/${productNameSlug(product.text)}`}
-                      to={`/products-page`}
+                      to={`/product/${product?.id}/${productNameSlug(product.product_name)}`}
                       className="shop-by-category-slick text-decoration-none"
                     >
                       <div className="shop-by-category-slick position-relative h-100 overflow-hidden rounded-4">

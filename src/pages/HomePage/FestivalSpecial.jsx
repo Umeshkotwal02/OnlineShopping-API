@@ -14,8 +14,9 @@ const FestivalSpecialSection = ({ data }) => {
                 <div className="row g-4">
                     <div className="col-12 col-md-6">
                         <Link
-                            to={`/product-page?category=${data?.AllBanners?.banner5?.[3]?.category_id}`}
-                            className="d-block h-100 overflow-hidden"            >
+                            to={`/products-page?category=${data?.AllBanners?.banner5?.[3]?.category_id}`}
+                            className="h-full"
+                        >
                             <img
                                 src={data?.AllBanners?.banner5?.[3]?.file}
                                 className="img-fluid w-100 h-100 hover-scale rounded-4"
@@ -28,7 +29,7 @@ const FestivalSpecialSection = ({ data }) => {
                         <div className="row g-4">
                             <div className="col-12">
                                 <Link
-                                    to={`/product-page?category=${data?.AllBanners?.banner5?.[0]?.category_id}`}
+                                    to={`/products-page?category=${data?.AllBanners?.banner5?.[0]?.category_id}`}
                                     className="d-block h-100 overflow-hidden"
                                 >
                                     <img
@@ -41,7 +42,7 @@ const FestivalSpecialSection = ({ data }) => {
                             </div>
                             <div className="col-6">
                                 <Link
-                                    to={`/product-page?category=${data?.AllBanners?.banner5?.[1]?.category_id}`}
+                                    to={`/products-page?category=${data?.AllBanners?.banner5?.[1]?.category_id}`}
                                     className="d-block h-100 overflow-hidden"
                                 >
                                     <img
@@ -54,7 +55,7 @@ const FestivalSpecialSection = ({ data }) => {
                             </div>
                             <div className="col-6">
                                 <Link
-                                    to={`/product-page?category=${data?.AllBanners?.banner5?.[2]?.category_id}`}
+                                    to={`/products-page?category=${data?.AllBanners?.banner5?.[2]?.category_id}`}
                                     className="d-block h-100 overflow-hidden"
                                 >
                                     <img

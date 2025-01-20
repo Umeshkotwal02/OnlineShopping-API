@@ -35,7 +35,7 @@
     "sass": "^1.83.0",
     "slick-carousel": "^1.8.1",
     "sweetalert2": "^11.14.5",
-    "swiper": "^11.1.15",
+    "swiper": "^11.2.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -61,5 +61,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "webpack-cli": "^6.0.1"
   }
 }

@@ -69,7 +69,7 @@ function HomePage() {
         }} />
 
       <ShopByCategorySlick data={data?.categorydata} />
-      {/* <WatchShopSection data={data?.watch_and_shop} /> */}
+      <WatchShopSection data={data?.watch_and_shop} />
 
       <BridalLahegaCholi data={data?.pre_weding_festives} />
 

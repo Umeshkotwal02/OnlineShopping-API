@@ -1,16 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import { PlusIcon, MinusIcon, XClose } from "../assets/SvgIcons";
-import {
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  Typography,
-  Select,
-  MenuItem,
-} from "@mui/material";
 import { Stack, Pagination } from "@mui/material";
 import {
   Link,
@@ -26,7 +14,12 @@ import ProductFilter from "./ProductPage/ProductFilter";
 import NewArrivalCard from "../components/homepage/NewArriveCard";
 import { API_URL } from "../Constant/constApi";
 import Loader from "../components/Loader";
-import { Button, Card, Col, Container, Dropdown, Form, Row } from "react-bootstrap";
+import { Accordion, Card, Col, Container, Dropdown, DropdownButton, Form, Row } from "react-bootstrap";
+import { FaMinus, FaPlus } from "react-icons/fa";
+import { XClose } from "../assets/SvgIcons";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import "../styles/ProductPage.css"
+
 
 
 const ProductPage = () => {
@@ -85,28 +78,21 @@ const ProductPage = () => {
   };
 
   const breadcrumbArray = [
-    <Link
-      to={"/"}
-      underline="hover"
-      key="1"
-      color="inherit"
-      className="text-[#666666] text-base lg:text-md !leading-[1.16] font-normal font-jost  hover:underline capitalize"
-    >
+    <Link to="/" key="1" className="text-dark fw-light text-decoration-none">
       Home
     </Link>,
-    <p
-      key={2}
-      className="text-[#A36300] text-base lg:text-md !leading-[1.16] font-normal font-jost  capitalize"
-    >
+    <span key="2" className="text-dark fw-light">
       Product Page
-    </p>,
+    </span>,
   ];
+
   const pageSize = 12;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalpageset, setTotalpageset] = useState(0);
   const [pageset, setpageset] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const fetchProductPageDetails = async (page = 1) => {
     try {
@@ -292,10 +278,17 @@ const ProductPage = () => {
     return dataArr?.map((e) => (
       <button
         key={`${e.fillName}-${e.value}`}
-        className="flex gap-2 py-1.5 md:py-2.5 px-2.5 border border-dashed border-[#898989] rounded-3xl"
+        style={{
+          borderRadius: "50px",
+          color: "#898989",
+          border: "1px dashed #C6C6C6",
+          backgroundColor: "white",
+          fontSize: "0.85rem",
+        }}
+        className="px-3 py-1 d-flex justify-content-around align-items-center gap-2"
         onClick={() => changeFilterData({ key: e.fillName, val: e.value })}
       >
-        <span className="text-sm md:text-base md:leading-5 font-jost text-[#898989]">
+        <span className="text-capitalize">
           {e.fillName} : {e.label}
         </span>
         <span>
@@ -353,8 +346,7 @@ const ProductPage = () => {
       ) : (
         <>
           <Breadcrumb list={breadcrumbArray} />
-          <Container fluid className="my-4">
-
+          <Container fluid className="my-1 px-lg-5 px-xl-5 px-xxl-5">
             <Row>
               {/* Sidebar Filter */}
               <Col lg={3} className="d-none d-lg-block">
@@ -368,58 +360,46 @@ const ProductPage = () => {
                     });
 
                     return (
-                      <Accordion
-                        key={index}
-                        className="!shadow-none !border-0 !border-b border-[#dcdcdc] rounded-none my-0 accordion-main"
-                        expanded={isExpanded.includes(filterdata.title)}
-                      >
-                        <AccordionSummary
-                          className="h-[60px] accordion-btn"
-                          expandIcon={
-                            isExpanded.includes(filterdata.title) ? (
-                              <MinusIcon />
-                            ) : (
-                              <PlusIcon />
-                            )
-                          }
-                          aria-controls={`panel-content-${index}`}
-                          id={`panel-header-${index}`}
-                          onClick={() =>
-                            handleAccordionChange(filterdata.title)
-                          }
-                        >
-                          <span className="text-base leading-5 font-medium font-jost capitalize">
-                            {filterdata.title}
-                          </span>
-                        </AccordionSummary>
-                        <AccordionDetails className="bg-[#F6F6F6] p-4">
-                          <FormGroup className="accordion-list max-h-52 overflow-y-auto !flex-nowrap">
-                            {sortedItems?.map((item, itemIndex) => (
-                              <FormControlLabel
-                                onClick={() =>
-                                  handleCheckboxChange(
-                                    filterdata.name,
-                                    item.value
-                                  )
-                                }
-                                key={item.value + itemIndex}
-                                className="text-base leading-5 font-jost text-black capitalize"
-                                control={
-                                  <Checkbox
-                                    checked={
-                                      appliedfilterData[
-                                        filterdata.name
-                                      ]?.indexOf(item.value) >= 0
+                      <Accordion key={index} className="product-page-accordion">
+                        <Card key={index} className="border-0 border-bottom" style={{ borderRadius: "15px" }}>
+                          <Accordion.Item eventKey={index.toString()} style={{ borderRadius: "15px" }}>
+                            <Accordion.Header
+                              onClick={() => handleAccordionChange(filterdata.title)}
+                              className="d-flex align-items-center"
+                              style={{ borderRadius: "15px" }}
+                            >
+                              <span className="text-capitalize fw-medium">
+                                {filterdata.title}
+                              </span>
+                              <span className="ms-auto">
+                                {isExpanded.includes(filterdata.title) ? (
+                                  <FaMinus />
+                                ) : (
+                                  <FaPlus />
+                                )}
+                              </span>
+                            </Accordion.Header>
+                            <Accordion.Body className="py-3" style={{ backgroundColor: "#F6F6F6" }}>
+                              <Form className="overflow-auto custom-scrollbar" style={{ maxHeight: "200px" }}>
+                                {sortedItems?.map((item, itemIndex) => (
+                                  <Form.Check
+                                    key={item.value + itemIndex}
+                                    type="checkbox"
+                                    label={item.label}
+                                    id={`checkbox-${item.value}`}
+                                    checked={appliedfilterData[filterdata.name]?.includes(item.value)}
+                                    onChange={() =>
+                                      handleCheckboxChange(filterdata.name, item.value)
                                     }
-                                    style={{ color: "#E9B159" }}
+                                    className="text-capitalize py-1"
                                   />
-                                }
-                                label={item.label}
-                              />
-                            ))}
-                          </FormGroup>
-                        </AccordionDetails>
+                                ))}
+                              </Form>
+                            </Accordion.Body>
+                          </Accordion.Item>
+                        </Card>
                       </Accordion>
+
                     );
                   }
                   return null;
@@ -428,107 +408,148 @@ const ProductPage = () => {
 
               {/* Products Section */}
               <Col lg={9}>
-                <Row className="align-items-center justify-content-between mb-4">
-                  <Col>
-                    <h3 className="h4 mb-3">Lehenga Wedding Dresses Collection</h3>
-                    <div className="d-flex flex-wrap gap-2">
-                      <Button variant="outline-secondary" onClick={clearFilters}>
-                        Clear All
-                      </Button>
-                      <ShowFilterTitles />
-                    </div>
-                  </Col>
-                  <Col className="d-flex align-items-center gap-3">
-                    <span>Sort by:</span>
-                    <Dropdown>
-                      <Dropdown.Toggle variant="outline-secondary">
-                        {selectedSortValue}
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        {filterOptions &&
-                          filterOptions[0]?.data.map((e, i) => (
-                            <Dropdown.Item
-                              key={i}
-                              onClick={() => changeFilterData({ key: filterOptions[0].name, val: e.value })}
-                            >
-                              {e.label}
-                            </Dropdown.Item>
-                          ))}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </Col>
-                </Row>
-
-                {/* Products Grid */}
-                {productPageDetails?.CATEGORY_PRODUCT?.length > 0 ? (
-                  <Row>
-                    {productPageDetails?.CATEGORY_PRODUCT?.map((item, index) => (
-                      <Col xs={6} sm={4} md={3} lg={2} key={index} className="mb-4">
-                        <NewArrivalCard product={item} />
-                      </Col>
-                    ))}
-                  </Row>
-                ) : (
-                  <div className="text-center py-5">
-                    <h2 className="h5">Product Unavailable</h2>
-                    <p>No products match the current filter criteria.</p>
+                <div className="d-flex justify-content-between align-items-center my-2">
+                  <h5>Lehenga Wedding Dresses Collection</h5>
+                  <div>
+                    <Accordion className="border-0 sort-by">
+                      <Accordion.Item eventKey="0">
+                        <Accordion.Header>
+                          <div className="d-flex align-items-center gap-3">
+                            <span className="me-2">Sort by:</span>
+                            <div>
+                              <DropdownButton
+                                id="dropdown-sort"
+                                title={
+                                  <div className="d-flex align-items-center text-secondary">
+                                    {selectedSortValue
+                                      ? filterOptions[0].data.find(
+                                        (item) => item.value === selectedSortValue
+                                      )?.label || "Sort by Latest"
+                                      : "Sort by Latest"}
+                                    <span className="" style={{ marginLeft: "55px" }}>
+                                      {isDropdownOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                                    </span>
+                                  </div>
+                                }
+                                onToggle={(isOpen) => setIsDropdownOpen(isOpen)} // Handle dropdown open/close state
+                                style={{
+                                  backgroundColor: "#F5F4F4",
+                                  borderRadius: "5px",
+                                  color: "#828282",
+                                  border: "1px solid #C6C6C6",
+                                  fontSize: "1.1rem",
+                                }}
+                                variant=""
+                                className="custom-dropdown" // Add custom class
+                              >
+                                {filterOptions[0]?.data.map((e, i) => (
+                                  <Dropdown.Item
+                                    key={i}
+                                    onClick={() => changeFilterData({ key: filterOptions[0].name, val: e.value })}
+                                    className="border-bottom px-0 py-2"
+                                    style={{ fontSize: "1rem" }}
+                                  >
+                                    {e.label}
+                                  </Dropdown.Item>
+                                ))}
+                              </DropdownButton>
+                            </div>
+                          </div>
+                        </Accordion.Header>
+                      </Accordion.Item>
+                    </Accordion>
                   </div>
-                )}
-
-                {/* Pagination */}
-                <Stack spacing={2} alignItems="center" className="font-jost">
-                  {productPageDetails?.CATEGORY_PRODUCT?.length >=
-                    pageset && (
-                      <Pagination
-                        count={totalPages}
-                        page={currentPage}
-                        variant="outlined"
-                        shape="rounded"
-                        nextIconButtonText="Next"
-                        nextIconButtonProps={{
-                          sx: {
-                            backgroundColor: "blue",
-                            color: "white",
-                          },
-                        }}
-                        sx={{
-                          "& .MuiPaginationItem-root": {
-                            border: "none",
-                          },
-                          "& .Mui-selected": {
-                            backgroundColor: "#5C5C5C !important",
-                            color: "#fff",
-                          },
-                          "& .MuiButtonBase-root": {
-                            borderRadius: "0",
-                            height: "40px",
-                            width: "40px",
-                            fontSize: "20px",
-                          },
-                        }}
-                        onChange={handlePaginationChange}
-                      />
-                    )}
-                </Stack>
+                </div>
+                <Col>
+                  <div className="d-flex gap-2 my-4">
+                    <button
+                      onClick={clearFilters}
+                      style={{
+                        borderRadius: "50px",
+                        color: "black",
+                        backgroundColor: "#F5F4F4",
+                        border: "1px solid #C6C6C6",
+                        fontSize: "0.85rem",
+                      }}
+                      className="px-3 py-1 d-flex justify-content-around align-items-center gap-2"
+                    >
+                      Clear All
+                    </button>
+                    <ShowFilterTitles />
+                  </div>
               </Col>
 
-            </Row>
-          </Container>
-          {/* Filter Overlay */}
-          <ProductFilter
-            handleFilterClick={handleFilterClick}
-            showFilterOverlay={showFilterOverlay}
-            filterOptions={filterOptions}
-            handleCloseClick={handleCloseClick}
-            handleApplyFilters={handleApplyFilters}
-            activeFilterIndex={activeFilterIndex}
-            handleFilterChange={handleFilterChange}
-            selectedFilters={selectedFilters}
-            handleCheckboxLocalChange={handleCheckboxLocalChange}
-          />
-        </>
+              {/* Products Grid */}
+              {productPageDetails?.CATEGORY_PRODUCT?.length > 0 ? (
+                <Row>
+                  {productPageDetails?.CATEGORY_PRODUCT?.map((item, index) => (
+                    <Col xs={12} sm={6} md={4} lg={3} xl={3} xxl={3} key={index} className="mb-4">
+                      <NewArrivalCard product={item} />
+                    </Col>
+                  ))}
+                </Row>
+              ) : (
+                <div className="text-center py-5">
+                  <h2 className="h5">Product Unavailable</h2>
+                  <p>No products match the current filter criteria.</p>
+                </div>
+              )}
 
-      )}
+            </Col>
+
+            {/* Pagination */}
+            <Stack spacing={2} alignItems="center" className="d-flex justify-content-center align-item-center font-jost pagination justify-content-center align-item-center gap-4 fw-bold">
+              {productPageDetails?.CATEGORY_PRODUCT?.length >=
+                pageset && (
+                  <Pagination
+                    count={totalPages}
+                    page={currentPage}
+                    variant="outlined"
+                    shape="rounded"
+                    nextIconButtonText="Next"
+                    nextIconButtonProps={{
+                      sx: {
+                        backgroundColor: "blue",
+                        color: "white",
+                      },
+                    }}
+                    sx={{
+                      "& .MuiPaginationItem-root": {
+                        border: "none",
+                      },
+                      "& .Mui-selected": {
+                        backgroundColor: "black !important",
+                        color: "#fff",
+                      },
+                      "& .MuiButtonBase-root": {
+                        borderRadius: "0",
+                        height: "40px",
+                        width: "40px",
+                        fontSize: "20px",
+                      },
+                    }}
+                    onChange={handlePaginationChange}
+                  />
+                )}
+            </Stack>
+          </Row>
+        </Container >
+      {/* Filter Overlay */}
+      < ProductFilter
+        handleFilterClick={handleFilterClick}
+        showFilterOverlay={showFilterOverlay}
+        filterOptions={filterOptions}
+        handleCloseClick={handleCloseClick}
+        handleApplyFilters={handleApplyFilters}
+        activeFilterIndex={activeFilterIndex}
+        handleFilterChange={handleFilterChange}
+        selectedFilters={selectedFilters}
+        handleCheckboxLocalChange={handleCheckboxLocalChange}
+      />
+    </>
+
+  )
+}
     </>
   );
 };

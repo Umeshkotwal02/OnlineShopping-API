@@ -1,7 +1,40 @@
+.coupon-card {
+    position: relative;
+    background-color: #fff5e6;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #DCDCDC;
+    overflow: visible;
+}
+
+.ticket-hole {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 40%;
+    width: 8.5%;
+    background-color: #ffffff;
+    border-radius: 50%;
+}
+
+.ticket-hole.left {
+    left: -4.5%;
+}
+
+.ticket-hole.right {
+    right: -4.5%;
+}
+
+
 /*  */
 .thumbnail-grid {
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     gap: 10px;
     height: 100%;
 }
@@ -35,18 +68,37 @@
 }
 
 .main-image img {
+    cursor: pointer;
     border-radius: 20px;
+    width: 100%;
+    object-fit: fill;
+    height: 100%;
+}
+
+.main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .zoomed {
     transform: scale(1.5);
 }
 
+.active-thumbnail {
+    border: 3px solid #000000 !important;
+}
+
+.product-details-bagShowOff-text {
+    font-size: 1rem;
+}
+
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 .discount-coupon {
     background-image: url("../assets/images/ProductDetails/discount-bg.png");
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
+    background-position: center;
     width: 100%;
     /* object-fit: ; */
 }
@@ -55,6 +107,10 @@
     width: 4.5rem;
     height: auto;
     object-fit: contain;
+}
+
+.coupon-heading-text {
+    font-size: 1.48rem;
 }
 
 .border-3 {
@@ -154,6 +210,10 @@
     border: 0px !important;
 }
 
+.css-1wq2o34-MuiButtonBase-root-MuiRadio-root {
+    padding: 2px 2px 2px 10px !important;
+}
+
 /* Customer Review */
 
 @media (min-width: 992px) {
@@ -171,5 +231,62 @@
 
     .product_review_message {
         font-size: 12px;
+    }
+}
+
+/* Media Queries for Smaller Screens */
+@media (max-width: 768px) {
+    .coupon-heading-text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .product-details-name {
+        padding-top: 16px;
+    }
+
+    .coupon-card {
+        padding: 0;
+    }
+
+    .discount-bag {
+        width: 3.5rem;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .coupon-heading-text {
+        font-size: 0.9rem;
+    }
+
+    .text-responsive {
+        font-size: 0.75rem;
+        /* Smaller for mobile */
+        text-align: left;
+        /* Align text left for better spacing */
+    }
+
+    .text-responsive h5 {
+        font-size: 0.7rem;
+    }
+
+    .coupon-btn {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+        /* Adjust button size for smaller screens */
+    }
+
+    .mobile-product-details-col {
+        padding: 0px;
+    }
+
+    .main-image img {
+        border-radius: 0%;
+    }
+    .product-details-bagShowOff-text {
+        font-size: 0.7rem;
+        margin-top: 5px;
+
     }
 }

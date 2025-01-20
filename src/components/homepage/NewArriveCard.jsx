@@ -12,9 +12,13 @@ import { addToCart, fetchCartItems } from "../../redux/cart/cartThunk";
 import { STORAGE } from "../../config/config";
 import toast from "react-hot-toast";
 import "../../styles/NewArrivalCard.css";
+import { Link } from "react-router-dom";
+import Loader from "../Loader";
 
 const NewArrivalCard = ({ product }) => {
+    const productName = product?.product_name.replace(/\s+/g, "-").toLowerCase();
     const [isWishlisted, setIsWishlisted] = useState(false);
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
     const { wishlist } = useSelector((state) => state.wishlist);
@@ -32,7 +36,6 @@ const NewArrivalCard = ({ product }) => {
 
     const handleAddToCart = () => {
         dispatch(addToCart(product.id, product.stitchingOptions));
-        toast.success("Product added to cart.");
     }
 
     const handleWishlistToggle = () => {
@@ -44,74 +47,87 @@ const NewArrivalCard = ({ product }) => {
 
         if (isWishlisted) {
             dispatch(removeFromWishlist(product.id));
-            toast.success("Removed from wishlist.");
         } else {
             dispatch(addToWishlist(product.id));
-            toast.success("Added to wishlist.");
         }
 
         setIsWishlisted(!isWishlisted);
     };
 
     const truncateProductName = (name = "") =>
-        name.length > 35 ? name.substring(0, 35) + "..." : name;
+        name.length > 27 ? name.substring(0, 27) + "..." : name;
 
     return (
-        <div className="new-arrival-card rounded-top-3">
-            <div className="image-container rounded-top-3">
-                <ProductImageSlider imageList={[product?.product_images || product?.product_image]} />
-                <div className="overlay-buttons">
-                    <button
-                        className="add-to-cart-btn"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            handleAddToCart();
-                        }}
-                    >
-                        ADD TO CART
-                    </button>
-                </div>
-                <div className="wishlist-btn">
-                    <button
-                        type="button"
-                        className="flex items-center justify-center bg-white p-2 rounded-full"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            handleWishlistToggle();
-                        }}
-                    >
-                        {isWishlisted ? (
-                            <FaHeart className="icon heart-icon" />
-                        ) : (
-                            <FiHeart className="icon" />
-                        )}
-                    </button>
-                </div>
+        <>
+            {
+                loading ? (
+                    <Loader />
+                ) : (
+                    <>
+                        <Link to={`/product/${product?.id || product?.product_id}/${productName}}`} className="text-decoration-none">
+                            <div className="new-arrival-card rounded-top-3">
+                                <div className="image-container rounded-top-3">
+                                    <ProductImageSlider
+                                        imageList={product?.product_images || product?.product_image}
+                                    />
+                                    <div className="overlay-buttons">
+                                        <button
+                                            className="add-to-cart-btn"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                e.preventDefault();
+                                                handleAddToCart();
+                                            }}
+                                        >
+                                            ADD TO CART
+                                        </button>
+                                    </div>
+                                    <div className="wishlist-btn">
+                                        <button
+                                            type="button"
+                                            className="flex items-center justify-center bg-white p-2 rounded-full"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                e.preventDefault();
+                                                handleWishlistToggle();
+                                            }}
+                                        >
+                                            {isWishlisted ? (
+                                                <FaHeart className="icon heart-icon" />
+                                            ) : (
+                                                <FiHeart className="icon" />
+                                            )}
+                                        </button>
+                                    </div>
 
-                {product?.product_discount > 0 && (
-                    <div className="discount-badge">
-                        <p className="discount-p">{(product?.product_discount)}%</p>
-                    </div>
-                )}
-            </div>
-            <div className="product-info">
-                <h3 className="text-start text-dark">
-                    {truncateProductName(product?.product_name)}
-                </h3>
-                <div className="price-section">
-                    <span className="mrp text-start">
-                        {product?.currency}
-                        {product?.product_mrp}
-                    </span>
-                    <span className="discounted-price">
-                        {product?.currency}
-                        {product?.product_price}
-                    </span>
-                </div>
-            </div>
-        </div>
+                                    {product?.product_discount > 0 && (
+                                        <div className="discount-badge">
+                                            <p className="discount-p">{(product?.product_discount)}% OFF</p>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="product-info">
+                                    <h3 className="text-start text-dark">
+                                        {truncateProductName(product?.product_name)}
+                                    </h3>
+                                    <div className="price-section">
+                                        <span className="mrp text-start">
+                                            {product?.currency}
+                                            {product?.product_mrp}
+                                        </span>
+                                        <span className="discounted-price">
+                                            {product?.currency}
+                                            {product?.product_price}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </Link>
+                    </>
+                )
+            }
+        </>
+
     );
 };
 

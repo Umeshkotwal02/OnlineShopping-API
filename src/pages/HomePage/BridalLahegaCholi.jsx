@@ -1,27 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import "../../styles/BridalLahegaCholi.css";
+import { useDispatch } from "react-redux";
+import { addToCart, fetchCartItems } from "../../redux/cart/cartThunk";
+import toast from "react-hot-toast";
 
 const BridalLahegaCholi = ({ data = [] }) => {
 
-    const handleAddToCart = (e) => {
-        e.preventDefault();
-        alert("Product added to cart!");
-    };
+    const dispatch = useDispatch();
 
     const productNameSlug = (name) => {
         return name.replace(/\s+/g, "-").toLowerCase();
     };
 
+    useEffect(() => {
+        dispatch(fetchCartItems());
+    }, [dispatch]);
+
+    const handleAddToCart = (productId, stitchingOptions) => {
+        if (!productId) {
+            toast.error("Product ID is required.");
+            return;
+        }
+        dispatch(addToCart(productId, stitchingOptions));
+        // toast.success("Product added to cart.");
+    };
+
+
+    // Custom Arrow Button (hidden)
     function CustStoryBtn() {
-        return (
-            <div
-                style={{ display: "none" }}
-            />
-        );
+        return <div style={{ display: "none" }} />;
     }
 
+    // Slider settings
     const settings = {
         dots: false,
         infinite: true,
@@ -64,29 +76,37 @@ const BridalLahegaCholi = ({ data = [] }) => {
                 <i> "Embrace the festival magic, let joy fill every moment."</i>
             </p>
             <Slider {...settings} className="bridal-slider">
-                {data.map((product) => (
-                    <Link
-                        key={product.id}
-                        to={`/product/${productNameSlug(product?.product_name)}`}
-                        className="text-decoration-none"
-                    >
-                        <div className="bridal-image-container">
-                            <img
-                                src={product?.product_image}
-                                className="slider-image bridal-img"
-                                alt={product?.product_name}
-                            />
-                            <div className="overlay-buttons">
-                                <button
-                                    className="shop-now-btn"
-                                    onClick={handleAddToCart}
-                                >
-                                    SHOP NOW
-                                </button>
+                {data.map((product) => {
+                    // Generate the product slug for the URL
+                    const productName = productNameSlug(product?.product_name || "product");
+                    return (
+                        <Link
+                            key={product?.id || product?.product_id}
+                            to={`/product/${product?.id || product?.product_id}/${productName}`}
+                            className="text-decoration-none"
+                        >
+                            <div className="bridal-image-container">
+                                <img
+                                    src={product?.product_image}
+                                    className="slider-image bridal-img"
+                                    alt={product?.product_name}
+                                />
+                                <div className="overlay-buttons">
+                                    <button
+                                        className="shop-now-btn"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            e.preventDefault();
+                                            handleAddToCart(product?.id || product?.product_id, product?.stitchingOptions);
+                                        }}
+                                    >
+                                        SHOP NOW
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </Link>
-                ))}
+                        </Link>
+                    );
+                })}
             </Slider>
         </div>
     );
