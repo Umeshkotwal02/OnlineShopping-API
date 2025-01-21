@@ -28,6 +28,8 @@ const publicRoutes = [
     { path: '/contact-us', element: <ContactUsPage /> },
     { path: '/profile', element: <ProfilePage /> },
     { path: '/mobile-category', element: <CategoryMobile /> },
+    { path: "/orders-details/:orderId", element: <OrderDetails /> },
+
 ];
 
 

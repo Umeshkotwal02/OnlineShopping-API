@@ -1,25 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { IoIosArrowForward } from "react-icons/io";
-import { FaAmazon } from "react-icons/fa";
 import Modal from "@mui/material/Modal";
 import Backdrop from "@mui/material/Backdrop";
 import { FaXmark } from "react-icons/fa6";
 import { Rating } from "@mui/material";
 import { IoCloseCircleSharp } from "react-icons/io5";
-import { AddPhotoIcon } from "../assets/SvgIcons";
 import { TextareaAutosize } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
-import Breadcrumb from "../components/Breadcrumb";
-import SuggestionBlock from "../components/SuggestionBlock";
-import { STORAGE } from "../config/config";
 import axios from "axios";
+import { STORAGE } from "../../config/config";
+import { API_URL } from "../../Constant/constApi";
 import toast from "react-hot-toast";
-import { Circles } from "react-loader-spinner";
-import TopBar from "../components/TopBar";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Breadcrumb from "../../components/Breadcrumb";
+import { AddPhotoIcon } from "../../assets/SvgIcons";
 
-const OrderDetailsPage = () => {
+
+const OrderDetails = () => {
   const breadcrumbArray = [
     <Link
       to="/"
@@ -60,7 +55,7 @@ const OrderDetailsPage = () => {
     const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
     try {
       setLoading(true);
-      const response = await axios.post("orderdetails", {
+      const response = await axios.post(`${API_URL}orderdetails`, {
         device_id: localStorage.getItem(STORAGE?.DEVICEID),
         user_id: userProfile?.id,
         order_id: orderId,
@@ -87,7 +82,7 @@ const OrderDetailsPage = () => {
   const [downloadInvoice, setDownloadInvoice] = useState("");
   const fetchDoenloadInvoice = async () => {
     try {
-      const { data } = await axios.post("generateinvoice", {
+      const { data } = await axios.post(`${API_URL}generateinvoice`, {
         order_id: orderId,
       });
       console.log("invoice", data.DATA);
@@ -127,7 +122,7 @@ const OrderDetailsPage = () => {
     const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
     try {
       setLoading(true);
-      const { data } = await axios.post("cancelorder", {
+      const { data } = await axios.post(`${API_URL}cancelorder`, {
         user_id: userProfile?.id,
         order_id: orderId,
 
@@ -189,7 +184,7 @@ const OrderDetailsPage = () => {
         order_id: orderId,
         return_reason: returnReason,
       });
-      const { data } = await axios.post("return_productsave", {
+      const { data } = await axios.post(`${API_URL}return_productsave`, {
         device_id: localStorage.getItem(STORAGE.DEVICEID),
         user_id: userProfile?.id,
         user_type: userProfile?.user_type,
@@ -311,7 +306,7 @@ const OrderDetailsPage = () => {
     formdata.append("product_review_message", reviewMessage);
 
     try {
-      const { data } = await axios.post("savereview", formdata, {
+      const { data } = await axios.post(`${API_URL}savereview`, formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -344,186 +339,71 @@ const OrderDetailsPage = () => {
       {/* <TopBar />
       <Header /> */}
       <Breadcrumb list={breadcrumbArray} />
-      <div className="max-w-[1600px] mx-auto px-3">
-        <div className="my-[17px] md:mb-[30px]"></div>
-        <h3 className="text-xl md:text-2xl xl:text-2xl !leading-[1.22] font-jost font-medium mb-[15px]">
-          Order Details
-        </h3>
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-[15px] gap-y-3">
-          <div className="flex flex-col lg:flex-row lg:items-center gap-2 sm:gap-3.5 w-full sm:w-auto justify-between">
+      {/* Order-Card Start ------------------------------------------------*/}
+      <div className="container m-4 border" style={{ borderRadius: "15px", backgroundColor: "#F3F3F3" }}>
+        <h3 className="h4 mt-4 mb-2">Order Details</h3>
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+          <div className="d-flex flex-column flex-lg-row align-items-center gap-3">
             <div>
-              <h5 className="xs:text-sm md:text-lg !leading-[120%] font-medium text-[#474545] mb-1.5">
-                Ordered on {orderDetails?.order_detail[0]?.order_date}
+              <h5 className="mb-0" style={{ color: "#474545" }}>
+                Ordered on {orderDetails?.order_detail[0]?.order_date ?? "N/A"}
               </h5>
             </div>
-            <span className="hidden lg:inline-block">|</span>
+            <span className="d-none d-lg-inline-block" style={{ color: "#474545" }}>|</span>
             <div>
-              <h5 className="xs:text-sm md:text-lg !leading-[120%] font-medium text-[#474545] mb-1.5">
-                Order# {orderDetails?.order_detail[0]?.order_number}
+              <h5 className="mb-0" style={{ color: "#474545" }}>
+                Order# {orderDetails?.order_detail[0]?.order_number ?? "N/A"}
               </h5>
             </div>
           </div>
-
-          <div className="">
+          <div>
             <a
-              href={downloadInvoice?.invoice_url}
+              href={orderDetails?.order_detail[0]?.invoice_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block w-max xs:text-sm md:text-lg !leading-[120%] font-medium text-[#03A685]"
+              className="fw-bold text-decoration-none"
+              style={{ color: "#03A685" }}
             >
               Download Invoice
             </a>
           </div>
         </div>
-        <div className="border-2 border-[#EBEBEB] p-3 sm:p-4 md:p-[30px]">
-          <div className="flex flex-wrap -mx-3 gap-y-4 justify-between">
-            <div className="w-full md:w-6/12 lg:w-3/12 xl:w-1/5 px-3">
-              <h4 className="text-lg md:text-2xl font-medium !leading-relaxed mb-2.5">
-                Shipping Address
-              </h4>
-              <p className="xs:text-sm md:text-lg !leading-[120%] font-jost text-[#404040] max-w-[200px] break-words whitespace-normal">
-                {orderDetails?.sheeping_address?.order_shipping_address}
-              </p>
-            </div>
-            <div className="w-full md:w-6/12 lg:w-3/12 xl:w-1/5 px-3">
-              <h4 className="text-lg md:text-2xl font-medium !leading-relaxed mb-2.5">
-                Payment Methods
-              </h4>
-              <div className="flex items-center gap-2">
-                <p className="xs:text-sm md:text-lg !leading-[120%] font-jost text-[#404040]">
-                  {orderDetails?.order_summary?.payment_method}
-                </p>
-              </div>
-            </div>
-            <div className="w-full lg:w-5/12 px-3">
-              <h4 className="text-lg md:text-2xl font-medium !leading-relaxed mb-2.5">
-                Order Summary
-              </h4>
-              <table className="w-full">
-                <tbody>
-                  <tr>
-                    <td className="xs:text-sm md:text-lg !leading-[120%] font-jost text-[#404040] py-[5px] text-start">
-                      Bag Total:
-                    </td>
-                    <td className="xs:text-sm md:text-lg !leading-[120%] font-jost text-[#404040] py-[5px] text-end">
-                      ₹ {orderDetails?.order_summary?.total_before_gst}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="xs:text-sm md:text-lg !leading-[120%] font-jost text-[#404040] py-[5px] text-start">
-                      Packing Charge:
-                    </td>
-                    <td className="xs:text-sm md:text-lg !leading-[120%] font-jost text-[#404040] py-[5px] text-end">
-                      ₹ 0
-                    </td>
-                  </tr>
 
-                  {userProfile?.user_type === "btob" ? (
-                    <tr>
-                      <td className="xs:text-sm md:text-lg !leading-[120%] font-jost text-[#404040] py-[5px] text-start">
-                        GST 18%:
-                      </td>
-                      <td className="xs:text-sm md:text-lg !leading-[120%] font-jost text-[#404040] py-[5px] text-end">
-                        ₹ {orderDetails?.order_summary?.total_gst_amount}
-                      </td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
-
+        <div className="row">
+          <div className="col-md-6 col-lg-3 mb-3 text-capitalize">
+            <h5>Shipping Address</h5>
+            <p className="text-capitalize">{orderDetails?.sheeping_address?.order_shipping_address ?? "No address provided"}</p>
+          </div>
+          <div className="col-md-6 col-lg-3 mb-3">
+            <h5>Payment Methods</h5>
+            <p className="fw-normal text-muted mb-0 text-capitalize">
+              {orderDetails?.order_summary?.payment_method ?? "N/A"}
+            </p>
+          </div>
+          <div className="col-lg-6">
+            <h5>Order Summary</h5>
+            <table className="table" style={{ backgroundColor: "#F3F3F3" }}>
+              <tbody>
+                <tr>
+                  <td>Bag Total:</td>
+                  <td className="text-end">₹ {orderDetails?.order_summary?.total_before_gst ?? 0}</td>
+                </tr>
+                {userProfile?.user_type === "btob" && (
                   <tr>
-                    <td className="xs:text-sm md:text-lg!leading-[120%] font-jost font-bold text-[#404040] py-[5px] text-start">
-                      Total Pay:
-                    </td>
-                    <td className="xs:text-sm md:text-lg !leading-[120%] font-jost font-bold text-[#404040] py-[5px] text-end">
-                      ₹ {orderDetails?.order_summary?.total_after_gst}
-                    </td>
+                    <td>GST 18%:</td>
+                    <td className="text-end">₹ {orderDetails?.order_summary?.total_gst_amount ?? 0}</td>
                   </tr>
-                </tbody>
-              </table>
-            </div>
+                )}
+                <tr>
+                  <td className="fw-bold" style={{ color: "#03A685" }}>Total Pay:</td>
+                  <td className="fw-bold text-end">₹ {orderDetails?.order_summary?.total_after_gst ?? 0}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-        <div className="my-5">
-          {orderDetails?.product_detail?.map((item, index) => {
-            const isSelected = selectedProductIds.includes(item.product_id);
-            return (
-              <>
-                <div
-                  key={index}
-                  className={`border-2 border-[#EBEBEB] mt-5 ${
-                    isSelected ? "bg-[#f0f0f0]" : ""
-                  }`}
-                >
-                  <div className="flex flex-wrap gap-4 md:gap-2 justify-between items-center cursor-pointer">
-                    <div
-                      className="flex gap-3 md:gap-5 xl:gap-[30px] md:flex-1 w-full p-3 sm:p-4 md:p-[30px]"
-                      onClick={() => handleProductSelect(item.product_id)}
-                    >
-                      <div className="flex-shrink-0 w-24 h-28 md:w-[155px] md:h-[195px] ">
-                        <img
-                          loading="lazy"
-                          src={item?.product_images}
-                          className="w-full h-full object-top object-cover cursor-pointer"
-                          alt=""
-                        />
-                      </div>
-                      <div className="max-w-[620px] w-full">
-                        <h3 className="text-lg xs:text-xl md:text-xl !leading-[134%] font-normal text-black mb-3 md:mb-4">
-                          {item?.product_name}
-                        </h3>
-                        <p className="md:text-2xl xl:text-3xl leading-9 font-bold text-black mb-4">
-                          {item?.product_sub_total}
-                          <span className="text-sm md:text-[15px] !leading-[120%] text-[#828181] font-medium line-through">
-                            {" "}
-                            MRP:₹{item?.product_mrp}
-                          </span>{" "}
-                          <span className="block md:inline-block text-sm md:text-[15px] !leading-[120%] text-[#F30404] font-medium">
-                            {" "}
-                            [{item?.product_discount}% OFF]
-                          </span>
-                        </p>
-                        {item?.stitching_price > 0 ? (
-                          <p className="text-lg xs:text-xl md:text-xl !leading-[134%] font-normal text-black mb-3 md:mb-4">
-                            Stitching Price: ₹{item.stitching_price}
-                          </p>
-                        ) : null}
-                        <div className="flex flex-wrap items-center gap-3 md:gap-4">
-                          <p className="text-sm xs:text-base md:text-lg xl:text-xl !leading-[65%] text-[#312F2F]">
-                            Qty:{item?.product_quantity}
-                          </p>
-                        </div>
-                        <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-3">
-                          <p
-                            className={`text-center rounded-[10px] p-1 ${getStatusStyle(
-                              item?.status
-                            )}`}
-                          >
-                            {item?.status}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    {item.status === "complete" && (
-                      <div className="buttons flex-shrink-0 w-full md:w-[200px] xl:w-[300px] flex flex-col sm:flex-row md:flex-col gap-4 p-3 sm:p-4 md:p-[30px]">
-                        <button className="flex-1 md:flex-auto md:w-full bg-[#E9B159] text-white xl:text-sm !leading-loose font-medium p-2 sm:p-3">
-                          Buy it again
-                        </button>
-                        <button
-                          className="flex-1 md:flex-auto md:w-full bg-[#F4F4F4] border border-[#D1D1D1] text-black xl:text-sm !leading-loose font-medium p-2 sm:p-3"
-                          onClick={() => handleWriteReviewOpen(index)}
-                        >
-                          Write Product Review
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </>
-            );
-          })}
-        </div>
       </div>
+      {/* Order-Card Emd ------------------------------------------------*/}
       <div className="flex justify-center mt-3 mb-6">
         <div>
           {orderDetails?.order_detail[0]?.order_status !== "cancel" &&
@@ -770,4 +650,4 @@ const OrderDetailsPage = () => {
   );
 };
 
-export default OrderDetailsPage;
+export default OrderDetails;

@@ -99,7 +99,7 @@ const MyOrderPage = () => {
           </div>
         ) : (
           <>
-            <Link to="/my-order/order-details" className="text-decoration-none text-dark">
+        
               {orders.slice(0, showAll ? orders.length : 3).map((order) => (
                 <div className="mb-3 web-bg-color" style={{ borderRadius: "15px" }} key={order.order_id} onClick={() => handleOrderClick(order.order_id)}>
                   <div className="border border-2 border-light rounded">
@@ -131,7 +131,7 @@ const MyOrderPage = () => {
                   </div>
                 </div>
               ))}
-            </Link>
+          
             {!showAll && orders.length > 3 && (
               <div className="d-flex justify-content-end mt-4">
                 <button onClick={() => setShowAll(true)} className="fw-bold btn ">

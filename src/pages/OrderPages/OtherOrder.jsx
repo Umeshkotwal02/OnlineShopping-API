@@ -110,7 +110,7 @@ const OtherOrder = () => {
                                     position: "absolute",
                                     top: "50%",
                                     left: "0%",
-                                    transform: "translate(50%, -50%)",
+                                    transform: "translate(150%, -50%)",
                                     pointerEvents: "none",
                                 }}
                             />
