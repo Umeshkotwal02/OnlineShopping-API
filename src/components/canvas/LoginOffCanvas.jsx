@@ -21,7 +21,7 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
   const [isCounting, setIsCounting] = useState(false);
   const [isOtpExpired, setIsOtpExpired] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   const referralCode = searchParams.get("code");
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -36,7 +36,7 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
 
       if (user) {
         const userData = {
-          device_id: localStorage.getItem("deviceId") || "default",
+          device_id: localStorage.getItem("deviceId"),
           user_email: user.email,
           user_name: user.displayName,
           type: STORAGE?.GOOGLE,
@@ -51,6 +51,7 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
         if (data && data.STATUS === 200) {
           toast.success(data.MESSAGE);
           console.log("Google login success", data);
+          console.log("userData", data);
           setUser(true);
           setSuccess(true);
           handleClose(true);
@@ -159,7 +160,8 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
     const loadingId = toast.loading("Verifying OTP...");
     try {
       const enteredOtp = otp.join('');
-      const { data } = await axios.post(`${API_URL}verifyotp`, {
+      const { data } = await axios.post(`${API_URL}loginotpvarify`, {
+        // const { data } = await axios.post(`${API_URL}verifyotp`, {
         device_id: localStorage.getItem(STORAGE?.DEVICEID),
         otp: enteredOtp,
         is_mobile: "0",
@@ -174,6 +176,8 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
         localStorage.setItem(STORAGE?.ISLOGIN, 1);
         localStorage.setItem(STORAGE?.USERDETAIL, JSON.stringify(data?.DATA));
         localStorage.setItem("loginTimestamp", Date.now());
+        console.log("OTp Login", data);
+
 
         // Update the user state
         setUser(true);

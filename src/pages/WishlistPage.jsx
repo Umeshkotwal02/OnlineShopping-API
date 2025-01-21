@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Row, Col, Container } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { Row, Col, Container, Button } from "react-bootstrap";
 import { FaHeart } from "react-icons/fa6";
 import Breadcrumb from "../components/Breadcrumb";
 import "../styles/NewArrivalCard.css";
@@ -15,6 +15,7 @@ import { FiHeart } from "react-icons/fi";
 
 const WishlistPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { wishlist } = useSelector((state) => state.wishlist); // Get wishlist from Redux store
 
   const breadcrumbArray = [
@@ -80,6 +81,27 @@ const WishlistPage = () => {
     <>
       {loading ? (
         <Loader />
+      ) : wishlist.length === 0 ? (
+        <div className="bg-light d-flex justify-content-center align-items-center">
+          <div className="w-100 text-center text-secondary py-3">
+            <img
+              src={require("../assets/images/wishlistimg.jpg")}
+              alt="wishlist-img"
+              style={{
+                width: "25%",
+                borderRadius: "50%",
+              }}
+            />
+            <div className="fs-2 text-dark">Wishlist empty.</div>
+            <Button
+              variant="dark"
+              className="rounded-3 fs-5 shadow-lg p-3 my-3"
+              onClick={() => navigate("/")}
+            >
+              Continue shopping
+            </Button>
+          </div>
+        </div>
       ) : (
         <>
           <div className="web-bg-color d-lg-none py-3">

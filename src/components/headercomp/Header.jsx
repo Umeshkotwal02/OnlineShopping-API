@@ -37,11 +37,12 @@ const Header = () => {
   const dispatch = useDispatch();
   const wishlistCount = useSelector((state) => state.wishlist.wishlistCount);
   const cartCount = useSelector((state) => state.cart.cartCount);
+  
 
   // Logout handler
   const handleLogout = () => {
     localStorage.removeItem(STORAGE?.USERDETAIL);
-    localStorage.removeItem(STORAGE?.DEVICEID);
+    // localStorage.removeItem(STORAGE?.DEVICEID);
     dispatch(setCartInfo(null));
     dispatch(setCartItems([]));
     setUser(null);

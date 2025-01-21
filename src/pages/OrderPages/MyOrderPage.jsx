@@ -5,6 +5,9 @@ import Pagination from "react-bootstrap/Pagination";
 import Breadcrumb from "../../components/Breadcrumb";
 import Loader from "../../components/Loader";
 import '../../styles/Order.css'
+import axios from "axios";
+import { STORAGE } from "../../config/config";
+import { API_URL } from "../../Constant/constApi";
 
 const MyOrderPage = () => {
   const [orders, setOrders] = useState([]);
@@ -14,48 +17,36 @@ const MyOrderPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
 
-  // Mock data for orders
-  const mockOrders = [
-    {
-      order_id: 1,
-      order_date: "26 September 2023",
-      order_net_amount: "10000",
-      total_quantity: 3,
-      order_number: "954-65221854-152321",
-      order_status: "pending",
-    },
-    {
-      order_id: 2,
-      order_date: "26 September 2023",
-      order_net_amount: "10000",
-      total_quantity: 3,
-      order_number: "954-65221854-152321",
-      order_status: "complete",
-    },
-    {
-      order_id: 3,
-      order_date: "26 September 2023",
-      order_net_amount: "10000",
-      total_quantity: 3,
-      order_number: "954-65221854-152321",
-      order_status: "complete",
-    },
-    {
-      order_id: 4,
-      order_date: "26 September 2023",
-      order_net_amount: "10000",
-      total_quantity: 3,
-      order_number: "954-65221854-152321",
-      order_status: "cancel",
-    },
-  ];
+  const ordersPerPage = 10;
 
+  // API Data fetch
   useEffect(() => {
-    // Simulating fetching data
-    setLoading(true);
-    setOrders(mockOrders);
-    setTotalPages(3); // Example of total pages (can be dynamic)
-    setLoading(false);
+    const fetchOrders = async () => {
+      setLoading(true);
+      const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+      try {
+        const response = await axios.post(`${API_URL}orders`, {
+          device_id: localStorage.getItem(STORAGE?.DEVICEID),
+          user_id: userProfile?.id,
+          limit: ordersPerPage.toString(),
+          page: currentPage.toString(),
+          is_admin: "0",
+        });
+        // console.log("API Response", response.data); // Log the entire API response
+        if (response.data.STATUS === 200) {
+          setOrders(response.data.DATA.data);
+          setTotalPages(response.data.DATA.last_page);
+        } else {
+          console.error("Failed to fetch order data");
+        }
+      } catch (error) {
+        console.error("Error fetching order data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
   }, [currentPage]);
 
   const breadcrumbArray = [
@@ -69,7 +60,7 @@ const MyOrderPage = () => {
 
   const getStatusStyle = (status) => {
     switch (status) {
-      case "pending":
+      case "Pending":
         return "btn btn-outline-warning";
       case "complete":
         return "btn btn-outline-success";
@@ -121,7 +112,11 @@ const MyOrderPage = () => {
                         <div className="ps-5">
                           <div className="fw-bold">ORDER TOTAL</div>
                           <div className="fw-medium" style={{ color: "#545454" }}>
-                            ₹{parseFloat(order.order_net_amount.replace(/,/g, '')).toLocaleString()} ({order.total_quantity} item{order.total_quantity > 1 ? "s" : ""})
+                            <div className="text-[7px] sm:text-[16px]">
+                              ₹{order.order_net_amount.toFixed(2)} (
+                              {order.total_quantity} item
+                              {order.total_quantity > 1 ? "s" : ""})
+                            </div>
                           </div>
                         </div>
 

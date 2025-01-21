@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import "../../styles/BridalLahegaCholi.css";
 import { useDispatch } from "react-redux";
-import { addToCart, fetchCartItems } from "../../redux/cart/cartThunk";
+import { addToCart } from "../../redux/cart/cartThunk";
 import toast from "react-hot-toast";
 
 const BridalLahegaCholi = ({ data = [] }) => {
@@ -15,7 +15,7 @@ const BridalLahegaCholi = ({ data = [] }) => {
     };
 
     useEffect(() => {
-        dispatch(fetchCartItems());
+        // dispatch(fetchCartItems());
     }, [dispatch]);
 
     const handleAddToCart = (productId, stitchingOptions) => {

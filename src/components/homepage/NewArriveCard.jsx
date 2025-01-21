@@ -8,7 +8,7 @@ import {
     addToWishlist,
     removeFromWishlist,
 } from "../../redux/wishlist/wishlistThunk";
-import { addToCart, fetchCartItems } from "../../redux/cart/cartThunk";
+import { addToCart} from "../../redux/cart/cartThunk";
 import { STORAGE } from "../../config/config";
 import toast from "react-hot-toast";
 import "../../styles/NewArrivalCard.css";
@@ -26,7 +26,6 @@ const NewArrivalCard = ({ product }) => {
 
     useEffect(() => {
         dispatch(fetchWishlistItem());
-        dispatch(fetchCartItems());
     }, [dispatch]);
 
     useEffect(() => {
@@ -35,6 +34,11 @@ const NewArrivalCard = ({ product }) => {
     }, [wishlist, product]);
 
     const handleAddToCart = () => {
+        const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+        if (!userProfile?.id) {
+            toast.error("Please log in to manage your Add To Cart.");
+            return;
+        }
         dispatch(addToCart(product.id, product.stitchingOptions));
     }
 

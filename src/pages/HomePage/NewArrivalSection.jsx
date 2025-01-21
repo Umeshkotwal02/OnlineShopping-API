@@ -8,7 +8,7 @@ import ProductImageSlider from "../../components/homepage/ProductImageSlider";
 import { STORAGE } from "../../config/config";
 import { useDispatch, useSelector } from "react-redux";
 import addToWishlist, { fetchWishlistItem, removeFromWishlist } from "../../redux/wishlist/wishlistThunk";
-import { addToCart, fetchCartItems } from "../../redux/cart/cartThunk";
+import { addToCart,  } from "../../redux/cart/cartThunk";
 import toast from "react-hot-toast";
 import { TbHeartPlus } from "react-icons/tb";
 import NewArrivalCard from "../../components/homepage/NewArriveCard";
@@ -23,7 +23,7 @@ const NewArrivalSection = ({ data }) => {
 
   useEffect(() => {
     dispatch(fetchWishlistItem());
-    dispatch(fetchCartItems());
+    // dispatch(fetchCartItems());
   }, [dispatch]);
 
   useEffect(() => {

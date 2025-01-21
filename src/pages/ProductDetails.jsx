@@ -23,7 +23,7 @@ import Loader from "../components/Loader";
 import SimilarProduct from "../components/SimilarProduct";
 import "../styles/ProductDetails.css";
 import { useDispatch } from "react-redux";
-import { addToCart, fetchCartItems } from "../redux/cart/cartThunk";
+import { addToCart } from "../redux/cart/cartThunk";
 import { FiHeart } from "react-icons/fi";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlist/wishlistThunk";
 
@@ -176,12 +176,12 @@ const ProductDetailsPage = () => {
     else setIsWishlisted(false);
   }, [productInfo]);
 
-  const handleAddToCartClick = (productId, stitchingOptions) => {
+  const handleAddToCartClick = (productId, quantity, stitchingOptions = []) => {
     if (!productId) {
       toast.error("Product ID is required.");
       return;
     }
-    dispatch(addToCart(productId, stitchingOptions));
+    dispatch(addToCart(productId, quantity, stitchingOptions));
   };
 
   // const [stitchingValue, setStitchingValue] = useState(0);
@@ -285,7 +285,7 @@ const ProductDetailsPage = () => {
 
   const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
   useEffect(() => {
-    dispatch(fetchCartItems());
+    // dispatch(fetchCartItems());
   }, [dispatch]);
 
   return (
@@ -552,7 +552,7 @@ const ProductDetailsPage = () => {
                       e.stopPropagation();
                       e.preventDefault();
                       if (isLoggedIn) {
-                        handleAddToCartClick(productInfo?.id || productInfo?.product_id, productInfo?.stitchingOptions);
+                        handleAddToCartClick(productInfo?.id || productInfo?.product_id, productInfo?.stitchingOptions, productInfo?.quantity);
                       } else {
                         // setShowLogin(true);
                       }
@@ -582,7 +582,7 @@ const ProductDetailsPage = () => {
                       e.stopPropagation();
                       e.preventDefault();
                       if (isLoggedIn) {
-                        handleAddToCartClick(productInfo?.id || productInfo?.product_id, productInfo?.stitchingOptions);
+                        handleAddToCartClick(productInfo?.id || productInfo?.product_id, productInfo?.stitchingOptions, productInfo?.quantity);
                         navigate("/checkout-page");
                       } else {
                         // setShowLogin(true);
@@ -613,7 +613,7 @@ const ProductDetailsPage = () => {
                       className="text-center d-flex flex-column align-items-center"
                     >
                       <div
-                        className="icon mb-2 d-flex justify-content-center align-items-center product-details-bagShowOff"                      
+                        className="icon mb-2 d-flex justify-content-center align-items-center product-details-bagShowOff"
                       >
                         {item.icon}
                       </div>
@@ -718,8 +718,8 @@ const ProductDetailsPage = () => {
                         <img
                           src={require("../assets/images/ProductDetails/return-box.png")}
                           alt="Return and exchange policy"
-                          className="img-fluid"
-                          style={{ width:" 2.8rem;" }}
+                          className=""
+                          style={{ width: "2.8rem" }}
                           loading="lazy"
                         />
                         <div>

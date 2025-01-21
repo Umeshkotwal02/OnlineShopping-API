@@ -9,6 +9,7 @@ import {
 import toast from "react-hot-toast";
 import { API_URL } from "../../Constant/constApi";
 import { STORAGE } from "../../config/config";
+import { updateCartItem, removeCartItem } from "./cartSlice";
 
 export const fetchCartItems = () => async (dispatch) => {
   dispatch(setLoading(true));
@@ -39,7 +40,7 @@ export const fetchCartItems = () => async (dispatch) => {
   }
 };
 
-export const addToCart = (productId, stitchingOptions = []) => async (dispatch) => {
+export const addToCart = (productId, quantity, stitchingOptions = []) => async (dispatch) => {
   const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
   const firstStitchingOption = stitchingOptions?.[0] || {};
   const stitchingLabel = firstStitchingOption?.label || "unstitched";
@@ -53,7 +54,7 @@ export const addToCart = (productId, stitchingOptions = []) => async (dispatch) 
       device_id: localStorage.getItem(STORAGE?.DEVICEID),
       is_mobile: "0",
       product_id: productId,
-      product_quantity: 1,
+      product_quantity: quantity || 1,
       stching: stchingValue,
       is_admin: "0",
       user_id: userProfile?.id,
@@ -76,3 +77,50 @@ export const addToCart = (productId, stitchingOptions = []) => async (dispatch) 
   }
 };
 
+// Update Cart Item
+export const updateCartItemThunk = (cartChildId, quantity) => async (dispatch) => {
+  dispatch(setLoading(true));
+  toast.dismiss();
+  const toastId = toast.loading("Updating cart...");
+  try {
+    const { data } = await axios.post(`${API_URL}updatecart`, {
+      cart_child_id: cartChildId,
+      product_quantity: quantity,
+    });
+    if (data?.STATUS === 200) {
+      dispatch(updateCartItem({ cartChildId, quantity }));
+      toast.success(data?.MESSAGE || "Cart updated.");
+    }
+  } catch (err) {
+    toast.error(err?.response?.data?.MESSAGE || "Something went wrong");
+  } finally {
+    toast.dismiss(toastId);
+    dispatch(setLoading(false));
+  }
+};
+
+// Remove Item from Cart
+export const removeFromCartThunk = (cartChildId) => async (dispatch) => {
+  dispatch(setLoading(true));
+  toast.dismiss();
+  const toastId = toast.loading("Removing from cart...");
+  try {
+    const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+    const { data } = await axios.post(`${API_URL}productremovefromcart`, {
+      user_type: userProfile?.user_type,
+      is_admin: "0",
+      device_id: localStorage.getItem("deviceId"),
+      user_id: userProfile?.id,
+      cart_child_id: cartChildId,
+    });
+    if (data?.STATUS === 200) {
+      dispatch(removeCartItem(cartChildId));
+      toast.success(data?.MESSAGE || "Product removed from cart.");
+    }
+  } catch (err) {
+    toast.error(err?.response?.data?.MESSAGE || "Something went wrong");
+  } finally {
+    toast.dismiss(toastId);
+    dispatch(setLoading(false));
+  }
+};
