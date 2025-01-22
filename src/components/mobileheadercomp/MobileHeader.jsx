@@ -86,7 +86,7 @@ const MainHeaderMobi = ({
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav className="d-grid align-items-center mobile-offcanvas text-capitalize">
-              <Nav.Link href="/home" className="red-hover">
+              <Nav.Link href="/" className="red-hover">
                 <span className="pe-3"> <OffCanvaArrowIcon /> </span> Home
               </Nav.Link>
               <div className="border-bottom"></div>

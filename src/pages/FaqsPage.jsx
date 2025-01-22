@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import Breadcrumb from "../components/Breadcrumb";
 import Faq from "../components/Faq";
 import { Container } from "react-bootstrap";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { API_URL } from "../Constant/constApi";
 
 const FaqsPage = () => {
   const breadcrumbArray = [
@@ -14,72 +17,25 @@ const FaqsPage = () => {
     </span>,
   ];
 
-  // Static FAQ Data
-  const [faqData, setFaqData] = useState([
-    {
-      question: "Can you tell me what kinds of payments Kesaria Textile Company will accept?",
-      answer: "The Kesaria Textile Company accepts payments made via NEFT, Cash on Delivery (COD), UPI, Net Banking, Credit Card, Debit Card, and Wire Transfer.",
-    },
-    {
-      question: "Do I have to pay anything else for shipping?",
-      answer: "Shipping typically takes 5-7 business days, depending on your location.",
-    },
-    {
-      question: "When can we expect delivery?",
-      answer: "Yes, we offer international shipping to select countries.",
-    },
-    {
-      question: "When will I receive my order, and how will it be delivered?",
-      answer: "Yes, we offer international shipping to select countries.",
-    },
-    {
-      question: "How can I track the status of my order's delivery?",
-      answer: "Yes, we offer international shipping to select countries.",
-    },
-    {
-      question: "How will my order be packaged?",
-      answer: "Yes, we offer international shipping to select countries.",
-    },
-    {
-      question: "How does Kesaria Textile Company make sure its consumers don't have any trouble receiving their orders?",
-      answer: "Yes, we offer international shipping to select countries.",
-    },
-    {
-      question: "How can I place an order?",
-      answer: "Yes, we offer international shipping to select countries.",
-    },
-    {
-      question: "How to find saree manufacturer?",
-      answer: "Yes, we offer international shipping to select countries.",
-    },
-    {
-      question: "Who is the biggest manufacturer of sarees in Surat?",
-      answer: "Yes, we offer international shipping to select countries.",
-    },
-    {
-      question: "How to become saree manufacturer?",
-      answer: "Yes, we offer international shipping to select countries.",
-    },
-    {
-      question: "Which brand is best for sarees?",
-      answer: "Yes, we offer international shipping to select countries.",
-    },
-    {
-      question: "How to start selling sarees?",
-      answer: "Yes, we offer international shipping to select countries.",
-    },
-    {
-      question: "How to start a saree business without money?",
-      answer: "Yes, we offer international shipping to select countries.",
-    },
-  ]);
-  const [loading, setLoading] = useState(false);
+  const [faqData, setFaqData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Simulating fetch operation
-  const fetchFaqs = () => {
-    setLoading(true);
-    // Simulated API response with static data (already set above)
-    setLoading(false);
+  const fetchFaqs = async () => {
+    try {
+      const { data } = await axios.get(`${API_URL}Faqs`);
+      if (data && data?.STATUS === 200) {
+        setFaqData(data?.DATA || []);
+        // console.log("shajshja", data?.DATA);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(
+        err?.response?.data?.MESSAGE || err?.message || "Failed to fetch faqs."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -88,6 +44,16 @@ const FaqsPage = () => {
 
   return (
     <>
+      {loading && (
+        <div className="loader-overlay">
+          <div className="loader-container">
+            <div className="loader-circle-9">
+              Kapoor
+              <span></span>
+            </div>
+          </div>
+        </div>
+      )}
       <Breadcrumb list={breadcrumbArray} />
       <section className="">
         <Container fluid className="px-lg-5 px-xl-5 px-xxl-5 mb-5">

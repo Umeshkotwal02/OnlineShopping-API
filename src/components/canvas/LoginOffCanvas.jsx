@@ -105,12 +105,14 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
         is_admin: "0",
         user_type: STORAGE?.B2C,
       });
+      console.log("Login OTP:", data?.OTP);
 
       if (data && data?.STATUS === 200) {
         console.log("Login Otp is", data?.OTP);
         toast.success(data?.MESSAGE || "OTP send.");
         setMobileNumber(mobileNumber);
         // setOtp(data?.OTP)
+        console.log("Login OTP:", data?.OTP);
         setOtpCanvas(true);
         setError('');
         setResendTimer(59);
@@ -201,6 +203,7 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
   };
 
 
+
   const handleOtpChange = (index, value) => {
     if (isNaN(value)) return; // Allow only numbers
     const newOtp = [...otp];
@@ -215,6 +218,16 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
       // Move back on backspace
       const prevInput = document.getElementById(`otp-input-${index - 1}`);
       if (prevInput) prevInput.focus();
+    }
+    if (/^\d*$/.test(value)) { // Allow only digits
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+
+      // Automatically move to the next input box
+      if (value !== "" && index < otp.length - 1) {
+        document.getElementById(`otp-input-${index + 1}`).focus();
+      }
     }
   };
 
@@ -259,6 +272,17 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
       user_mobile: mobileNumber,
     });
   };
+  const handleOtpPaste = (e) => {
+    e.preventDefault(); // Prevent the default paste action
+    const pastedData = e.clipboardData.getData("text").trim(); // Get the pasted text
+
+    if (pastedData.length === otp.length) {
+      // Distribute the pasted string into the OTP state
+      const otpArray = pastedData.split("").slice(0, otp.length);
+      setOtp(otpArray); // Update the OTP state
+    }
+  };
+
 
   // Timer logic in useEffect
   useEffect(() => {
@@ -395,10 +419,12 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
                   maxLength="1"
                   value={digit}
                   onChange={(e) => handleOtpChange(index, e.target.value)}
+                  onPaste={(e) => handleOtpPaste(e)}
                   className="otp-input-box web-bg-color"
                 />
               ))}
             </div>
+
             {error && <p className="text-danger">{error}</p>}
             <button type="button" className="btn-continue w-100" onClick={handleVerifyOtp}>
               Verify OTP

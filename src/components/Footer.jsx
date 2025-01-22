@@ -55,7 +55,7 @@ const Footer = () => {
                 </div>
                 <ul className="list-unstyled ">
                   <li className="my-1">
-                    <Link to="/home" className="text-dark text-decoration-none  ">
+                    <Link to="/" className="text-dark text-decoration-none  ">
                       Home
                     </Link>
                   </li>

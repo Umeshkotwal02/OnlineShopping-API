@@ -3,6 +3,7 @@ import { Accordion, Card, Form } from "react-bootstrap";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { MdOutlineFilterList } from "react-icons/md";
 import "../../styles/ProductPage.css"
+import { FliterIcon } from "../../assets/SvgIcons";
 
 
 const ProductFilter = ({
@@ -28,14 +29,14 @@ const ProductFilter = ({
 
   const handleCheckboxChange = (filterName, value) => {
     handleCheckboxLocalChange(filterName, value);
-  }; 
+  };
 
   return (
     <>
-      <div className="d-block d-lg-none fixed-bottom w-100 px-3 z-50">
-        <div className="d-flex justify-content-center align-items-center gap-2 text-xl fw-medium text-center py-3">
-          <MdOutlineFilterList size={24} />
-          <div className="text-uppercase" onClick={handleFilterClick}>
+      <div className="d-block d-lg-none fixed-bottom w-100 z-50">
+        <div className="d-flex justify-content-center align-items-center gap-2 text-xl fw-medium text-center py-4" style={{ backgroundColor: "#B51B3B" }}>
+          <FliterIcon size={24} />
+          <div className="text-uppercase text-white" onClick={handleFilterClick}>
             Filter
           </div>
         </div>
@@ -54,9 +55,8 @@ const ProductFilter = ({
                   return (
                     <div
                       key={index}
-                      className={`p-3 cursor-pointer text-capitalize ${
-                        activeFilterIndex === index ? "" : ""
-                      }`}
+                      className={`p-3 cursor-pointer text-capitalize ${activeFilterIndex === index ? "" : ""
+                        }`}
                       onClick={() => handleFilterChange(index)}
                     >
                       {filterData.title}

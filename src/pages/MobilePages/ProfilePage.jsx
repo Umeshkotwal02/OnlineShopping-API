@@ -47,9 +47,9 @@ const ProfilePage = () => {
 
     // Logout function
     const handleLogout = () => {
-        // Clear user data from sessionStorage or localStorage
-        sessionStorage.removeItem("authUser");
-        sessionStorage.removeItem("userName");
+        // Clear user data from localStorage or localStorage
+        localStorage.removeItem("authUser");
+        localStorage.removeItem("userName");
         localStorage.removeItem("authUserr");
         localStorage.removeItem("profileImage");
 

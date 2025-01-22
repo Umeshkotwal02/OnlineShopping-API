@@ -116,7 +116,7 @@ const WishlistPage = () => {
                     <div className="new-arrival-card">
                       {/* Product Image Section */}
                       <div className="image-container rounded">
-                        <ProductImageSlider imageList={[product.product_image]} />
+                        <ProductImageSlider imageList={product.product_image || product?.product_images} />
                         <div className="overlay-buttons">
                           <button className="add-to-cart-btn" onClick={(e) => {
                             e.stopPropagation();

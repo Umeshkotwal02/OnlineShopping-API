@@ -19,6 +19,9 @@ const wishlistSlice = createSlice({
       state.wishlist = action.payload;
       state.wishlistCount = action.payload.length;
     },
+    resetWishlistCount: (state) => {
+      state.wishlistCount = 0;
+    },
     setLoading(state, action) {
       state.loading = action.payload;
     },
@@ -28,5 +31,5 @@ const wishlistSlice = createSlice({
   },
 });
 
-export const { setLoggedIn, setWishlist, setLoading, setError } = wishlistSlice.actions;
+export const { setLoggedIn, setWishlist, setLoading, setError,resetWishlistCount } = wishlistSlice.actions;
 export default wishlistSlice.reducer;

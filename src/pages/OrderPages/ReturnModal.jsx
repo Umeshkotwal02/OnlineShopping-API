@@ -15,6 +15,8 @@ function ReturnModal({ show, handleClose }) {
                         placeholder="Enter Reason..."
                         rows="5"
                         cols="40"
+                        onChange={(e) => setCancelReason(e.target.value)}
+
                     ></textarea>
 
                     <div className="d-flex justify-content-end">
@@ -26,7 +28,8 @@ function ReturnModal({ show, handleClose }) {
                         </button>
                         <button
                             className="btn btn-dark rounded-5"
-                            onClick={handleClose}
+                            onClick={submitCancelReason}
+
                         >
                             Submit
                         </button>

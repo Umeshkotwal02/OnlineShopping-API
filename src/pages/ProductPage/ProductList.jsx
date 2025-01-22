@@ -42,7 +42,7 @@ const ProductList = () => {
                             <div className="new-arrival-card">
                                 {/* Product Image Section */}
                                 <div className="image-container rounded">
-                                    <ProductImageSlider imageList={product.product_images} />
+                                    <ProductImageSlider imageList={product.product_images || product?.product_images} />
                                     <div className="overlay-buttons">
                                         <button className="add-to-cart-btn" onClick={handleAddToCart}>
                                             ADD TO CART

@@ -23,6 +23,7 @@ import { setCartInfo, setCartItems } from "../../redux/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWishlistItem } from "../../redux/wishlist/wishlistThunk";
 import { fetchCartItems } from "../../redux/cart/cartThunk";
+import { resetWishlistCount } from "../../redux/wishlist/wishlistSlice";
 
 const Header = () => {
 
@@ -37,14 +38,16 @@ const Header = () => {
   const dispatch = useDispatch();
   const wishlistCount = useSelector((state) => state.wishlist.wishlistCount);
   const cartCount = useSelector((state) => state.cart.cartCount);
-  
+
 
   // Logout handler
   const handleLogout = () => {
     localStorage.removeItem(STORAGE?.USERDETAIL);
-    // localStorage.removeItem(STORAGE?.DEVICEID);
+    localStorage.removeItem(STORAGE?.DEVICEID);
+    localStorage.removeItem(STORAGE?.ISLOGIN);
     dispatch(setCartInfo(null));
     dispatch(setCartItems([]));
+    dispatch(resetWishlistCount());
     setUser(null);
     setIsOpen(!isOpen);
     signOut(auth).then(() => {

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Modal from "@mui/material/Modal";
+// import Modal from "@mui/material/Modal";
 import Backdrop from "@mui/material/Backdrop";
 import { FaXmark } from "react-icons/fa6";
 import { Rating } from "@mui/material";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { TextareaAutosize } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Form, Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { STORAGE } from "../../config/config";
 import { API_URL } from "../../Constant/constApi";
@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumb";
 import { AddPhotoIcon } from "../../assets/SvgIcons";
 import Loader from "../../components/Loader";
-import { Container } from "react-bootstrap";
+import { Button, Container, Modal } from "react-bootstrap";
 
 
 const OrderDetails = () => {
@@ -43,6 +43,23 @@ const OrderDetails = () => {
   const [cancelProductIndex, setCancelProductIndex] = useState(null);
   const [productIndex, setProductIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showReturnModal, setShowReturnModal] = useState(false);
+  const [showCancelModal, setShowCanselModal] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+
+  const handleReturnClose = () => setShowReturnModal(false);
+  const handleReturnShow = () => setShowReturnModal(true);
+  const handleCancelClose = () => setShowCanselModal(false);
+  const handleCancelShow = () => setShowCanselModal(true);
+  const handleReviewClose = () => {
+    setShowReviewModal(false)
+    setOpenWriteReview(false);
+    setValue(0);
+    setReviewMessage("");
+    setImages([]);
+    setVideos([]);
+  }
+  const handleReviewShow = () => setShowReviewModal(true);
   const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
 
   const fetchOrderDetailApi = async () => {
@@ -73,29 +90,11 @@ const OrderDetails = () => {
     fetchOrderDetailApi();
   }, [orderId]);
 
-  const [downloadInvoice, setDownloadInvoice] = useState("");
-  const fetchDoenloadInvoice = async () => {
-    try {
-      const { data } = await axios.post(`${API_URL}generateinvoice`, {
-        order_id: orderId,
-      });
-      console.log("invoice", data.DATA);
-      setDownloadInvoice(data.DATA);
-    } catch (error) {
-      console.error("Error fetching order details:", error);
-    } finally {
-      // setLoading(false); // Set loading to false after the request completes
-    }
-  };
-  useEffect(() => {
-    fetchDoenloadInvoice();
-  }, [orderId]);
-
   const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   const getStatusStyle = (status) => {
     switch (status) {
       case "pending":
@@ -142,26 +141,20 @@ const OrderDetails = () => {
 
   const openCancelDialog = (index) => {
     setCancelProductIndex(index);
-    setIsDialogOpen(true);
-  };
-
-  const closeCancelDialog = () => {
-    setIsDialogOpen(false);
-    setCancelProductIndex(null);
+    handleCancelShow();
   };
 
   const submitCancelReason = () => {
     if (cancelProductIndex !== null) {
       handleCancelOrder(orderId, cancelProductIndex, cancelReason);
     }
-    setIsDialogOpen(false);
+    handleCancelClose()
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // ----------------------------for cancel order---------------------
   // ----------------------------for Return order---------------------
 
-  const [dialogVisible, setDialogVisible] = useState(false);
   const [returnReason, setReturnReason] = useState("");
   const [selectedProductIds, setSelectedProductIds] = useState([]);
 
@@ -191,7 +184,7 @@ const OrderDetails = () => {
 
       if (data && data.STATUS === 200) {
         toast.success(data?.MESSAGE || "Cancel order successfully.");
-        setDialogVisible(false);
+        setShowReturnModal(false);
       }
       if (data && data.STATUS === 400) {
         toast.error(data?.MESSAGE || "Cancel order successfully.");
@@ -205,24 +198,19 @@ const OrderDetails = () => {
   };
 
   const handleReturnButtonClick = () => {
-    // setDialogVisible(true);
     if (selectedProductIds.length === 0) {
-      toast.error("Please select product to return.");
+      toast.error("Please select a product to return.");
     } else {
-      setDialogVisible(true);
+      handleReturnShow();
     }
   };
 
-  const handleCloseDialog = () => {
-    setDialogVisible(false);
-  };
-
   const handleSubmit = () => {
-    console.log("Return Reason:", returnReason);
-
-    handleReturnProduct(orderId);
-    handleCloseDialog();
-
+    if (returnReason !== null) {
+      handleReturnProduct(orderId);
+      console.log("Return Reason:", returnReason);
+      handleReturnClose();
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -236,7 +224,10 @@ const OrderDetails = () => {
 
   console.log("selectedProductIds", selectedProductIds);
 
-  // ----------------------------for return order---------------------
+  // ----------------------------for return order End---------------------
+
+
+  // ----------------------------for Review order Start---------------------
 
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
@@ -268,17 +259,11 @@ const OrderDetails = () => {
   };
 
   const handleWriteReviewOpen = (index) => {
+    console.log("Opening review for product index:", index);
+    handleReviewShow();
     setProductIndex(index);
-    setOpenWriteReview(true);
   };
 
-  const handleWriteReviewClose = () => {
-    setOpenWriteReview(false);
-    setValue(0);
-    setReviewMessage("");
-    setImages([]);
-    setVideos([]);
-  };
 
   const handleSubmitReview = async () => {
     const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
@@ -308,7 +293,7 @@ const OrderDetails = () => {
       console.log("review", data);
       if (data && data?.STATUS === 200) {
         toast.success(data?.MESSAGE || "Review added");
-        handleWriteReviewClose();
+        handleReviewClose();
         console.log("review-inside", data);
       } else if (data && data.STATUS === 400) {
         toast.error(data.MESSAGE || "Failed to review added");
@@ -345,15 +330,15 @@ const OrderDetails = () => {
               </div>
             </div>
             <div>
-              <a
-                href={orderDetails?.order_detail[0]?.invoice_url}
+              <Link
+                to={orderDetails?.order_detail[0]?.invoice_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="fw-bold text-decoration-none"
                 style={{ color: "#03A685" }}
               >
                 Download Invoice
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -392,7 +377,91 @@ const OrderDetails = () => {
           </div>
         </div>
         {/* Order-Card Emd ------------------------------------------------*/}
-        <div className="d-flex justify-content-center my-3">
+
+
+
+        {/* Other Order Start ------------------------------------------------*/}
+
+        <div className="my-5">
+          {orderDetails?.product_detail?.map((item, index) => {
+            const isSelected = selectedProductIds.includes(item.product_id);
+            return (
+              <>
+                <div
+                  key={index}
+                  className={`border mt-4 rounded-4 p-3 ${isSelected ? "border-2 border-secondary bg-light" : ""}`}
+                  style={{ position: "relative" }}
+                  onClick={() => handleProductSelect(item.product_id)}
+                >
+                  {isSelected && (
+                    <img
+                      src={require("../../assets/images/form-checkout/select-img.png")}
+                      alt="Select Icon"
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "10px",
+                        transform: "translate(170%, -50%)",
+                        width: "24px",
+                        height: "24px",
+                        pointerEvents: "none",
+                      }}
+                    />
+                  )}
+                  <div className="d-flex align-items-center">
+                    {/* Product Image */}
+                    <div className="flex-shrink-0" style={{ width: "100px", marginRight: "16px" }}>
+                      <img
+                        loading="lazy"
+                        src={item?.product_images}
+                        className="w-100 h-100 object-fit-cover rounded"
+                        alt=""
+                      />
+                    </div>
+
+                    {/* Product Details */}
+                    <div className="flex-grow-1">
+                      <h3 className="h6 text-black mb-2">{item?.product_name}</h3>
+                      <p className="text-muted mb-2">
+                        {item?.product_description || "Product description here..."}
+                      </p>
+                      <p className="fw-bold mb-0">
+                        ₹{item?.product_sub_total}{" "}
+                        <span className="text-muted text-decoration-line-through">
+                          MRP: ₹{item?.product_mrp}
+                        </span>{" "}
+                        <span className="text-danger small">
+                          [{item?.product_discount}% OFF]
+                        </span>
+                      </p>
+                      <p className="mb-0">Qty: {item?.product_quantity}</p>
+                    </div>
+
+                    {/* Status and Action Buttons */}
+                    {item.status === "complete" && (
+                      <div className="d-flex flex-column gap-2 mt-3">
+                        <button className="btn btn-outline-success rounded-3">
+                          Complted
+                        </button>
+
+                        <button
+                          className="ms-auto bg-dark text-center rounded-3 px-3 py-1 cmn-btn text-white"
+                          onClick={() => handleWriteReviewOpen(index)}
+                        >
+                          Write Product Review
+                        </button>
+
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
+            );
+          })}
+        </div >
+        {/* Other Order Emd ------------------------------------------------*/}
+
+        < div className="d-flex justify-content-center my-3" >
           <div>
             {orderDetails?.order_detail[0]?.order_status !== "cancel" &&
               orderDetails?.order_detail[0]?.order_status !== "return" &&
@@ -413,41 +482,67 @@ const OrderDetails = () => {
               ))}
           </div>
         </div>
-
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={isDialogOpen}
-          onClose={submitCancelReason}
-          closeAfterTransition
-          slots={{ backdrop: Backdrop }}
-          slotProps={{
-            backdrop: {
-              timeout: 500,
-            },
-          }}
-        >
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 shadow-lg max-w-[400px] w-full">
-              <h2 className="text-xl font-bold mb-2 text-center">Cancel Order</h2>
-              <div className="text-sm text-center mb-3">
-                Do you want to send the item cancellation request?
-              </div>
+        {/* -------------------------------------------- Return Modal Start------------------------------------------------------*/}
+        <Modal show={showReturnModal} onHide={handleReturnClose} backdrop="static" centered>
+          <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50">
+            <div className="bg-white p-4 shadow-lg rounded-4" style={{ maxWidth: "400px", width: "100%" }}>
+              <h2 className="text-center mb-3 fw-medium">Return Order</h2>
+              <p className="text-center text-muted mb-3">
+                Reason for Return
+              </p>
               <textarea
-                className="w-full p-2 border border-gray-300 rounded mb-4"
-                placeholder="Write the reason for cancellation..."
-                value={cancelReason}
-                onChange={(e) => setCancelReason(e.target.value)}
-              />
-              <div className="flex justify-end">
+                className="web-bg-color form-control mb-3 no-style border-0 rounded-4"
+                placeholder="Enter Reason..."
+                rows="5"
+                cols="40"
+                onChange={(e) => setReturnReason(e.target.value)}
+
+              ></textarea>
+
+              <div className="d-flex justify-content-end">
                 <button
-                  className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
-                  onClick={closeCancelDialog}
+                  className="btn web-bg-color me-2 rounded-5"
+                  onClick={handleReturnClose}
                 >
                   Cancel
                 </button>
                 <button
-                  className="bg-[#E9B159] text-white px-4 py-2 rounded"
+                  className="btn btn-dark rounded-5"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </Modal>
+        {/* -------------------------------------------- Return Modal End------------------------------------------------------*/}
+
+        {/* -------------------------------------- Order-Cancel Modal-Start------------------------------------------------------*/}
+        <Modal show={showCancelModal} onHide={handleCancelClose} backdrop="static" centered>
+          <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50">
+            <div className="bg-white p-4 shadow-lg rounded-4" style={{ maxWidth: "400px", width: "100%" }}>
+              <h2 className="text-center mb-3 fw-medium">Cancel Order</h2>
+              <p className="text-center text-muted mb-3">
+                Do you want to send the item cancellation request?
+              </p>
+              <textarea
+                className="web-bg-color form-control mb-3 no-style border-0 rounded-4"
+                placeholder="Enter Reason..."
+                rows="5"
+                cols="40"
+                onChange={(e) => setCancelReason(e.target.value)}
+              ></textarea>
+
+              <div className="d-flex justify-content-end">
+                <button
+                  className="btn web-bg-color me-2 rounded-5"
+                  onClick={handleCancelClose}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn btn-dark rounded-5"
                   onClick={submitCancelReason}
                 >
                   Submit
@@ -456,185 +551,123 @@ const OrderDetails = () => {
             </div>
           </div>
         </Modal>
+        {/* ------------------------------------------ Order-Cancel Modal-End--------------------------------------------------*/}
 
+
+        {/* ------------------------------------------ Review Modal-Start--------------------------------------------------*/}
         <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={dialogVisible}
-          onClose={handleCloseDialog}
-          closeAfterTransition
-          slots={{ backdrop: Backdrop }}
-          slotProps={{
-            backdrop: {
-              timeout: 500,
-            },
-          }}
+          show={showReviewModal}
+          onHide={handleReviewClose}
+          size="lg"
+          centered
         >
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded shadow-lg max-w-[400px] w-full">
-              <h2 className="text-xl mb-4">Reason for Return</h2>
-              <textarea
-                className="w-full p-2 border border-gray-300 rounded mb-4"
-                placeholder="Write the reason for ReturnProduct..."
-                value={returnReason}
-                onChange={(e) => setReturnReason(e.target.value)}
-                rows="4"
-                cols="50"
+          <Modal.Header className="bg-light" closeButton>
+            <Modal.Title className="text-dark">Write Review</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {productIndex !== null && orderDetails?.product_detail?.[productIndex] ? (
+              <div className="d-flex align-items-center gap-3 mb-4">
+                <img
+                  src={orderDetails?.product_detail[productIndex]?.product_images || ""}
+                  alt="Product"
+                  className="img-fluid rounded"
+                  style={{ height: "120px", width: "120px", objectFit: "cover" }}
+                />
+                <h5 className="text-dark">
+                  {orderDetails?.product_detail[productIndex]?.product_name}
+                </h5>
+              </div>
+            ) : (
+              <p>Loading product details...</p>
+            )}
+
+            <Form.Group className="mb-4">
+              <Form.Label>How would you rate it?</Form.Label>
+              <Rating
+                name="rating"
+                value={value}
+                onChange={handleChange}
+                className="text-warning fs-3"
               />
-              <div className="flex justify-end">
-                <button
-                  className="bg-[#E9B159] text-white px-4 py-2 rounded  mr-2"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </button>
-                <button
-                  className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
-                  onClick={handleCloseDialog}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </Modal>
-
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={openWriteReview}
-          onClose={handleWriteReviewClose}
-          closeAfterTransition
-          slots={{ backdrop: Backdrop }}
-          slotProps={{
-            backdrop: {
-              timeout: 500,
-            },
-          }}
-        >
-          <div className="fixed inset-0 px-4 xl:p-0 overflow-y-auto">
-            <div className="max-w-[700px] w-full bg-white mx-auto my-5">
-              <div className="bg-[#EAEAEA] flex items-center justify-between px-4 sm:px-5 xl:pl-10 xl:pr-[30px] py-3 sm:py-[18px]">
-                <h3 className="text-lg md:text-xl xl:text-2xl 2xl:text-3xl !leading-none font-jost font-medium text-black">
-                  Write Review
-                </h3>
-                <button onClick={handleWriteReviewClose} className="">
-                  <FaXmark className="text-2xl xl:text-[30px] text-[#716C6C]" />
-                </button>
-              </div>
-              <div className="py-6 sm:py-4 px-4 sm:px-6 lg:px-[55px]">
-                <div className="flex items-center gap-2 sm:gap-6 mb-5">
-                  {productIndex !== null && (
-                    <div className="flex items-center gap-2 sm:gap-6">
-                      <div className="flex-shrink-0 h-20 w-20 sm:h-[120px] sm:w-[120px]">
-                        <img
-                          loading="lazy"
-                          src={
-                            orderDetails?.product_detail[productIndex]
-                              ?.product_images
-                          }
-                          className="h-full w-full object-cover object-top"
-                          alt=""
-                        />
-                      </div>
-                      <h4 className="sm:text-[15px] md:text-lg xl:text-lg 2xl:text-2xl !leading-[134%] font-jost text-black max-w-[509px]">
-                        {orderDetails?.product_detail[productIndex]?.product_name}
-                      </h4>
-                    </div>
-                  )}
-                  {/* ))} */}
-                </div>
-                <div className="mb-5 md:mb-8 xl:mb-[10px]">
-                  <h4 className="text-lg md:text-xl xl:text-2xl 2xl:text-3xl !leading-[120%] font-jost font-medium text-black mb-3 lg:mb-5">
-                    How would you rate it?
-                  </h4>
-                  <Rating
-                    className="!text-3xl xl:!text-[30px] text-[#DC9A35]"
-                    name="rating"
-                    value={value}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-5 md:mb-8 xl:mb-[30px]">
-                  <h4 className="text-lg md:text-xl xl:text-2xl 2xl:text-3xl !leading-[120%] font-jost font-medium text-black mb-3 lg:mb-5">
-                    Share a video or photo
-                  </h4>
-                  <div className="flex flex-wrap items-center gap-3 sm:gap-5">
-                    {[...images, ...videos].map((file, index) => (
-                      <div
-                        key={index}
-                        className="flex-shrink-0 w-20 h-24 sm:w-[120px] sm:h-[142px] border-[1.5px] border-dashed border-[#BAB8B8] rounded-[3px] relative"
-                      >
-                        {file.type.startsWith("image/") ? (
-                          <img
-                            loading="lazy"
-                            src={URL.createObjectURL(file)}
-                            alt={`review-${index}`}
-                            width="100"
-                            height="100"
-                          />
-                        ) : (
-                          <video width="100" height="100" controls>
-                            <source
-                              src={URL.createObjectURL(file)}
-                              type={file.type}
-                            />
-                            Your browser does not support the video tag.
-                          </video>
-                        )}
-                        <button
-                          onClick={() =>
-                            file.type.startsWith("image/")
-                              ? removeImage(index)
-                              : removeVideo(index - images.length)
-                          }
-                          className="absolute right-2 top-2 bg-white text-[#FF2E2E] rounded-full border-0"
-                        >
-                          <IoCloseCircleSharp className="text-sm h-full w-full" />
-                        </button>
-                      </div>
-                    ))}
-                    <div className="flex-shrink-0 w-20 h-24 sm:w-[120px] sm:h-[142px] grid place-content-center border-[1.5px] border-dashed border-[#BAB8B8] bg-white rounded-[3px] relative">
-                      <input
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp,video/mp4,video/webm"
-                        className="absolute inset-0 opacity-0 cursor-pointer"
-                        onChange={handleFileChange}
-                      />
-                      <button className="">
-                        <AddPhotoIcon />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="mb-5 md:mb-8 xl:mb-[30px]">
-                  <h4 className="text-lg md:text-xl xl:text-2xl 2xl:text-3xl !leading-[120%] font-jost font-medium text-black mb-3 lg:mb-5">
-                    Write your review
-                  </h4>
-                  <div className="w-full ">
-                    <TextareaAutosize
-                      value={reviewMessage}
-                      onChange={(e) => setReviewMessage(e.target.value)}
-                      placeholder="Please write your review here..."
-                      sx={{ "&::placeholder": { color: "#858585" } }}
-                      className="scrollbar-none w-full !text-lg sm:!text-xl !leading-none font-jost font-normal py-3 sm:p-5 text-black !h-[150px] lg:!h-[221px] max-w-[935px] outline-0 resize-none !overflow-y-auto border-[1.5px] border-[#BAB8B8]"
-                    />
-                  </div>
-                </div>
-                <div className="text-center">
-                  <button
-                    onClick={handleSubmitReview}
-                    className="max-w-[532px] mx-auto bg-[#E9B159] p-3 xl:p-3 w-full text-lg lg:text-2xl font-medium leading-10 text-center text-white"
+            </Form.Group>
+            <Form.Group className="mb-4">
+              <Form.Label>Share a video or photo</Form.Label>
+              <div className="d-flex flex-wrap gap-3">
+                {[...images, ...videos].map((file, index) => (
+                  <div
+                    key={index}
+                    className="position-relative border rounded"
+                    style={{
+                      height: "120px",
+                      width: "120px",
+                      overflow: "hidden",
+                    }}
                   >
-                    SUBMIT
-                  </button>
+                    {file.type.startsWith("image/") ? (
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={`review-${index}`}
+                        className="img-fluid"
+                      />
+                    ) : (
+                      <video width="100%" height="100%" controls>
+                        <source src={URL.createObjectURL(file)} type={file.type} />
+                      </video>
+                    )}
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() =>
+                        file.type.startsWith("image/")
+                          ? removeImage(index)
+                          : removeVideo(index - images.length)
+                      }
+                      className="position-absolute top-0 end-0"
+                    >
+                      <IoCloseCircleSharp />
+                    </Button>
+                  </div>
+                ))}
+                <div
+                  className="border rounded d-flex justify-content-center align-items-center"
+                  style={{
+                    height: "120px",
+                    width: "120px",
+                    cursor: "pointer",
+                    position: "relative",
+                  }}
+                >
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,video/mp4,video/webm"
+                    className="position-absolute w-100 h-100 opacity-0 cursor-pointer"
+                    onChange={handleFileChange}
+                  />
+                  <span>+ Add</span>
                 </div>
               </div>
-            </div>
-          </div>
+            </Form.Group>
+            <Form.Group className="mb-4">
+              <Form.Label>Write your review</Form.Label>
+              <Form.Control
+                as="textarea"
+                value={reviewMessage}
+                onChange={(e) => setReviewMessage(e.target.value)}
+                placeholder="Please write your review here..."
+                rows={4}
+                style={{ resize: "none" }}
+              />
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="warning" onClick={handleSubmitReview} className="w-100">
+              Submit
+            </Button>
+          </Modal.Footer>
         </Modal>
-      </Container>
-      {/* <Footer /> */}
+        {/* ------------------------------------------ Review Modal-End--------------------------------------------------*/}
+
+      </Container >
     </>
   );
 };

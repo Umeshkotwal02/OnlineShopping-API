@@ -50,7 +50,7 @@ const NewArrivalCard = ({ info }) => {
   return (
     <div className="group transition hover:shadow-md p-4 border rounded">
       <div className="aspect-[2/3] relative">
-        <ProductImageSlider imageList={info.product_images} />
+        <ProductImageSlider imageList={info.product_images || info?.product_images} />
         <div className="absolute z-10 left-0 bottom-2.5 w-full px-4 opacity-0 transition group-hover:opacity-100">
           <button
             className="w-full border-none text-sm fw-medium px-4 py-2 bg-white text-black border border-gray-300 hover:bg-yellow-500 rounded"

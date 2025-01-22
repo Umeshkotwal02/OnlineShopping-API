@@ -41,6 +41,7 @@ export const fetchCartItems = () => async (dispatch) => {
 };
 
 export const addToCart = (productId, quantity, stitchingOptions = []) => async (dispatch) => {
+  console.log("addToCart thunk called"); // Debugging log
   const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
   const firstStitchingOption = stitchingOptions?.[0] || {};
   const stitchingLabel = firstStitchingOption?.label || "unstitched";
@@ -60,6 +61,8 @@ export const addToCart = (productId, quantity, stitchingOptions = []) => async (
       user_id: userProfile?.id,
     });
 
+    console.log("API Response:", data); // Debugging log
+
     if (data?.STATUS === 200) {
       dispatch(setCartInfo(data?.DATA?.cart));
       dispatch(setCartIcons(data?.DATA?.icons));
@@ -69,13 +72,14 @@ export const addToCart = (productId, quantity, stitchingOptions = []) => async (
       toast.error(data?.MESSAGE || "Failed to add product to cart.");
     }
   } catch (err) {
-    console.error(err);
+    console.error(err); // Debugging log
     dispatch(setError(err?.response?.data?.MESSAGE || "Failed to add product to cart."));
     toast.error(err?.response?.data?.MESSAGE || "Failed to add product to cart.");
   } finally {
     dispatch(setLoading(false));
   }
 };
+
 
 // Update Cart Item
 export const updateCartItemThunk = (cartChildId, quantity) => async (dispatch) => {

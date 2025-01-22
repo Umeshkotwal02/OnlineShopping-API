@@ -37,7 +37,7 @@ const Faq = ({ faqData }) => {
                   fontSize: "1.1rem"
                 }}
               >
-                {item.question}
+                {item.page_title}
               </button>
             </h2>
             <div
@@ -46,7 +46,7 @@ const Faq = ({ faqData }) => {
               aria-labelledby={`${id}-header`}
               data-bs-parent="#faqAccordion"
             >
-              <div className="accordion-body" style={{ color: "#6C6C6C", fontSize:"0.83rem" }}>{item.answer}</div>
+              <div className="accordion-body" style={{ color: "#6C6C6C", fontSize:"0.83rem" }}>{item.page_description}</div>
             </div>
           </div>
         );

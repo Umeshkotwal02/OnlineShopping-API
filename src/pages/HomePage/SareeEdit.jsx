@@ -17,18 +17,19 @@ const SareeEdit = ({ data }) => {
                         <div className="col-12">
 
                             <img
-                                src={data?.multiple_images?.files?.[1]}
+                                src={data?.multiple_images?.files?.[0]}
                                 className="img-fluid w-100 h-100 hover-scale rounded-4"
-                                alt=""
+                                alt="1"
                                 loading="lazy"
                             />
                         </div>
                         <div className="col-6">
 
                             <img
-                                src={data?.multiple_images?.files?.[0]}
+                                src={data?.multiple_images?.files?.[1]}
+
                                 className="img-fluid w-100 h-100 hover-scale rounded-4"
-                                alt=""
+                                alt="2"
                                 loading="lazy"
                             />
                         </div>
@@ -37,7 +38,7 @@ const SareeEdit = ({ data }) => {
                             <img
                                 src={data?.multiple_images?.files?.[2]}
                                 className="img-fluid w-100 h-100 hover-scale rounded-4"
-                                alt=""
+                                alt="3"
                                 loading="lazy"
                             />
                         </div>
@@ -48,9 +49,10 @@ const SareeEdit = ({ data }) => {
                 <Col lg={4} md={4}>
                     <div className="position-relative overflow-hidden h-100">
                         <img
-                            src={data?.multiple_images?.files?.[4]}
+                            src={data?.multiple_images?.files?.[3]}
+
                             className="img-fluid rounded-4 object-cover transition-transform scale-hover h-100"
-                            alt=""
+                            alt="4"
                             loading="lazy"
                         />
                         <div className="position-absolute bottom-0 start-0 end-0 bg-opacity-75 bg-dark text-white rounded-4">
@@ -67,9 +69,9 @@ const SareeEdit = ({ data }) => {
                         <div className="col-6">
 
                             <img
-                                src={data?.multiple_images?.files?.[3]}
+                                src={data?.multiple_images?.files?.[6]}
                                 className="img-fluid w-100 h-100 hover-scale rounded-4"
-                                alt=""
+                                alt="5"
                                 loading="lazy"
                             />
                         </div>
@@ -78,16 +80,16 @@ const SareeEdit = ({ data }) => {
                             <img
                                 src={data?.multiple_images?.files?.[5]}
                                 className="img-fluid w-100 h-100 hover-scale rounded-4"
-                                alt=""
+                                alt="6"
                                 loading="lazy"
                             />
                         </div>
                         <div className="col-12">
 
                             <img
-                                src={data?.multiple_images?.files?.[6]}
+                                src={data?.multiple_images?.files?.[4]}
                                 className="img-fluid w-100 h-100 hover-scale rounded-4"
-                                alt=""
+                                alt="7"
                                 loading="lazy"
                             />
                         </div>

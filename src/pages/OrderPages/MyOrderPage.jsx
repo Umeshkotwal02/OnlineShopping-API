@@ -101,7 +101,7 @@ const MyOrderPage = () => {
           <>
         
               {orders.slice(0, showAll ? orders.length : 3).map((order) => (
-                <div className="mb-3 web-bg-color" style={{ borderRadius: "15px" }} key={order.order_id} onClick={() => handleOrderClick(order.order_id)}>
+                <div className="mb-3 web-bg-color link" style={{ borderRadius: "15px", cursor:"pointer" }} key={order.order_id} onClick={() => handleOrderClick(order.order_id)}>
                   <div className="border border-2 border-light rounded">
                     <div className="d-flex justify-content-between p-2">
                       <div className="d-flex gap-4 align-items-center">

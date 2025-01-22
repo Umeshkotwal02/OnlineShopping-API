@@ -58,27 +58,24 @@ const ProfileModal = ({ show, handleClose }) => {
         user_mobile: data.user_mobile,
         user_profile: userDetails.user_profile,
       });
-
-      if (response.data?.STATUS === 200) {
-        toast.success(response.data.MESSAGE || "User updated successfully.");
-        setUserDetails({
-          ...userDetails,
+      if (response.data && response.data.STATUS === 200) {
+        toast.success(data?.MESSAGE || "User updated successfully.");
+        setUserDetails((prevDetails) => ({
+          ...prevDetails,
           user_first_name: data.user_first_name,
           user_last_name: data.user_last_name,
           user_email: data.user_email,
           user_mobile: data.user_mobile,
-        });
-        handleClose();
+        }));
       } else {
-        setError(response.data.MESSAGE || "Failed to update user.");
+        toast.success(data?.MESSAGE || "Failed to update user.");
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      toast.success(data?.MESSAGE || "Failed to update user.");
     } finally {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchUserDetails();
   }, []); // Run once on mount

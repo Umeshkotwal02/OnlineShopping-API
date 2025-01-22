@@ -23,7 +23,7 @@ body {
 
 /* Common style ++++++++++++++++++++++++++++++++++++*/
 .web-bg-color {
-  background-color: #F3F3F3;
+  background-color: #F3F3F3 !important;
 }
 
 .text-size {
