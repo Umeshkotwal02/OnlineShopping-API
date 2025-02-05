@@ -26,10 +26,10 @@ const OurInstaPage = ({ instaBanner }) => {
                             />
                         ))}
                     </div>
-                    <div className="position-relative z-index-10 d-inline-block text-center px-3 py-2 py-md-4 py-xl-4 text-white" >
+                    {/* <div className="position-relative z-index-10 d-inline-block text-center px-3 py-2 py-md-4 py-xl-4 text-white" >
                         <h1 className="h3 h-xl5 our-stores-button" style={{ fontFamily: "Junge" }}>VISIT OUR INSTAGRAM DIARIES</h1>
                         <p className="mb-0 lead follow" style={{ fontFamily: "Roboto" }}>FOLLOW TO KNOW MORE</p>
-                    </div>
+                    </div> */}
 
                 </div>
             </div>

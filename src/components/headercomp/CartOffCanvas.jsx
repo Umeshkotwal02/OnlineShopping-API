@@ -9,8 +9,8 @@ import BagCard from '../Bag/BagCard';
 const CartOffCanvas = ({ show, handleClose }) => {
 
     // Select cart data from Redux store
-    const { cartInfo } = useSelector((state) => state.cart); // Get wishlist from Redux store
-    const cartTotal = useSelector((state) => state.cart.cartInfo?.total || 0);
+    const { cartInfo } = useSelector((state) => state.cart);
+    const cartTotal = useSelector((state) => state.cart.cartInfo?.total);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     console.log("cartInfo", cartInfo);
@@ -40,14 +40,16 @@ const CartOffCanvas = ({ show, handleClose }) => {
                             className="mb-4"
                         >
                             <div className="row g-3">
-                                {cartInfo?.cartdata?.map((item, index) => (
-                                    <BagCard
-                                        key={`cartItem-${item?.id}`}
-                                        info={item}
-                                        cartId={cartInfo?.cart_id}
-                                        fetchCartItems={fetchCartItems}
-                                    />
-                                ))}
+                                {cartInfo?.cartdata?.map((item, index) => {
+                                    return (
+                                        <BagCard
+                                            key={"cartItem" + item?.id}
+                                            info={item}
+                                            cartId={cartInfo?.cart_id}
+                                            fetchCartItems={fetchCartItems}
+                                        />
+                                    );
+                                })}
                             </div>
                         </div>
                     </>

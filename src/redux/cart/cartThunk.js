@@ -40,45 +40,51 @@ export const fetchCartItems = () => async (dispatch) => {
   }
 };
 
-export const addToCart = (productId, quantity, stitchingOptions = []) => async (dispatch) => {
-  console.log("addToCart thunk called"); // Debugging log
-  const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
-  const firstStitchingOption = stitchingOptions?.[0] || {};
-  const stitchingLabel = firstStitchingOption?.label || "unstitched";
-  const stitchingPrice = firstStitchingOption?.price || 0;
-  const stchingValue = `${stitchingLabel}`;
+export const addToCart = (productId, quantity, stitchingOptions = []) =>
+  async (dispatch, getState) => {
+    console.log("addToCart thunk called"); // Debugging log
+    const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+    const firstStitchingOption = stitchingOptions?.[0] || {};
+    const stitchingLabel = firstStitchingOption?.label || "unstitched";
+    const stitchingPrice = firstStitchingOption?.price || 0;
+    const stchingValue = `${stitchingLabel}`;
 
-  dispatch(setLoading(true));
-  try {
-    const { data } = await axios.post(`${API_URL}addtocart`, {
-      user_type: userProfile?.user_type ?? STORAGE?.B2C,
-      device_id: localStorage.getItem(STORAGE?.DEVICEID),
-      is_mobile: "0",
-      product_id: productId,
-      product_quantity: quantity || 1,
-      stching: stchingValue,
-      is_admin: "0",
-      user_id: userProfile?.id,
-    });
+    // Get the existing cart ID from the Redux store
+    const { cartInfo } = getState().cart;
+    const cartId = cartInfo?.cart_id;
 
-    console.log("API Response:", data); // Debugging log
+    dispatch(setLoading(true));
+    try {
+      const { data } = await axios.post(`${API_URL}addtocart`, {
+        user_type: userProfile?.user_type ?? STORAGE?.B2C,
+        device_id: localStorage.getItem(STORAGE?.DEVICEID),
+        is_mobile: "0",
+        product_id: productId,
+        product_quantity: quantity || 1,
+        stching: stchingValue,
+        is_admin: "0",
+        user_id: userProfile?.id,
+        cart_id: cartId, // Pass the existing cart ID
+      });
+      console.log("API Response:", data); // Debugging log
 
-    if (data?.STATUS === 200) {
-      dispatch(setCartInfo(data?.DATA?.cart));
-      dispatch(setCartIcons(data?.DATA?.icons));
-      dispatch(setCartItems(data?.DATA?.cart?.items));
-      toast.success(data?.MESSAGE || "Product added to cart successfully.");
-    } else {
-      toast.error(data?.MESSAGE || "Failed to add product to cart.");
+      if (data?.STATUS === 200) {
+        dispatch(fetchCartItems());
+        dispatch(setCartInfo(data?.DATA?.cart));
+        dispatch(setCartIcons(data?.DATA?.icons));
+        dispatch(setCartItems(data?.DATA?.cart?.items));
+        toast.success(data?.MESSAGE || "Product added to cart successfully.");
+      } else {
+        toast.error(data?.MESSAGE || "Failed to add product to cart.");
+      }
+    } catch (err) {
+      console.error(err); // Debugging log
+      dispatch(setError(err?.response?.data?.MESSAGE || "Failed to add product to cart."));
+      toast.error(err?.response?.data?.MESSAGE || "Failed to add product to cart.");
+    } finally {
+      dispatch(setLoading(false));
     }
-  } catch (err) {
-    console.error(err); // Debugging log
-    dispatch(setError(err?.response?.data?.MESSAGE || "Failed to add product to cart."));
-    toast.error(err?.response?.data?.MESSAGE || "Failed to add product to cart.");
-  } finally {
-    dispatch(setLoading(false));
-  }
-};
+  };
 
 
 // Update Cart Item

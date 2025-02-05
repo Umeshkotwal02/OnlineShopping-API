@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
 
 const ProductQtyCounter = ({ onChange, defaultValue }) => {
@@ -16,17 +17,18 @@ const ProductQtyCounter = ({ onChange, defaultValue }) => {
   }, [productCount]);
 
   return (
-    <div className="border border-[#CBCBCB] rounded-[5px] p-[5px] flex items-center gap-2">
-      <button onClick={handleMinusProductQty}>
+    <div className="d-flex align-items-center border rounded p-1">
+      <Button variant="light" onClick={handleMinusProductQty} size="sm" className="p-0">
         <FaChevronLeft color="#555555" />
-      </button>
-      <p className="text-lg font-medium font-jost !leading-[1.1]">
+      </Button>
+      <p className="fs-5 fw-medium m-0">
         {productCount}
       </p>
-      <button onClick={handleAddProductQty}>
-        <FaChevronRight color="#555555" />
-      </button>
+      <Button variant="light" size="sm" className="p-0" onClick={handleAddProductQty}>
+        <FaChevronRight className="text-secondary" />
+      </Button>
     </div>
+
   );
 };
 

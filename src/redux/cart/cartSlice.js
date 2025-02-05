@@ -4,7 +4,7 @@ const initialState = {
   cartInfo: [],
   cartIcons: [],
   cartItems: [],
-  cartCount: 0, // Added cartCount
+  cartCount: 0,
   loading: false,
   error: null,
 };
@@ -21,7 +21,7 @@ const cartSlice = createSlice({
     },
     setCartItems(state, action) {
       state.cartItems = action.payload;
-      state.cartCount = action.payload?.length || 0;
+      state.cartCount = action.payload?.length;
     },
     setLoading(state, action) {
       state.loading = action.payload;

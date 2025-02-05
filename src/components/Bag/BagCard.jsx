@@ -62,7 +62,7 @@ const BagCard = ({ info }) => {
 
   return (
     <div
-      className="card border"
+      className="card border  web-bg-color"
       onClick={handleCardClick}
       style={{ cursor: "pointer" }}
     >
@@ -71,8 +71,8 @@ const BagCard = ({ info }) => {
           <img
             src={itemInfo?.product_image}
             alt="Product"
-            className="img-fluid"
-            style={{ height: "100%", objectFit: "cover" }}
+            className="rounded"
+            style={{ width: "120px", height: "130px", objectFit: "contain" }}
           />
         </div>
         <div className="col-8 position-relative">
@@ -86,29 +86,25 @@ const BagCard = ({ info }) => {
             <FaXmark />
           </button>
           <div className="card-body p-3">
-            <h5 className="card-title text-truncate">
+            <p className="cart-para text-truncate">
               {truncateProductName(itemInfo?.product_name || "")}
-            </h5>
-            <p className="card-text text-muted small mb-2">
+            </p>
+            <p className="text-muted small cart-para">
               {truncateDescriptionName(itemInfo?.product_short_descriptio || "")}
             </p>
-            <p className="card-text fw-bold">
+            {/* <p className="card-text fw-bold">
               {itemInfo?.stitching_type}: ₹{itemInfo?.stitching_price}
-            </p>
-            <div className="d-flex align-items-center justify-content-between my-3">
-              <div className="d-flex align-items-center">
-                <p className="mb-0 me-3 fw-bold">Qty:</p>
-                <ProductQtyCounter
-                  defaultValue={itemInfo?.product_quantity}
-                  onChange={(value) => {
-                    setItemInfo((prev) => ({
-                      ...prev,
-                      product_quantity: value,
-                    }));
-                    debouncedUpdateCartItem(itemInfo?.child_cart_id, value);
-                  }}
-                />
-              </div>
+            </p> */}
+            <div className="d-flex align-items-center gap-2">
+              <span className="fw-bold text-secondary">Qty:</span>
+              <ProductQtyCounter
+                defaultValue={itemInfo?.product_quantity}
+                onChange={(value) => {
+                  // setItemInfo((prev) => ({ ...prev, product_quantity: value }));
+                  debouncedUpdateCartItem(itemInfo?.child_cart_id);
+                  // debouncedUpdateCartItem(itemInfo?.child_cart_id, value);
+                }}
+              />
             </div>
             <div>
               <p className="mb-0">

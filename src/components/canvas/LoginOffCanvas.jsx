@@ -47,7 +47,7 @@ const LoginOffcanvas = ({ show, handleClose, setUser }) => {
         // Sending data to your API
         const response = await axios.post(`${API_URL}sendotp`, userData);
         const data = response.data;
-
+        console.log("userData", data);
         if (data && data.STATUS === 200) {
           toast.success(data.MESSAGE);
           console.log("Google login success", data);

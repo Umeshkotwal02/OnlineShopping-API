@@ -56,7 +56,7 @@ function HomePage() {
       <CarosoleSilckSlider bannerList={data?.AllBanners?.banner1}
         onClick={() => {
           navigate(
-            `/product-page?category=${data?.AllBanners?.banner1.category_id}`
+            `/products-page?category=${data?.AllBanners?.banner1.category_id}`
           );
         }}
       />
@@ -64,7 +64,7 @@ function HomePage() {
       <CarosoleSlickMobi bannerList={data?.AllBanners?.banner1}
         onClick={() => {
           navigate(
-            `/product-page?category=${data?.AllBanners?.banner1.category_id}`
+            `/products-page?category=${data?.AllBanners?.banner1.category_id}`
           );
         }} />
 

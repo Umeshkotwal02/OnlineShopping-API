@@ -41,7 +41,7 @@ const ProductPage = () => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate("/product-page");
+    navigate("/products-page");
     window.scrollTo(0, 0);
   };
 

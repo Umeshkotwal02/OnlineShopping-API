@@ -37,13 +37,12 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const wishlistCount = useSelector((state) => state.wishlist.wishlistCount);
-  const cartCount = useSelector((state) => state.cart.cartCount);
+  // const cartCount = useSelector((state) => state.cart.cartCount);
 
 
   // Logout handler
   const handleLogout = () => {
     localStorage.removeItem(STORAGE?.USERDETAIL);
-    localStorage.removeItem(STORAGE?.DEVICEID);
     localStorage.removeItem(STORAGE?.ISLOGIN);
     dispatch(setCartInfo(null));
     dispatch(setCartItems([]));
@@ -129,6 +128,7 @@ const Header = () => {
       );
     }
   };
+  const { cartInfo } = useSelector((state) => state.cart);
 
   const handleCloseNotificationModals = () => setShowNotificationModal(false);
 
@@ -294,24 +294,27 @@ const Header = () => {
                   onClick={handleOpenCartCanvas}
                 >
                   <LgBagIcon />
-                  {cartCount > 0 && (
-                    <span
-                      className="cart badge bg-danger rounded-pill text-white"
-                      style={{
-                        fontSize: "0.7rem",
-                        width: "18px",
-                        height: "18px",
-                        position: "absolute",
-                        top: "13px",
-                        right: "32px",
-                        textAlign: "center",
-                        display: "grid",
-                        placeItems: "center",
-                      }}
-                    >
-                      {cartCount}
-                    </span>
-                  )}
+                  <span
+                    className="cart badge bg-danger rounded-pill text-white"
+                    style={{
+                      fontSize: "0.7rem",
+                      width: "18px",
+                      height: "18px",
+                      position: "absolute",
+                      top: "13px",
+                      right: "32px",
+                      textAlign: "center",
+                      display: "grid",
+                      placeItems: "center",
+                    }}
+                  >
+                    {cartInfo?.cartcount !== undefined &&
+                      cartInfo?.cartcount !== null && (
+                        <span className="cart-num absolute -right-0.5 -bottom-0.5 h-4 w-4 rounded-full bg-[#FF344B] grid place-content-center text-xs font-normal font-Roboto">
+                          {cartInfo.cartcount}
+                        </span>
+                      )}
+                  </span>
                   <span className="d-none d-xl-inline-block text-size ms-1 pt-1">Cart</span>
                 </div>
 

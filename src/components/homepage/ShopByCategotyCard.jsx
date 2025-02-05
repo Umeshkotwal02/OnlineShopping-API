@@ -9,7 +9,7 @@ const ShopByCategotyCard = () => {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
-        navigate("/product-page");
+        navigate("/products-page");
     };
 
     return (
