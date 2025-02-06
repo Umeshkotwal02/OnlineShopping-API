@@ -45,6 +45,7 @@ function HomePage() {
   return (
     <div>
       <MainHeaderMobi />
+      
       <span className='d-lg-none'>
         <SearchBar />
       </span>
@@ -60,6 +61,7 @@ function HomePage() {
           );
         }}
       />
+
       {/* Carosolve Mobile */}
       <CarosoleSlickMobi bannerList={data?.AllBanners?.banner1}
         onClick={() => {
@@ -70,21 +72,20 @@ function HomePage() {
 
       <ShopByCategorySlick data={data?.categorydata} />
       <WatchShopSection data={data?.watch_and_shop} />
-
       <BridalLahegaCholi data={data?.pre_weding_festives} />
-
       <NewArrivalSection data={data} />
       <NewOnOnlineSwiper data={data?.New_on_kapoor} />
-
       <Motion motionBanner={data?.AllBanners?.banner6} />
       <FestivalSpecial data={data} />
       <Banner saleBanner={data?.AllBanners?.banner4} />
       <ShopByColorSlick data={data?.colorist_product} />
       <SareeEdit data={data} />
+
       {/* <SareeEditMobi data={data} /> */}
       <CustomerStoriesSection data={data} />
       <OurInstaPage instaBanner={data?.our_story} />
       <OnlineShopDesignStudio data={data} />
+
     </div>
   )
 }
