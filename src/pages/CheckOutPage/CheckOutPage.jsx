@@ -16,21 +16,15 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlineCurrencyRupee } from 'react-icons/hi';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { IoMdClose } from "react-icons/io";
 import { LgBagIcon } from '../../assets/SvgIcons'
 import { FaTimes } from 'react-icons/fa'
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
-import CouponCanva from "./CouponCanva";
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Box, Drawer, InputBase } from '@mui/material';
-import ProductQtyCounter from '../../components/bag/ProductQtyCounter';
 import { debounce } from "lodash";
 import { updateCartItemThunk } from '../../redux/cart/cartThunk';
-
-
-
+import ProductQtyCounter from '../../components/bag/ProductQtyCounter';
 
 const steps = [
   { id: 'SignUp', label: 'Sign Up', icon: <IoIosCheckmark className="" style={{ fontSize: "500%" }} />, isActive: true },

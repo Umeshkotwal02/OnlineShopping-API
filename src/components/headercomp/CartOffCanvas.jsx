@@ -1,10 +1,10 @@
 import React from 'react';
-import { Offcanvas, Button, Row, Col } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Offcanvas, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { fetchCartItems } from '../../redux/cart/cartThunk';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import BagCard from '../bag/BagCard';
+import BagCard from "../bag/BagCard"
 
 const CartOffCanvas = ({ show, handleClose }) => {
 
