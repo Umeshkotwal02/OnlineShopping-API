@@ -18,7 +18,7 @@ import { STORAGE } from "../config/config";
 import QuantityCounter from "./ProductDetailsPage/QuantityCounter";
 import ProductDetailsSlider from "./ProductDetailsPage/ProductDetailsSlider";
 import CustomerReview from "./ProductDetailsPage/CustomerReview";
-import { API_URL } from "../Constant/constApi";
+import { API_URL } from "../constants/constApi";
 import Loader from "../components/Loader";
 import SimilarProduct from "../components/SimilarProduct";
 import "../styles/ProductDetails.css";

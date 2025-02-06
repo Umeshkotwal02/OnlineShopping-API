@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { API_URL } from '../../Constant/constApi';
+import { API_URL } from '../../constants/constApi';
 import { STORAGE } from '../../config/config';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../components/firebase';

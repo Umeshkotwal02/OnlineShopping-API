@@ -8,7 +8,7 @@ import { TextareaAutosize } from "@mui/material";
 import { Form, Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { STORAGE } from "../../config/config";
-import { API_URL } from "../../Constant/constApi";
+import { API_URL } from "../../constants/constApi";
 import toast from "react-hot-toast";
 import Breadcrumb from "../../components/Breadcrumb";
 import { AddPhotoIcon } from "../../assets/SvgIcons";

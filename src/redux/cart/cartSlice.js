@@ -20,9 +20,9 @@ const cartSlice = createSlice({
       state.cartIcons = action.payload;
     },
     setCartItems(state, action) {
-      state.cartItems = action.payload;
-      state.cartCount = action.payload?.length;
-    },
+      state.cartItems = Array.isArray(action.payload) ? action.payload : [];
+      state.cartCount = state.cartItems.length;
+    },    
     setLoading(state, action) {
       state.loading = action.payload;
     },

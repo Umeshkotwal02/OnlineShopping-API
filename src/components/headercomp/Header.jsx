@@ -2,22 +2,21 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import { AccountIcon, WishlistIcon, LoginIcon, DropdownDown, LgBagIcon, DropdownUp, ProfileIcon, NotificationIcon, MyOrderIcon } from "../../assets/SvgIcons";
-import LoginOffCanvas from "../canvas/LoginOffCanvas";
+import LoginOffCanvas from "../offcanvas/LoginOffCanvas";
 import CategoryMenu from "./CategoryMenu";
 import TopBar from "./TopBar";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import toast from "react-hot-toast";
 import { IoLogOutOutline } from "react-icons/io5";
-import NotificationCanvas from "../canvas/NotificationCanvas";
+import NotificationCanvas from "../offcanvas/NotificationCanvas";
 import "../../styles/Header.css"
 import CartOffCanvas from "./CartOffCanvas";
 import SearchBar from "../SearchBar";
 import axios from "axios";
-import { API_URL } from "../../Constant/constApi";
-import ProfileModal from "../canvas/ProfileModal";
+import { API_URL } from "../../constants/constApi";
+import ProfileModal from "../offcanvas/ProfileModal";
 import { UserProvider } from "../../context/UserContext ";
-import MainHeaderMobi from "../mobileheadercomp/MobileHeader";
 import { STORAGE } from "../../config/config";
 import { setCartInfo, setCartItems } from "../../redux/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -294,36 +293,37 @@ const Header = () => {
                   onClick={handleOpenCartCanvas}
                 >
                   <LgBagIcon />
-                  <span
-                    className="cart badge bg-danger rounded-pill text-white"
-                    style={{
-                      fontSize: "0.7rem",
-                      width: "18px",
-                      height: "18px",
-                      position: "absolute",
-                      top: "13px",
-                      right: "32px",
-                      textAlign: "center",
-                      display: "grid",
-                      placeItems: "center",
-                    }}
-                  >
-                    {cartInfo?.cartcount !== undefined &&
-                      cartInfo?.cartcount !== null && (
-                        <span className="cart-num absolute -right-0.5 -bottom-0.5 h-4 w-4 rounded-full bg-[#FF344B] grid place-content-center text-xs font-normal font-Roboto">
-                          {cartInfo.cartcount}
-                        </span>
-                      )}
-                  </span>
+                  {cartInfo?.cartcount > 0 && (
+                    <span
+                      className="cart badge bg-danger rounded-pill text-white"
+                      style={{
+                        fontSize: "0.7rem",
+                        width: "18px",
+                        height: "18px",
+                        position: "absolute",
+                        top: "13px",
+                        right: "32px",
+                        textAlign: "center",
+                        display: "grid",
+                        placeItems: "center",
+                      }}
+                    >
+                      {cartInfo?.cartcount !== undefined &&
+                        cartInfo?.cartcount !== null && (
+                          <span>
+                            {cartInfo.cartcount}
+                          </span>
+                        )}
+                    </span>
+                  )}
                   <span className="d-none d-xl-inline-block text-size ms-1 pt-1">Cart</span>
                 </div>
-
               </Col>
             </Row>
           </div>
-        </Container>
+        </Container >
         <CategoryMenu headerCatData={headerButtons} />
-      </div>
+      </div >
       <LoginOffCanvas show={showLoginCanvas} handleClose={handleCloseLoginCanvas} setUser={handleUserUpdate} />
       <CartOffCanvas show={showCartCanvas} handleClose={handleCloseCartCanvas} />
       <UserProvider>

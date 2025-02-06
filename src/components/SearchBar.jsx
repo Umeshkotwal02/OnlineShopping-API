@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { SearchCloseIcon, SearchIcon } from "../assets/SvgIcons";
 import { FiSearch } from "react-icons/fi";
 import axios from "axios";
-import { API_URL } from "../Constant/constApi";
+import { API_URL } from "../constants/constApi";
 import { STORAGE } from "../config/config";
 import "../styles/SearchBar.css";
 

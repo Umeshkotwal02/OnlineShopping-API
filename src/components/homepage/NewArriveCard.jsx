@@ -8,7 +8,7 @@ import {
     addToWishlist,
     removeFromWishlist,
 } from "../../redux/wishlist/wishlistThunk";
-import { addToCart} from "../../redux/cart/cartThunk";
+import { addToCart, fetchCartItems} from "../../redux/cart/cartThunk";
 import { STORAGE } from "../../config/config";
 import toast from "react-hot-toast";
 import "../../styles/NewArrivalCard.css";
@@ -26,6 +26,7 @@ const NewArrivalCard = ({ product }) => {
 
     useEffect(() => {
         dispatch(fetchWishlistItem());
+        dispatch(fetchCartItems()); 
     }, [dispatch]);
 
     useEffect(() => {

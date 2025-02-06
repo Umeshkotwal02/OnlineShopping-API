@@ -12,7 +12,7 @@ import axios from "axios";
 import { STORAGE } from "../config/config";
 import ProductFilter from "./ProductPage/ProductFilter";
 import NewArrivalCard from "../components/homepage/NewArriveCard";
-import { API_URL } from "../Constant/constApi";
+import { API_URL } from "../constants/constApi";
 import Loader from "../components/Loader";
 import { Accordion, Card, Col, Container, Dropdown, DropdownButton, Form, Row } from "react-bootstrap";
 import { FaMinus, FaPlus } from "react-icons/fa";

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { setWishlist, setLoggedIn, setLoading, setError } from './wishlistSlice';
 import toast from 'react-hot-toast';
 import { STORAGE } from '../../config/config';
-import { API_URL } from '../../Constant/constApi';
+import { API_URL } from '../../constants/constApi';
 
 export const fetchWishlistItem = () => async (dispatch) => {
   dispatch(setLoading(true));

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { fetchCartItems } from '../../redux/cart/cartThunk';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import BagCard from '../Bag/BagCard';
+import BagCard from '../bag/BagCard';
 
 const CartOffCanvas = ({ show, handleClose }) => {
 

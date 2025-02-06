@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, Image } from "react-bootstrap";
-import { API_URL } from "../../Constant/constApi";
+import { API_URL } from "../../constants/constApi";
 import axios from "axios";
 import toast from "react-hot-toast";
 

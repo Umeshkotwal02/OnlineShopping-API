@@ -5,7 +5,7 @@ import Faq from "../components/Faq";
 import { Container } from "react-bootstrap";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { API_URL } from "../Constant/constApi";
+import { API_URL } from "../constants/constApi";
 
 const FaqsPage = () => {
   const breadcrumbArray = [

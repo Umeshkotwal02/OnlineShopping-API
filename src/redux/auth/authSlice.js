@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { API_URL } from '../../Constant/constApi';
+import { API_URL } from '../../constants/constApi';
 import toast from 'react-hot-toast';
 
 const initialState = {

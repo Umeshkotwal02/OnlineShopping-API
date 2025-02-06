@@ -7,7 +7,7 @@ import Loader from "../../components/Loader";
 import '../../styles/Order.css'
 import axios from "axios";
 import { STORAGE } from "../../config/config";
-import { API_URL } from "../../Constant/constApi";
+import { API_URL } from "../../constants/constApi";
 
 const MyOrderPage = () => {
   const [orders, setOrders] = useState([]);

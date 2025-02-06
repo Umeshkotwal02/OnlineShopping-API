@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { fetchHomeFailure, fetchHomeStart, fetchHomeSuccess } from './homeSlice';
-import { API_URL } from '../../Constant/constApi';
+import { API_URL } from '../../constants/constApi';
 import { STORAGE } from '../../config/config';
 
 const fetchHomePageDetails = () => async (dispatch) => {

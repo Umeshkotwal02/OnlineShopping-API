@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Breadcrumb from "../components/Breadcrumb";
 import { Container } from "react-bootstrap";
 import axios from "axios";
-import { API_URL } from "../Constant/constApi";
+import { API_URL } from "../constants/constApi";
 
 const PrivancyPolicy = () => {
   const [policy, setPolicy] = useState(null); // Changed to null since the policy is a single object

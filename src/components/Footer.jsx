@@ -8,7 +8,6 @@ import {
   FaYoutube,
   FaFacebook,
   FaPinterest,
-  FaInstagramSquare,
 } from "react-icons/fa";
 import { IoIosMail } from "react-icons/io";
 import { RiTwitterXFill } from "react-icons/ri";

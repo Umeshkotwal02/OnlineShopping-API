@@ -19,11 +19,11 @@ const ProductQtyCounter = ({ onChange, defaultValue }) => {
   return (
     <div className="d-flex align-items-center border rounded p-1">
       <Button variant="light" onClick={handleMinusProductQty} size="sm" className="p-0">
-        <FaChevronLeft color="#555555" />
+        <FaChevronLeft className="text-secondary" />
       </Button>
-      <p className="fs-5 fw-medium m-0">
+      <span className="px-2">
         {productCount}
-      </p>
+      </span>
       <Button variant="light" size="sm" className="p-0" onClick={handleAddProductQty}>
         <FaChevronRight className="text-secondary" />
       </Button>
