@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { fetchCartItems, removeFromCartThunk, updateCartItemThunk } from "../../redux/cart/cartThunk";
 import { Button } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
-import ProductQtyCounter from "../bag/ProductQtyCounter";
+import ProductQtyCounter from "./ProductQtyCounter";
 
 const BagCard = ({ info, cartId }) => {
     const [itemInfo, setItemInfo] = useState(info || {});

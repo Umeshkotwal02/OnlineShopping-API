@@ -24,7 +24,7 @@ import * as yup from "yup";
 import { Box, Drawer, InputBase } from '@mui/material';
 import { debounce } from "lodash";
 import { updateCartItemThunk } from '../../redux/cart/cartThunk';
-import ProductQtyCounter from '../../components/bag/ProductQtyCounter';
+import ProductQtyCounter from '../../components/chekoutcard/ProductQtyCounter';
 
 const steps = [
   { id: 'SignUp', label: 'Sign Up', icon: <IoIosCheckmark className="" style={{ fontSize: "500%" }} />, isActive: true },
