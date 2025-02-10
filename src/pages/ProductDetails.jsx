@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AddCartProDetIcon, CashOnDelIcon, ExchangeIcon, ShippingIcon, StitchingIcon, } from "../assets/SvgIcons";
 import Breadcrumb from "../components/Breadcrumb";
@@ -17,15 +17,14 @@ import axios from "axios";
 import { STORAGE } from "../config/config";
 import QuantityCounter from "./ProductDetailsPage/QuantityCounter";
 import ProductDetailsSlider from "./ProductDetailsPage/ProductDetailsSlider";
-import CustomerReview from "./ProductDetailsPage/CustomerReview";
 import { API_URL } from "../constants/constApi";
 import Loader from "../components/Loader";
 import SimilarProduct from "../components/SimilarProduct";
 import "../styles/ProductDetails.css";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cart/cartThunk";
-import { FiHeart } from "react-icons/fi";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlist/wishlistThunk";
+import CustomerReviewSection from "./ProductDetailsPage/CustomerReviewSection";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 16,
@@ -100,9 +99,9 @@ const ProductDetailsPage = () => {
     <Link to="/" key="1" className="text-dark fw-light text-decoration-none">
       Home
     </Link>,
-    <span key="2" className="text-dark fw-light">
+    <Link to="/products-page" key="2" className="text-dark fw-light text-decoration-none">
       Product Page
-    </span>,
+    </Link>,
     <span key="2" className="text-dark fw-light">
       Product Details Page
     </span>
@@ -555,6 +554,7 @@ const ProductDetailsPage = () => {
                         handleAddToCartClick(productInfo?.id || productInfo?.product_id, productInfo?.stitchingOptions, productInfo?.quantity);
                       } else {
                         // setShowLogin(true);
+                        toast.error("Please log in to manage your Add To Cart.");
                       }
                     }}
                     style={{
@@ -586,6 +586,7 @@ const ProductDetailsPage = () => {
                         navigate("/checkout-page");
                       } else {
                         // setShowLogin(true);
+                        toast.error("Please log in to Buy Product.");
                       }
                     }}
                     style={{
@@ -752,7 +753,7 @@ const ProductDetailsPage = () => {
         info={productInfo?.similar_product}
       />
 
-      <CustomerReview productInfo={productInfo} BorderLinearProgress={BorderLinearProgress} />
+      <CustomerReviewSection productInfo={productInfo} BorderLinearProgress={BorderLinearProgress} />
     </>
   );
 };

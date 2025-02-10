@@ -11,20 +11,36 @@
 
 .mobi-footer-icon {
   text-decoration: none;
-  color: #000;
+  color: #6D6D6D;
   font-size: 14px;
   transition: color 0.3s ease;
 }
 
 .mobi-footer-icon svg {
-  color: #000;
+  color: #6D6D6D;
   transition: color 0.3s ease;
+}
+
+.profile-border {
+  border: 1.5px solid #6D6D6D;
+  border-radius: 50%;
+}
+
+.profile-border-active {
+  border: 2px solid #B51B3B;
+  border-radius: 50%;
 }
 
 .mobi-footer-icon.active,
 .mobi-footer-icon.active svg {
   color: rgba(181, 27, 59, 1);
   fill: rgba(181, 27, 59, 1);
+}
+
+.profile-img-footer {
+  width: 24px;
+  height: 24px;
+  object-fit: fill;
 }
 
 @media (max-width: 768px) {

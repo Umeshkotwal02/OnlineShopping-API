@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Banner from './HomePage/Banner'
 import Motion from './HomePage/Motion'
 import FestivalSpecial from './HomePage/FestivalSpecial'
@@ -45,7 +45,7 @@ function HomePage() {
   return (
     <div>
       <MainHeaderMobi />
-      
+
       <span className='d-lg-none'>
         <SearchBar />
       </span>

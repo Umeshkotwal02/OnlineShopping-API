@@ -9,7 +9,10 @@ const Breadcrumb = ({ list }) => {
           separator={<FaChevronRight className="text-sm  fw-normal" />}
           aria-label="breadcrumb"
         >
-          {list}
+          {/* {list} */}
+          {list.map((item, index) => (
+            <span key={index}>{item}</span> // Ensure each child has a unique "key"
+          ))}
         </Breadcrumbs>
       </div>
     </div>

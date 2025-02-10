@@ -1,52 +1,44 @@
 import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { API_URL } from '../../constants/constApi';
-import toast from 'react-hot-toast';
 
 const initialState = {
-  isLoading: false,
   user: null,
+  loading: false,
+  error: null,
   otpSent: false,
   otpVerified: false,
-  error: null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout: (state) => {
+    loginStart(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    loginSuccess(state, action) {
+      state.loading = false;
+      state.user = action.payload;
+      state.error = null;
+    },
+    loginFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    otpSent(state) {
+      state.otpSent = true;
+    },
+    otpVerified(state) {
+      state.otpVerified = true;
+    },
+    logout(state) {
       state.user = null;
       state.otpSent = false;
       state.otpVerified = false;
-      localStorage.removeItem('ISLOGIN');
-      localStorage.removeItem('USERDETAIL');
-    },
-    setLoading: (state, action) => {
-      state.isLoading = action.payload;
-    },
-    setOtpSent: (state, action) => {
-      state.otpSent = action.payload;
-    },
-    setOtpVerified: (state, action) => {
-      state.otpVerified = action.payload;
-    },
-    setError: (state, action) => {
-      state.error = action.payload;
-    },
-    setUser: (state, action) => {
-      state.user = action.payload;
     },
   },
 });
 
-export const {
-  logout,
-  setLoading,
-  setOtpSent,
-  setOtpVerified,
-  setError,
-  setUser,
-} = authSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, otpSent, otpVerified, logout } = authSlice.actions;
 
 export default authSlice.reducer;

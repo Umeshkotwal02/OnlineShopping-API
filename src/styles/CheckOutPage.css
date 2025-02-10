@@ -1,13 +1,12 @@
-
 /* Address Page Start +++++++++++++++++++++++++++++++++++++++++++ */
 .border-rad-fivepx {
-    border: 1px solid rgba(202, 202, 202, 1);
+    border: 1px solid #cacaca;
     border-radius: 5px;
-    color: rgba(116, 116, 116, 1);
+    color: #747474;
 }
 
 .default-Add-btn1 {
+    border: 1px solid rgba(181, 27, 59, 1);
     border-radius: "50px" !important;
     color: rgba(181, 27, 59, 1);
-    border: 1px solid rgba(181, 27, 59, 1);
 }

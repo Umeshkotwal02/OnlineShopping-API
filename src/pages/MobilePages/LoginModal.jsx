@@ -1,29 +1,125 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Form } from 'react-bootstrap';
-import { signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc';
 import "../../styles/LoginCanva.css";
 import toast from "react-hot-toast";
-import { auth, googleProvider } from '../../components/firebase';
+import { auth } from '../../components/firebase';
+import { useSearchParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { googleLogin, sendOtp, verifyOtp } from '../../redux/auth/authThunk';
+import { STORAGE } from '../../config/config';
+import { fetchCartItems } from '../../redux/cart/cartThunk';
+import { fetchWishlistItem } from '../../redux/wishlist/wishlistThunk';
 
-const LoginModal = ({ show, handleClose, setUser }) => {
+const LoginModal = ({ show, handleClose, setIsLoggedIn }) => {
     const [mobileNumber, setMobileNumber] = useState('');
+    // const [otpCanvas, setOtpCanvas] = useState(false);
     const [otpModal, setOtpModal] = useState(false);
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [error, setError] = useState('');
-    const [resendTimer, setResendTimer] = useState(30);
-    const [success, setSuccess] = useState(false);
+    const [resendTimer, setResendTimer] = useState(59);
+    const [isCounting, setIsCounting] = useState(false);
+    const [isOtpExpired, setIsOtpExpired] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const dispatch = useDispatch();
+    const { user, loading, otpSent, otpVerified } = useSelector((state) => state.auth);
+
+    const referralCode = searchParams.get("code");
 
     const handleGoogleLogin = async () => {
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({
+            prompt: "select_account",
+        });
         try {
-            const result = await signInWithPopup(auth, googleProvider);
-            setUser(true); // Notify parent about the logged-in user
-            toast.success("Google Login success");
-            console.log('User logged in:', result.user);
-            handleClose();
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            if (user) {
+                setIsLoggedIn(true);
+                handleClose(true);
+                const userData = {
+                    device_id: localStorage.getItem("deviceId"),
+                    user_email: user.email,
+                    user_name: user.displayName,
+                    type: STORAGE?.GOOGLE,
+                    is_admin: "0",
+                    user_type: STORAGE?.B2C,
+                };
+
+                const googleloginSuccessfully = await dispatch(googleLogin(userData));
+
+                // If OTP was sent successfully, update state and close the canvas
+                if (googleloginSuccessfully) {
+                    setIsLoggedIn(true);
+                    handleClose(true);
+                }
+            }
         } catch (error) {
-            console.error("Error logging in with Google: ", error.message);
+            toast.error("An error occurred during login. Please try again.");
         }
+    };
+
+    const handleProceed = async (e) => {
+        e.preventDefault();
+        setTouched({ mobileNumber: true });
+        setError("");
+        // Validate mobile number
+        if (!mobileNumber) {
+            setError('Please enter your mobile number.');
+            return;
+        }
+        if (!/^[0-9]{10}$/.test(mobileNumber)) {
+            setError('Please enter a valid 10-digit mobile number.');
+            return;
+        }
+        // Send OTP
+        const { success, error } = await dispatch(sendOtp(mobileNumber));
+        // If OTP was sent successfully, update state and close the canvas
+        if (success) {
+            setResendTimer(29);
+            setIsCounting(true);
+            setIsOtpExpired(false);
+            setOtpModal(true); // Open OTP canvas
+            handleClose(true); // Close login canvas
+        } else {
+            setError(error); // Set the error message in the state
+        }
+    };
+
+    const handleVerifyOtp = async () => {
+        if (isOtpExpired) {
+            toast.error("OTP has expired. Please request a new OTP.");
+            return;
+        }
+
+        const enteredOtp = otp.join('');
+        // Send OTP
+        const { success, error } = await dispatch(verifyOtp(enteredOtp, mobileNumber, referralCode));
+
+        // If OTP was sent successfully, update state and close the canvas
+        if (success) {
+            clearAll();
+            setIsLoggedIn(true);
+            setOtpModal(false);
+            setOtp(['', '', '', '', '', '']);
+            handleClose();
+            setMobileNumber("");
+            dispatch(fetchCartItems());
+            dispatch(fetchWishlistItem());
+        } else {
+            setError(error); // Set the error message in the state
+        }
+    };
+
+    const [touched, setTouched] = useState({
+        mobileNumber: false,
+        password: false
+    });
+
+    const handleBlur = (field) => {
+        setTouched((prev) => ({ ...prev, [field]: true }));
     };
 
     const validateInput = (input) => {
@@ -32,56 +128,31 @@ const LoginModal = ({ show, handleClose, setUser }) => {
         return emailRegex.test(input) || phoneRegex.test(input);
     };
 
-    const handleProceed = () => {
-        if (validateInput(mobileNumber)) {
-            setOtpModal(true);
-            startResendTimer();
-            setError('');
-        } else {
-            setError('Please enter a valid email ID or 10-digit mobile number.');
-        }
-    };
-
-    const handleVerifyOtp = () => {
-        if (otp && otp.length === 6 && otp.join('') === '123456') {
-            const userData = {
-                phoneNumber: mobileNumber,
-            };
-            setUser(userData);
-            setSuccess(true);
-            toast.success("OTP Verified Successfully!");
-            setOtpModal(false);
-            setOtp(['', '', '', '', '', '']);
-            handleClose();
-            setMobileNumber('');
-        } else {
-            setError('Invalid OTP. Please try again.');
-        }
-    };
-
-    const handleOtpChange = (index, value) => {
-        if (isNaN(value)) return; // Allow only numbers
-        const newOtp = [...otp];
-        newOtp[index] = value;
-        setOtp(newOtp);
-
-        if (value && index < 5) {
-            const nextInput = document.getElementById(`otp-input-${index + 1}`);
-            if (nextInput) nextInput.focus();
-        } else if (!value && index > 0) {
-            const prevInput = document.getElementById(`otp-input-${index - 1}`);
-            if (prevInput) prevInput.focus();
-        }
-    };
-
-    const startResendTimer = () => {
+    // Function to clear all inputs and states
+    const clearAll = () => {
+        setMobileNumber('');
+        setOtpModal(false);
+        setOtp(['', '', '', '', '', '']);
+        setError('');
         setResendTimer(30);
-        const interval = setInterval(() => {
-            setResendTimer((prev) => {
-                if (prev <= 1) clearInterval(interval);
-                return prev - 1;
-            });
-        }, 1000);
+        setTouched({ mobileNumber: false, password: false });
+    };
+
+    const handleOffcanvasClose = () => {
+        clearAll();
+        handleClose();
+    };
+
+    const handleVerifyOffcanvasClose = () => {
+        setOtpModal(false); // Close OTP canvas
+        setMobileNumber(''); // Clear mobile number
+        clearOtp(); // Clear OTP
+        setError(''); // Clear error
+        handleClose(false); // Ensure login canvas remains open
+    };
+
+    const clearOtp = () => {
+        setOtp(['', '', '', '', '', '']);
     };
 
     const maskMobileNumber = (number) => {
@@ -94,25 +165,63 @@ const LoginModal = ({ show, handleClose, setUser }) => {
         return number; // Return as-is if length is less than 4
     };
 
-    const clearOtp = () => {
-        setOtp(['', '', '', '', '', '']);
+    const handleOtpChange = (index, value) => {
+        if (isNaN(value)) return; // Allow only numbers
+        const newOtp = [...otp];
+        newOtp[index] = value;
+        setOtp(newOtp);
+
+        // Automatically focus the next input
+        if (value && index < 5) {
+            const nextInput = document.getElementById(`otp-input-${index + 1}`);
+            if (nextInput) nextInput.focus();
+        } else if (!value && index > 0) {
+            // Move back on backspace
+            const prevInput = document.getElementById(`otp-input-${index - 1}`);
+            if (prevInput) prevInput.focus();
+        }
+        if (/^\d*$/.test(value)) { // Allow only digits
+            const newOtp = [...otp];
+            newOtp[index] = value;
+            setOtp(newOtp);
+
+            // Automatically move to the next input box
+            if (value !== "" && index < otp.length - 1) {
+                document.getElementById(`otp-input-${index + 1}`).focus();
+            }
+        }
     };
 
+    const resendOtp = () => {
+        sendOtp({
+            user_mobile: mobileNumber,
+        });
+    };
+
+    const handleOtpPaste = (e) => {
+        e.preventDefault(); // Prevent the default paste action
+        const pastedData = e.clipboardData.getData("text").trim(); // Get the pasted text
+
+        if (pastedData.length === otp.length) {
+            // Distribute the pasted string into the OTP state
+            const otpArray = pastedData.split("").slice(0, otp.length);
+            setOtp(otpArray); // Update the OTP state
+        }
+    };
+
+    // Inside the LoginOffcanvas component
     useEffect(() => {
         let interval;
-        if (resendTimer > 0) {
+        if (isCounting && resendTimer > 0) {
             interval = setInterval(() => {
-                setResendTimer((prev) => {
-                    if (prev <= 1) {
-                        clearInterval(interval);
-                        return 0;
-                    }
-                    return prev - 1;
-                });
+                setResendTimer((prev) => prev - 1);
             }, 1000);
+        } else if (resendTimer === 0) {
+            setIsCounting(false);
+            setIsOtpExpired(true);
         }
-        return () => clearInterval(interval);
-    }, [resendTimer]);
+        return () => clearInterval(interval); // Cleanup on unmount
+    }, [isCounting, resendTimer]);
 
     return (
         <>
@@ -134,17 +243,26 @@ const LoginModal = ({ show, handleClose, setUser }) => {
                         <p className="signin-description font-color-global fs-2 pt-5">
                             Enter your email ID or phone number to sign in
                         </p>
-                        <Form.Group className="login-modal-form">
+                        {/* Mobile Number Enter */}
+                        <Form.Group className="mb-3">
                             <Form.Control
                                 type="text"
-                                placeholder="Enter your phone or email ID"
+                                placeholder="Enter your phone number"
                                 value={mobileNumber}
                                 onChange={(e) => setMobileNumber(e.target.value)}
-                                className="form-input"
+                                onBlur={() => handleBlur('mobileNumber')}
+                                className={`form-input ${touched.mobileNumber && !validateInput(mobileNumber) ? 'is-invalid' : ''}`}
+                                required
                             />
-                            {error && <p className="text-danger mt-2">{error}</p>}
+                            {touched.mobileNumber && !mobileNumber && (
+                                <div className="invalid-feedback">Mobile Number is required.</div>
+                            )}
+                            {touched.mobileNumber && mobileNumber && !validateInput(mobileNumber) && (
+                                <div className="invalid-feedback">Please enter a valid 10-digit phone number.</div>
+                            )}
                         </Form.Group>
-                        <button type="button" className="btn-continue w-100 py-3" onClick={handleProceed}>
+                        {error && <div className="text-danger mt-2">{error}</div>}
+                        <button type="button" className="btn-continue w-100" onClick={handleProceed}>
                             Proceed
                         </button>
                     </div>
@@ -197,17 +315,20 @@ const LoginModal = ({ show, handleClose, setUser }) => {
                         <p className="signin-description font-color-global fs-1 pt-5">
                             Enter the OTP sent to your phone number
                         </p>
-                        <p className='fs-5'>OTP sent to {maskMobileNumber(mobileNumber)} <button
-                            className="btn-link text-danger resend-btn"
-                            onClick={() => {
-                                setOtpModal(false);
-                                setMobileNumber('');
-                                clearOtp();
-                                setError('');
-                            }}
-                        >
-                            Change
-                        </button></p>
+                        <p>OTP sent to {maskMobileNumber(mobileNumber)}
+                            <button
+                                className="btn-link text-danger resend-btn px-2"
+                                onClick={() => {
+                                    setOtpModal(false); // Close OTP canvas
+                                    setMobileNumber(''); // Clear mobile number
+                                    clearOtp(); // Clear OTP
+                                    setError(''); // Clear error
+                                    handleClose(false); // Ensure login canvas remains open
+                                }}
+                            >
+                                Change
+                            </button>
+                        </p>
                         <div className="otp-input-container mb-4 gap-3 ">
                             {otp.map((digit, index) => (
                                 <input
@@ -217,7 +338,8 @@ const LoginModal = ({ show, handleClose, setUser }) => {
                                     maxLength="1"
                                     value={digit}
                                     onChange={(e) => handleOtpChange(index, e.target.value)}
-                                    className="otp-input-box web-bg-color px-4 rounded rounded-3"
+                                    onPaste={(e) => handleOtpPaste(e)}
+                                    className="otp-input-box web-bg-color"
                                 />
                             ))}
                         </div>
@@ -232,10 +354,15 @@ const LoginModal = ({ show, handleClose, setUser }) => {
                             </span>
                             <button
                                 className="btn-link p-0 text-decoration-none resend-btn ps-1 text-dark"
-                                disabled={resendTimer > 0}
-                                onClick={startResendTimer}
+                                disabled={resendTimer > 0} // Disable button when timer is active
+                                onClick={resendOtp}
                             >
-                                Resend OTP{resendTimer > 0 ? ` in ${resendTimer}s` : ''}
+                                <span className="fw-medium text-[#666464] underline">
+                                    {isOtpExpired ? "Resend OTP" : "Resend OTP"}
+                                </span>
+                                <span className="fw-medium">
+                                    {resendTimer > 0 && ` in ${resendTimer}s`}
+                                </span>
                             </button>
                         </div>
                     </div>

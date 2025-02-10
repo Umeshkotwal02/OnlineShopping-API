@@ -1,5 +1,5 @@
 export const STORAGE = {
-    USERDETAIL: 'userProfile',
+    USERDETAIL: 'userProfile' || "",
     CARTDETAIL: 'cartDetail',
     ISLOGIN: "isLoggedIn",
     DEVICEID: "deviceId",

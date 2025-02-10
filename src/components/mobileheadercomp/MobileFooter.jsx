@@ -1,32 +1,28 @@
-import React, { useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
-import { HeartIcon, HomeActiveIcon, HomeIcon, WishlistIcon } from '../../assets/SvgIcons';
+import React, { useState, useEffect } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import { NavLink, useNavigate } from "react-router-dom";
+import { GridIcon, HeartIcon, HomeActiveIcon, HomeIcon, WishlistIcon } from "../../assets/SvgIcons";
 import { CgProfile } from "react-icons/cg";
 import "../../styles/Mobile-footer.css";
-import { HiOutlineViewGrid, HiViewGrid } from "react-icons/hi";
-import LoginModal from '../../pages/MobilePages/LoginModal';
-import { useNavigate } from 'react-router-dom';
+import { HiViewGrid } from "react-icons/hi";
+import LoginModal from "../../pages/MobilePages/LoginModal";
+import { useSelector } from "react-redux";
 
 const MobileFooter = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false); // Track login state
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(localStorage.getItem("isLoggedIn"));
+  const { userDetails, loading, error } = useSelector((state) => state.user);
 
-  const handleLoginModal = () => setShowLoginModal(!showLoginModal);
+  const navigate = useNavigate();
+  useEffect(() => {
+    // Sync state with localStorage
+    setIsUserLoggedIn(localStorage.getItem("isLoggedIn"));
+  }, []);
 
   const handleSuccessfulLogin = () => {
     setShowLoginModal(false);
-    setIsUserLoggedIn(true); // Set user as logged in
-  };
-
-  const navigate = useNavigate();
-
-  const handleNavigate = () => {
-    if (isUserLoggedIn) {
-      navigate("/profile");
-    } else {
-      setShowLoginModal(true); // Open Login Modal
-    }
+    localStorage.setItem("isLoggedIn");
+    setIsUserLoggedIn(true);
   };
 
   return (
@@ -43,9 +39,9 @@ const MobileFooter = () => {
               {({ isActive }) => (
                 <>
                   {isActive ? (
-                    <HomeIcon style={{ fontSize: '24px', color: 'black' }} />
+                    <HomeActiveIcon style={{ fontSize: "24px", color: "black" }} />
                   ) : (
-                    <HomeActiveIcon style={{ fontSize: '24px', color: 'blue' }} />
+                    <HomeIcon style={{ fontSize: "24px", color: "#6D6D6D" }} />
                   )}
                   <span className="mt-2">Home</span>
                 </>
@@ -56,16 +52,16 @@ const MobileFooter = () => {
           {/* Category */}
           <Col xxl={3} xl={3} lg={3} md={3} sm={3} xs={3}>
             <NavLink
-              to="/"
+              to="/mobile-category"
               className="mobi-footer-icon d-flex flex-column align-items-center"
               activepagemobile="active"
             >
               {({ isActive }) => (
                 <>
                   {isActive ? (
-                    <HiViewGrid style={{ fontSize: '24px', color: 'blue' }} />
+                    <HiViewGrid style={{ fontSize: "24px", color: "#6D6D6D" }} />
                   ) : (
-                    <HiOutlineViewGrid style={{ fontSize: '24px', color: 'black' }} />
+                    <GridIcon style={{ fontSize: "24px", color: "#6D6D6D" }} />
                   )}
                   <span className="mt-2">Category</span>
                 </>
@@ -83,9 +79,9 @@ const MobileFooter = () => {
               {({ isActive }) => (
                 <>
                   {isActive ? (
-                    <HeartIcon style={{ fontSize: '24px', color: 'black' }} />
+                    <HeartIcon style={{ fontSize: "24px", color: "#6D6D6D" }} />
                   ) : (
-                    <WishlistIcon style={{ fontSize: '24px', color: 'blue' }} />
+                    <WishlistIcon style={{ fontSize: "24px", color: "#6D6D6D" }} />
                   )}
                   <span className="mt-2">Wishlist</span>
                 </>
@@ -97,20 +93,37 @@ const MobileFooter = () => {
           <Col xxl={3} xl={3} lg={3} md={3} sm={3} xs={3}>
             <div
               className="mobi-footer-icon d-flex flex-column align-items-center"
-              onClick={handleNavigate}
+              onClick={() => {
+                if (isUserLoggedIn) {
+                  navigate("/profile");
+                } else {
+                  setShowLoginModal(true);
+                }
+              }}
             >
-              <CgProfile style={{ fontSize: '24px', color: 'black' }} />
+              {isUserLoggedIn ? (
+                <>
+                  <img
+                    src={userDetails?.user_profile || "/images/account-avatar.png"}
+                    alt="Profile"
+                    className="profile-img-footer profile-border-active"
+                  />
+                </>
+              ) : (
+                <CgProfile style={{ fontSize: "24px" }} className="profile-border" />
+              )}
               <span className="mt-2">My Profile</span>
             </div>
           </Col>
+
         </Row>
-      </Container>
+      </Container >
 
       {/* Login Modal */}
-      <LoginModal
+      < LoginModal
         show={showLoginModal}
         handleClose={() => setShowLoginModal(false)}
-        setUser={handleSuccessfulLogin}
+        setIsLoggedIn={handleSuccessfulLogin}
       />
     </>
   );

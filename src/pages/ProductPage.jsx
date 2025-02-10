@@ -339,6 +339,29 @@ const ProductPage = () => {
     setShowFilterOverlay(false);
   };
 
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const stickyStyle = isLargeScreen
+    ? {
+      position: "sticky",
+      top: "133px",
+      height: "max-content",
+      zIndex: 2,
+    }
+    : {};
+
   return (
     <>
       {loading ? (
@@ -349,7 +372,7 @@ const ProductPage = () => {
           <Container fluid className="my-1 px-lg-5 px-xl-5 px-xxl-5">
             <Row>
               {/* Sidebar Filter */}
-              <Col lg={3} className="d-none d-lg-block">
+              <Col lg={3} style={stickyStyle} className="d-none d-lg-block">
                 <h3 className="h4 mb-4">Filter</h3>
                 {filterOptions?.map((filterdata, index) => {
                   if (filterdata.name.toLowerCase() !== 'sort') {
@@ -477,79 +500,79 @@ const ProductPage = () => {
                     </button>
                     <ShowFilterTitles />
                   </div>
+                </Col>
+
+                {/* Products Grid */}
+                {productPageDetails?.CATEGORY_PRODUCT?.length > 0 ? (
+                  <Row>
+                    {productPageDetails?.CATEGORY_PRODUCT?.map((item, index) => (
+                      <Col xs={6} sm={6} md={4} lg={3} xl={3} xxl={3} key={index} className="mb-4">
+                        <NewArrivalCard product={item} />
+                      </Col>
+                    ))}
+                  </Row>
+                ) : (
+                  <div className="text-center py-5">
+                    <h2 className="h5">Product Unavailable</h2>
+                    <p>No products match the current filter criteria.</p>
+                  </div>
+                )}
+
               </Col>
 
-              {/* Products Grid */}
-              {productPageDetails?.CATEGORY_PRODUCT?.length > 0 ? (
-                <Row>
-                  {productPageDetails?.CATEGORY_PRODUCT?.map((item, index) => (
-                    <Col xs={12} sm={6} md={4} lg={3} xl={3} xxl={3} key={index} className="mb-4">
-                      <NewArrivalCard product={item} />
-                    </Col>
-                  ))}
-                </Row>
-              ) : (
-                <div className="text-center py-5">
-                  <h2 className="h5">Product Unavailable</h2>
-                  <p>No products match the current filter criteria.</p>
-                </div>
-              )}
+              {/* Pagination */}
+              <Stack spacing={2} alignItems="center" className="d-flex justify-content-center align-item-center font-jost pagination justify-content-center align-item-center gap-4 fw-bold">
+                {productPageDetails?.CATEGORY_PRODUCT?.length >=
+                  pageset && (
+                    <Pagination
+                      count={totalPages}
+                      page={currentPage}
+                      variant="outlined"
+                      shape="rounded"
+                      nextIconButtonText="Next"
+                      nextIconButtonProps={{
+                        sx: {
+                          backgroundColor: "blue",
+                          color: "white",
+                        },
+                      }}
+                      sx={{
+                        "& .MuiPaginationItem-root": {
+                          border: "none",
+                        },
+                        "& .Mui-selected": {
+                          backgroundColor: "black !important",
+                          color: "#fff",
+                        },
+                        "& .MuiButtonBase-root": {
+                          borderRadius: "0",
+                          height: "40px",
+                          width: "40px",
+                          fontSize: "20px",
+                        },
+                      }}
+                      onChange={handlePaginationChange}
+                    />
+                  )}
+              </Stack>
+            </Row>
+          </Container >
+          {/* Filter Overlay */}
+          < ProductFilter
+            handleFilterClick={handleFilterClick}
+            showFilterOverlay={showFilterOverlay}
+            filterOptions={filterOptions}
+            handleCloseClick={handleCloseClick}
+            handleApplyFilters={handleApplyFilters}
+            activeFilterIndex={activeFilterIndex}
+            handleFilterChange={handleFilterChange}
+            selectedFilters={selectedFilters}
+            handleCheckboxLocalChange={handleCheckboxLocalChange}
+          />
+        </>
 
-            </Col>
-
-            {/* Pagination */}
-            <Stack spacing={2} alignItems="center" className="d-flex justify-content-center align-item-center font-jost pagination justify-content-center align-item-center gap-4 fw-bold">
-              {productPageDetails?.CATEGORY_PRODUCT?.length >=
-                pageset && (
-                  <Pagination
-                    count={totalPages}
-                    page={currentPage}
-                    variant="outlined"
-                    shape="rounded"
-                    nextIconButtonText="Next"
-                    nextIconButtonProps={{
-                      sx: {
-                        backgroundColor: "blue",
-                        color: "white",
-                      },
-                    }}
-                    sx={{
-                      "& .MuiPaginationItem-root": {
-                        border: "none",
-                      },
-                      "& .Mui-selected": {
-                        backgroundColor: "black !important",
-                        color: "#fff",
-                      },
-                      "& .MuiButtonBase-root": {
-                        borderRadius: "0",
-                        height: "40px",
-                        width: "40px",
-                        fontSize: "20px",
-                      },
-                    }}
-                    onChange={handlePaginationChange}
-                  />
-                )}
-            </Stack>
-          </Row>
-        </Container >
-      {/* Filter Overlay */}
-      < ProductFilter
-        handleFilterClick={handleFilterClick}
-        showFilterOverlay={showFilterOverlay}
-        filterOptions={filterOptions}
-        handleCloseClick={handleCloseClick}
-        handleApplyFilters={handleApplyFilters}
-        activeFilterIndex={activeFilterIndex}
-        handleFilterChange={handleFilterChange}
-        selectedFilters={selectedFilters}
-        handleCheckboxLocalChange={handleCheckboxLocalChange}
-      />
-    </>
-
-  )
-}
+      )
+      }
     </>
   );
 };

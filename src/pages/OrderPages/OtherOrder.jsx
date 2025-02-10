@@ -65,7 +65,6 @@ const OtherOrder = () => {
 
     const handleCloseReturnOrder = () => {
         setShowReturnOrder(false);
-        document.body.classList.remove("body-lock");
     };
 
     // Review Modal
@@ -76,7 +75,6 @@ const OtherOrder = () => {
 
     const handleCloseReviewOrder = () => {
         setShowReviewOrder(false);
-        document.body.classList.remove("body-lock");
     };
 
 

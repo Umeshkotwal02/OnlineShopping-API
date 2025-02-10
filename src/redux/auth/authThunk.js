@@ -1,106 +1,106 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { API_URL } from '../../constants/constApi';
 import { STORAGE } from '../../config/config';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { auth } from '../../components/firebase';
 import toast from 'react-hot-toast';
+import { loginStart, loginSuccess, loginFailure, otpSent, otpVerified } from './authSlice';
+import { fetchCartItems } from '../cart/cartThunk';
+import { fetchWishlistItem } from '../wishlist/wishlistThunk';
+import { fetchUserDetails } from '../user/userThunk.js';
 
-export const loginWithGoogle = () => async (dispatch) => {
-  dispatch({ type: 'auth/loginWithGoogle/pending' });
-
+const googleLogin = (userData) => async (dispatch) => {
+  dispatch(loginStart());
   try {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-
-    const payload = {
-      device_id: localStorage.getItem('deviceId') || 'default',
-      user_email: user.email,
-      user_name: user.displayName,
-      type: STORAGE.GOOGLE,
-      is_admin: '0',
-      user_type: STORAGE.B2C,
-    };
-
-    console.log('Payload for Google login:', payload); // Debugging log
-
-    const response = await axios.post(`${API_URL}sendotp`, payload);
-
-    if (response.data.STATUS === 200) {
-      localStorage.setItem(STORAGE.ISLOGIN, 1);
-      localStorage.setItem(STORAGE.USERDETAIL, JSON.stringify(response.data.DATA));
-      dispatch({ type: 'auth/loginWithGoogle/fulfilled', payload: response.data.DATA });
+    const response = await axios.post(`${API_URL}sendotp`, userData);
+    const data = response.data;
+    if (data && data.STATUS === 200) {
+      toast.success(data.MESSAGE);
+      dispatch(loginSuccess(data.DATA));
+      dispatch(fetchCartItems());
+      dispatch(fetchWishlistItem());
+      dispatch(fetchUserDetails());
+      localStorage.setItem(STORAGE?.ISLOGIN, 1);
+      localStorage.setItem(STORAGE?.USERDETAIL, JSON.stringify(data.DATA));
+      console.log("Google login success", data);
+      console.log("userData", data);
     } else {
-      console.error('Error in Google login:', response.data.MESSAGE); // Debugging log
-      dispatch({ type: 'auth/loginWithGoogle/rejected', error: response.data.MESSAGE });
+      dispatch(loginFailure(data.MESSAGE));
     }
   } catch (error) {
-    console.error('Error in Google login:', error.message); // Debugging log
-    dispatch({ type: 'auth/loginWithGoogle/rejected', error: error.message });
+    dispatch(loginFailure(error.message));
+    if (error.response) {
+      // Errors from the API
+      console.error("Error response from API: ", error.response.data);
+    } else if (error.request) {
+      // No response received
+      toast.error(error.request);
+      console.error("No response from API: ", error.request);
+    } else {
+      // Other errors
+      toast.error(error.request);
+      console.error("Error during sign-in with Google: ", error.request);
+    }
+    toast.error("An error occurred during login. Please try again.");
   }
 };
 
-
-
-export const sendOtp = (mobileNumber) => async (dispatch) => {
-  dispatch({ type: 'auth/sendOtp/pending' });
-
+const sendOtp = (mobileNumber) => async (dispatch) => {
+  dispatch(loginStart());
   try {
-    const payload = {
-      device_id: localStorage.getItem(STORAGE.DEVICEID),
+    const response = await axios.post(`${API_URL}userlogin`, {
+      device_id: localStorage.getItem(STORAGE?.DEVICEID),
       user_mobile: mobileNumber,
       is_mobile: '0',
-      type: STORAGE.MOBILE,
-      is_admin: '0',
-      user_type: STORAGE.B2C,
-    };
-
-    console.log('Payload for sending OTP:', payload); // Debugging log
-
-    const response = await axios.post(`${API_URL}userlogin`, payload);
-
-    if (response.data.STATUS === 200) {
-      dispatch({ type: 'auth/sendOtp/fulfilled', payload: response.data.OTP });
-      console.log("Login Otp is", response.data?.OTP);
-      toast.success(response?.data?.MESSAGE || "OTP send.");
+      type: STORAGE?.MOBILE,
+      is_admin: "0",
+      user_type: STORAGE?.B2C,
+    });
+    const data = response.data;
+    if (data && data.STATUS === 200) {
+      dispatch(otpSent());
+      localStorage.setItem(STORAGE?.ISLOGIN, 1);
+      localStorage.setItem(STORAGE?.USERDETAIL, JSON.stringify(data.DATA));
+      console.log("Login Otp is", data?.OTP);
+      toast.success(data?.MESSAGE || "OTP send.");
+      return { success: true, error: data.MESSAGE };// Indicate success
     } else {
-      console.error('Error in sending OTP:', response.data.MESSAGE); // Debugging log
-      dispatch({ type: 'auth/sendOtp/rejected', error: response.data.MESSAGE });
+      dispatch(loginFailure(data.MESSAGE));
+      return { success: false, error: data.MESSAGE }; // Indicate failure
     }
   } catch (error) {
-    console.error('Error in sending OTP:', error.message); // Debugging log
-    dispatch({ type: 'auth/sendOtp/rejected', error: error.message });
+    dispatch(loginFailure(error.message));
+    return { success: false, error: error.message }; // Indicate failure
   }
 };
 
-
-export const verifyOtp = (mobileNumber, otp) => async (dispatch) => {
-  dispatch({ type: 'auth/verifyOtp/pending' });
-
+const verifyOtp = (otp, mobileNumber, referralCode) => async (dispatch) => {
+  dispatch(loginStart());
   try {
-    const payload = {
-      device_id: localStorage.getItem(STORAGE.DEVICEID),
+    const response = await axios.post(`${API_URL}loginotpvarify`, {
+      device_id: localStorage.getItem(STORAGE?.DEVICEID),
+      otp: otp,
+      is_mobile: "0",
       user_mobile: mobileNumber,
       user_otp: otp,
-    };
-
-    console.log('Payload for verifying OTP:', payload); // Debugging log
-
-    const response = await axios.post(`${API_URL}verifyotp`, payload);
-
-    if (response.data.STATUS === 200) {
-      localStorage.setItem(STORAGE.ISLOGIN, 1);
-      localStorage.setItem(STORAGE.USERDETAIL, JSON.stringify(response.data.DATA));
-      dispatch({ type: 'auth/verifyOtp/fulfilled', payload: response.data.DATA });
+      code: referralCode || "",
+    });
+    const data = response.data;
+    if (data && data.STATUS === 200) {
+      toast.success(data?.MESSAGE || "OTP verified.");
+      dispatch(otpVerified());
+      // dispatch(fetchCartItems());
+      // dispatch(fetchWishlistItem());
+      dispatch(fetchUserDetails());
+      dispatch(loginSuccess(data.DATA));
+      localStorage.setItem(STORAGE?.ISLOGIN, 1);
+      localStorage.setItem(STORAGE?.USERDETAIL, JSON.stringify(data.DATA));
+      return { success: true, error: data.MESSAGE };// Indicate success
     } else {
-      console.error('Error in verifying OTP:', response.data.MESSAGE); // Debugging log
-      dispatch({ type: 'auth/verifyOtp/rejected', error: response.data.MESSAGE });
+      dispatch(loginFailure(data.MESSAGE));
+      return { success: false, error: data.MESSAGE }; // Indicate success
     }
   } catch (error) {
-    console.error('Error in verifying OTP:', error.message); // Debugging log
-    dispatch({ type: 'auth/verifyOtp/rejected', error: error.message });
+    dispatch(loginFailure(error.message));
   }
 };
 
-
+export { googleLogin, sendOtp, verifyOtp }

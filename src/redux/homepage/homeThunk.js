@@ -6,8 +6,8 @@ import { STORAGE } from '../../config/config';
 const fetchHomePageDetails = () => async (dispatch) => {
   dispatch(fetchHomeStart());
   try {
-    const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL)) || {};
-    const deviceId = localStorage.getItem(STORAGE?.DEVICEID);
+    // const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL)) || {};
+    const deviceId = localStorage.getItem(STORAGE?.DEVICEID || 0);
 
     // Validate required parameters
     if (!deviceId) {
@@ -15,9 +15,9 @@ const fetchHomePageDetails = () => async (dispatch) => {
     }
 
     const { data } = await axios.post(`${API_URL}home`, {
-      user_type: userProfile?.user_type ?? STORAGE?.B2C,
+      user_type: STORAGE?.B2C,
       device_id: deviceId,
-      user_id: userProfile?.id || null,
+      // user_id: userProfile?.id || null,
       is_mobile: "0",
       is_admin: "0",
     });

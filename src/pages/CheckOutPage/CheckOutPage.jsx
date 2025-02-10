@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import "../../styles/CheckOutPage.css";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IoIosCheckmark, IoIosClose } from 'react-icons/io';
 import { GoPencil, GoPlus } from 'react-icons/go';
-import { Row, Col, Container, Button } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import Payment from './Payment';
 import AddressCard from './AddressCard';
-import { WalletIcon } from '../../assets/SvgIcons';
+import { CashONIcon2, WalletIcon, WalletIcon2 } from '../../assets/SvgIcons';
 import Loader from '../../components/Loader';
 import { Link } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumb';
@@ -15,16 +16,18 @@ import { API_URL } from '../../constants/constApi';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlineCurrencyRupee } from 'react-icons/hi';
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { LgBagIcon } from '../../assets/SvgIcons'
-import { FaTimes } from 'react-icons/fa'
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Box, Drawer, InputBase } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Drawer, FormControlLabel, InputBase, Radio, RadioGroup } from '@mui/material';
 import { debounce } from "lodash";
-import { updateCartItemThunk } from '../../redux/cart/cartThunk';
-import ProductQtyCounter from '../../components/chekoutcard/ProductQtyCounter';
+import { fetchCartItems, updateCartItemThunk } from '../../redux/cart/cartThunk';
+import OffCanvasBagCard from '../../components/chekoutcard/OffCanvasBagCard';
+import RazorPay from "../../assets/images/RazorPay.png"
+import caseondelivery from "../../assets/images/caseondelivery.png"
+import SuccessModal from './SuccessModal';
 
 const steps = [
   { id: 'SignUp', label: 'Sign Up', icon: <IoIosCheckmark className="" style={{ fontSize: "500%" }} />, isActive: true },
@@ -46,6 +49,9 @@ const CheckOutPage = () => {
   const { cartInfo } = useSelector((state) => state.cart);
   const [showCouponCode, setShowCouponCode] = React.useState(false);
   const [itemInfo, setItemInfo] = useState({});
+  const [modalMessage, setModalMessage] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+
 
 
   const navigate = useNavigate();
@@ -68,6 +74,10 @@ const CheckOutPage = () => {
     return name;
   };
 
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
   const handleUpdateCart = (cartChildId, quantity) => {
     const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
     if (!userProfile?.id) {
@@ -84,11 +94,10 @@ const CheckOutPage = () => {
 
   //Coupon
   const handleShowCouponcanvas = () => {
-    document.body.classList.add("body-lock");
+    
     setShowCouponcanvas(true);
   };
   const handleCloseCouponcanvas = () => {
-    document.body.classList.remove("body-lock");
     setShowCouponcanvas(false);
   };
 
@@ -96,7 +105,7 @@ const CheckOutPage = () => {
     <Link to="/" key="1" className="text-dark fw-light text-decoration-none">
       Home
     </Link>,
-    <Link to="/bag" key="2" className="text-dark fw-light text-decoration-none">
+    <Link to="" key="2" className="text-dark fw-light text-decoration-none">
       Bag
     </Link>,
     <span key="3" className="text-dark fw-light">
@@ -114,12 +123,12 @@ const CheckOutPage = () => {
     {
       label: "COD (Cash on Delivery)",
       value: "cod",
-      image: "",
+      image: caseondelivery,
     },
     {
-      label: "Use Razorpay Payments",
+      label: "Razor Pay",
       value: "razorpay",
-      image: "Razorpayicon",
+      image: RazorPay,
     },
   ];
 
@@ -259,6 +268,77 @@ const CheckOutPage = () => {
   };
 
   // ------------------------------ Payment & Coupon Code Concept Start ------------------------------------
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  const handleCodPayment = async () => {
+    try {
+      const userProfile = JSON.parse(localStorage.getItem(STORAGE.USERDETAIL));
+      const deviceId = localStorage.getItem(STORAGE?.DEVICEID);
+      const response = await axios.post(`${API_URL}saveorder`, {
+        device_id: deviceId,
+        is_admin: 0,
+        is_mobile: 1,
+        user_type: "btoc",
+        payment_from: "app",
+        payment_method: paymentMethods[0].value,
+        shipping_name: selectedAddress ? selectedAddress.address_name : "",
+        shipping_mobile: selectedAddress ? selectedAddress.address_mobile : "",
+        shipping_flate_house_company: selectedAddress
+          ? selectedAddress.address_flate_house_company
+          : "",
+        shipping_area_street_village: selectedAddress
+          ? selectedAddress.address_area_street_village
+          : "",
+        shipping_landmark: selectedAddress
+          ? selectedAddress.address_landmark
+          : "",
+        shipping_pincode: selectedAddress
+          ? selectedAddress.address_pincode
+          : "",
+        shipping_city: selectedAddress ? selectedAddress.address_city : "",
+        shipping_state: selectedAddress ? selectedAddress.address_state : "",
+        shipping_country: selectedAddress
+          ? selectedAddress.address_country
+          : "",
+        user_id: userProfile ? userProfile.id : "",
+        code: userProfile?.user_refer_id,
+        total_weight: cartItem,
+      });
+
+      if (response.data.STATUS === 200) {
+        toast.success(response.data.MESSAGE);
+        setModalMessage(response.data.MESSAGE);
+        setOpenModal(true);
+      } else if (response.data.STATUS === 400) {
+        // console.error("COD payment failed:");
+        toast.error(response.data.MESSAGE);
+      }
+    } catch (error) {
+      console.error(
+        "An error occurred while processing COD payment:",
+        error.message
+      );
+    }
+  };
+
+  const handlePayment = () => {
+    if (!selectedPaymentMethod) {
+      toast.error("Please select a payment method");
+      return;
+    }
+    if (selectedPaymentMethod === "cod") {
+      handleCodPayment();
+      setIsButtonDisabled(true);
+      localStorage.removeItem("selectedAddress");
+    } else if (selectedPaymentMethod === "razorpay") {
+      localStorage.removeItem("selectedAddress");
+    }
+  };
+
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
+    paymentMethods[0].value
+  );
+
   const [couponData, setCouponData] = useState([]);
   const [selectedCodeName, setSelectedCodeName] = useState("");
   const fetchCouponCode = async () => {
@@ -367,47 +447,12 @@ const CheckOutPage = () => {
                             </div>
                             {cartInfo?.cartdata?.map((item) => {
                               return (
-                                <div
-                                  key={item.id}
-                                  className="d-flex rounded mb-3 py-2 position-relative border" style={{ backgroundColor: "white", borderRadius: "10px" }}>
-                                  <div className="px-2" style={{ borderRadius: "8px" }} >
-                                    <img
-                                      src={item?.product_image}
-                                      alt={item.product_name}
-                                      className="rounded"
-                                      style={{ width: "100px", objectFit: "fill", }}
-                                    />
-                                  </div>
-                                  <div className="flex-grow-1">
-                                    <Button
-                                      variant=""
-                                      className="position-absolute top-0 end-0 product-cart-close-btn"
-                                      size="sm"
-                                    >
-                                      <FaTimes />
-                                    </Button>
-                                    <h5 className="m-0 fw-medium cart-para"> {item?.product_name} </h5>
-                                    <p className="text-muted small cart-para"> {item?.product_short_description}</p>
-                                    <div className="d-inline-flex fw-bold text-secondary gap-2"> Qty :{" "}
-                                      <ProductQtyCounter
-                                        defaultValue={itemInfo?.product_quantity}
-                                        onChange={(value) => {
-                                          setItemInfo((prev) => ({ ...prev, product_quantity: value }));
-                                          debouncedUpdateCartItem(itemInfo?.child_cart_id, value);
-                                        }}
-                                      />
-                                    </div>
-
-                                    <div className="d-flex align-items-center mb-2">
-                                      <span className="text-success fw-bold me-2"> ₹{item?.product_price}</span>
-                                      <span className="text-muted text-decoration-line-through me-2">
-                                        ₹{item?.product_mrp}
-                                      </span>
-                                      <span className="text-danger small"> {item?.product_discount}% off</span>
-                                    </div>
-
-                                  </div>
-                                </div>
+                                <OffCanvasBagCard
+                                  key={"cartItem" + item?.id}
+                                  info={item}
+                                  cartId={cartInfo?.cart_id}
+                                  fetchCartItems={fetchCartItems}
+                                />
                               )
                             })}
 
@@ -432,9 +477,9 @@ const CheckOutPage = () => {
                                 </div>
                                 <div>
                                   {isOpen ? (
-                                    <IoIosArrowForward size={24} className="text-dark" />
+                                    <IoIosArrowUp size={24} className="text-dark" />
                                   ) : (
-                                    <IoIosArrowBack size={24} className="text-dark" />
+                                    <IoIosArrowDown size={24} className="text-dark" />
                                   )}
                                 </div>
                               </div>
@@ -454,7 +499,7 @@ const CheckOutPage = () => {
                                         }
                                       />
                                     </div>
-                                    <div style={{ width: "20%" }}>
+                                    <div style={{ width: "22%" }}>
                                       {selectedCodeName === "" ? (
                                         <button
                                           className="btn btn-dark  w-100 text-white fw-bold rounded-5"
@@ -511,7 +556,7 @@ const CheckOutPage = () => {
                                     Coupon
                                   </p>
                                   <p style={{ fontSize: "1.2rem", marginBottom: "0.1rem", fontWeight: "400", color: "#555555" }}>
-                                    {cartInfo.applied_coupon_code}
+                                    ₹{cartInfo.applied_coupon_code ? cartInfo.applied_coupon_code : "0"}
                                   </p>
                                 </div>
                                 <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -573,7 +618,170 @@ const CheckOutPage = () => {
         );
 
       case "Payment":
-        return <Payment />;
+        const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+        const filteredPaymentMethods = paymentMethods;
+        return (
+          <>
+            {activeTab === "Payment" && (
+              <>
+                <Container className="mt-4 px-lg-5 px-xl-5 px-xxl-5">
+                  <Container className="px-lg-5 px-xl-5 px-xxl-5">
+                    <Row className="px-lg-5 px-xl-5 px-xxl-5">
+                      <Row className="px-lg-5 px-xl-5 px-xxl-5">
+                        <div class="d-flex justify-content-between flex-wrap mt-4 mb-5">
+                          {/* Price Details card */}
+                          <Col sm={12} xs={12} lg={5} xxl={5} xl={5} >
+                            <div style={{ padding: "20px", borderRadius: "15px", backgroundColor: "#F3F3F3" }} className="mb-2">
+                              <div>
+                                <h4 className="fw-bold" style={{ fontSize: "22px", marginBottom: "12px", fontWeight: "500", lineHeight: "1", }}>
+                                  <HiOutlineCurrencyRupee className="fs-4" /> Price Details
+                                </h4>
+                              </div>
+                              <div style={{ padding: "10px" }}>
+                                <h5
+                                  style={{
+                                    fontSize: "20px",
+                                    marginBottom: "12px",
+                                    fontWeight: "500",
+                                    lineHeight: "1",
+                                  }}
+                                >
+                                  Price Summary
+                                </h5>
+                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                  <p style={{ fontSize: "1.2rem", marginBottom: "0.1rem", fontWeight: "400", color: "#555555", }}>
+                                    Bag Total
+                                  </p>
+                                  <p style={{ fontSize: "1.2rem", marginBottom: "0.1rem", fontWeight: "400", color: "#555555" }}>
+                                    ₹{cartInfo?.total_gross_amount || 0}
+                                  </p>
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                  <p style={{ fontSize: "1.2rem", marginBottom: "0.1rem", fontWeight: "400", color: "#555555" }}>
+                                    Coupon
+                                  </p>
+                                  <p style={{ fontSize: "1.2rem", marginBottom: "0.1rem", fontWeight: "400", color: "#555555" }}>
+                                    ₹{cartInfo.applied_coupon_code ? cartInfo.applied_coupon_code : "0"}
+                                  </p>
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                  <p style={{ fontSize: "1.2rem", marginBottom: "0.1rem", fontWeight: "400", color: "#555555" }}>
+                                    GST {cartInfo?.gst_percentage}%
+                                  </p>
+                                  <p style={{ fontSize: "1.2rem", marginBottom: "0.1rem", fontWeight: "400", color: "#555555" }}>
+                                    ₹{cartInfo?.gst_amount || 0}
+                                  </p>
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                  <p
+                                    style={{
+                                      fontSize: "1.2rem", marginBottom: "0.1rem",
+                                      paddingTop: "10px",
+                                      fontWeight: "600",
+                                      color: "#03A685",
+                                    }}
+                                  >
+                                    You Pay
+                                  </p>
+                                  <p
+                                    style={{
+                                      fontSize: "1.2rem", marginBottom: "0.1rem",
+                                      paddingTop: "10px",
+                                      fontWeight: "600",
+                                      color: "#03A685",
+                                    }}
+                                  >
+                                    ₹{cartInfo?.total_net_amount || 0}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </Col>
+
+                          {/* Payment card */}
+                          <Col sm={12} xs={12} lg={6} xxl={6} xl={6}>
+                            <div style={{ padding: "20px", borderRadius: "15px", backgroundColor: "#F3F3F3" }} className="">
+                              <div >
+                                <div className="px-3">
+                                  <div className="mb-2">
+                                    <h5 className=""> <WalletIcon2 />  Payment Method</h5>
+                                  </div>
+                                </div>
+                                <div className="px-3">
+                                  <img src="/images/map-address.png" alt="" />
+                                </div>
+                              </div>
+                              <RadioGroup
+                                aria-labelledby="payment-method-label"
+                                onChange={(e) =>
+                                  setSelectedPaymentMethod(e.target.value)
+                                }
+                                name="payment-method-group"
+                              >
+                                {filteredPaymentMethods.map((method, index) => (
+                                  <div
+                                    key={index}
+                                    className="d-flex justify-content-between align-items-center gap-4 p-3 bg-white mb-2 rounded"
+                                  >
+                                    <div className="d-flex align-items-center gap-2">
+                                      <img
+                                        src={method.image}
+                                        alt={method.label}
+                                        className="bg-design"
+                                        style={{ width: "60px", height: "60px" }}
+                                        loading="lazy"
+                                      />
+                                    </div>
+                                    <div className="flex-grow-1">
+                                      <h6 className="h5 mb-3 fw-medium m-0">{method.label}</h6>
+                                    </div>
+                                    <FormControlLabel
+                                      value={method.value}
+                                      control={
+                                        <Radio
+                                          sx={{
+                                            "&.Mui-checked": {
+                                              color: "#000000",
+                                            },
+                                          }}
+                                          className="gap-3"
+                                        />
+                                      }
+                                      label=""
+                                    />
+                                  </div>
+
+                                ))}
+                              </RadioGroup>
+                              <div>
+                                <button
+                                  type="button mt-3"
+                                  className="btn-payment w-100"
+                                  fullWidth
+                                  size="large"
+                                  onClick={handlePayment}
+                                  disabled={isButtonDisabled}
+                                >
+                                  Payment
+                                </button>
+                                <SuccessModal
+                                  open={openModal}
+                                  onClose={handleCloseModal}
+                                  message={modalMessage}
+                                />
+                              </div>
+                            </div>
+                          </Col>
+                        </div>
+                      </Row>
+                    </Row>
+                  </Container>
+                </Container>
+              </>
+            )
+            }
+          </>
+        )
 
       default:
         return null;
@@ -671,20 +879,20 @@ const CheckOutPage = () => {
 
       <Drawer
         open={showAddressForm}
-        onClose={toggleAddressDrawer(false)}
+        onClose={toggleAddressDrawer(false)} // Pass the function, not its result
         anchor="right"
       >
         <Box
           role="presentation"
-          className="scrollbar max-w-[300px] lg:!max-w-[450px] w-screen"
+          className="scrollbar "
         >
-          <div className="w-screen max-w-[300px] lg:max-w-[450px] h-full bg-white absolute top-0 right-0">
-            <div className="bag-header flex justify-between items-center border-b border-[#C5C5C5] p-3">
-              <h3 className="text-xl md:text-2xl xl:text-[26px] !leading-none font-medium">
+          <div style={{ maxWidth: "450px", width: "100vw" }}>
+            <div className="d-flex justify-content-between align-items-center border-bottom border-secondary p-3">
+              <h3 className="h3">
                 New Address
               </h3>
               <button
-                className="w-10 aspect-square flex items-center justify-center"
+                className="btn btn-link p-0"
                 onClick={() => {
                   setShowAddressForm(false);
                 }}
@@ -694,27 +902,23 @@ const CheckOutPage = () => {
             </div>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="h-[calc(100%-97px)]"
+              className="h-100"
             >
-              <div className="p-6 lg:pt-[30px] lg:pb-10 lg:px-11 h-[calc(100%-53px)] md:h-[calc(100%-101px)]  lg:h-[calc(100%-133px)] xl:h-[calc(100%-165px)] overflow-auto scrollbar">
-                <h4 className="text-xl md:text-2xl xl:text-[22px] !leading-none font-medium mb-3 xl:mb-6">
-                  Address
-                </h4>
-                <div className="grid gap-y-3">
-                  <div className="w-full">
+              <div className="p-3 overflow-auto h-100">
+                <div className="grid gap-3">
+                  <div className="w-100">
                     <Controller
                       name="address_country"
                       control={control}
                       render={({ field }) => {
                         return (
                           <>
-                            <InputBase
-                              classes={{ input: "py-0" }}
+                            <input
                               placeholder="Country"
-                              className="h-12 sm:h-[60px] xl:h-10 w-full border-b border-[#cdcdcd] !text-lg sm:!text-xl xl:!text-2xl 3xl:!text-[28px] !leading-none font-jost bg-[#f5f5f5] px-4 py-3 xl:p-6 text-black"
+                              className="form-control web-bg-color p-2  Address-Form"
                               {...field}
                             />
-                            <p className="text-red-500">
+                            <p className="text-danger">
                               {errors.address_country?.message}
                             </p>
                           </>
@@ -722,20 +926,19 @@ const CheckOutPage = () => {
                       }}
                     />
                   </div>
-                  <div className="w-full">
+                  <div className="w-100">
                     <Controller
                       name="address_name"
                       control={control}
                       render={({ field }) => {
                         return (
                           <>
-                            <InputBase
-                              classes={{ input: "py-0" }}
-                              placeholder="Name"
-                              className="h-12 sm:h-[60px] xl:h-10 w-full border-b border-[#cdcdcd] !text-lg sm:!text-xl xl:!text-2xl 3xl:!text-[28px] !leading-none font-jost bg-[#f5f5f5] px-4 py-3 xl:p-6 text-black"
+                            <input
+                              placeholder="Full Name"
+                              className="form-control web-bg-color p-2  Address-Form"
                               {...field}
                             />
-                            <p className="text-red-500">
+                            <p className="text-danger">
                               {errors?.address_name?.message}
                             </p>
                           </>
@@ -743,7 +946,7 @@ const CheckOutPage = () => {
                       }}
                     />
                   </div>
-                  <div className="w-full">
+                  <div className="w-100">
                     <Controller
                       name="address_mobile"
                       control={control}
@@ -759,44 +962,40 @@ const CheckOutPage = () => {
                       }}
                       render={({ field }) => (
                         <>
-                          <InputBase
+                          <input
                             {...field}
-                            classes={{ input: "py-0" }}
                             placeholder="Mobile Number"
-                            className="h-12 sm:h-[60px] xl:h-10 w-full border-b border-[#cdcdcd] !text-lg sm:!text-xl xl:!text-2xl 3xl:!text-[28px] !leading-none font-jost bg-[#f5f5f5] px-4 py-3 xl:p-6 text-black"
-                            inputProps={{
-                              maxLength: 10,
-                              inputMode: "numeric",
-                              pattern: "[0-9]*",
-                              onInput: (e) => {
-                                e.target.value = e.target.value.replace(
-                                  /[^0-9]/g,
-                                  ""
-                                );
-                              },
+                            className="form-control web-bg-color p-2 Address-Form "
+                            maxLength={10}
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(
+                                /[^0-9]/g,
+                                ""
+                              );
                             }}
                           />
-                          <p className="text-red-500">
+                          <p className="text-danger">
                             {errors?.address_mobile?.message}
                           </p>
                         </>
                       )}
                     />
                   </div>
-                  <div className="w-full">
+                  <div className="w-100">
                     <Controller
                       name="address_flate_house_company"
                       control={control}
                       render={({ field }) => {
                         return (
                           <>
-                            <InputBase
+                            <input
                               placeholder="Flat,House,No,Building"
-                              sx={{ "&::placeholder": { color: "#858585" } }}
-                              className="h-12 sm:h-[60px] xl:h-10 w-full border-b border-[#cdcdcd] !text-lg sm:!text-xl xl:!text-2xl 3xl:!text-[28px] !leading-none font-jost bg-[#f5f5f5] px-4 py-3 xl:p-6 text-black"
+                              className="form-control web-bg-color p-2  Address-Form"
                               {...field}
                             />
-                            <p className="text-red-500">
+                            <p className="text-danger">
                               {errors.address_flate_house_company?.message}
                             </p>
                           </>
@@ -804,20 +1003,19 @@ const CheckOutPage = () => {
                       }}
                     />
                   </div>
-                  <div className="w-full">
+                  <div className="w-100">
                     <Controller
                       name="address_area_street_village"
                       control={control}
                       render={({ field }) => {
                         return (
                           <>
-                            <InputBase
+                            <input
                               placeholder="Area,Street,Village"
-                              sx={{ "&::placeholder": { color: "#858585" } }}
-                              className="h-12 sm:h-[60px] xl:h-10 w-full border-b border-[#cdcdcd] !text-lg sm:!text-xl xl:!text-2xl 3xl:!text-[28px] !leading-none font-jost bg-[#f5f5f5] px-4 py-3 xl:p-6 text-black"
+                              className="form-control web-bg-color p-2  Address-Form"
                               {...field}
                             />
-                            <p className="text-red-500">
+                            <p className="text-danger">
                               {errors.address_area_street_village?.message}
                             </p>
                           </>
@@ -825,21 +1023,19 @@ const CheckOutPage = () => {
                       }}
                     />
                   </div>
-                  <div className="w-full">
+                  <div className="w-100">
                     <Controller
                       name="address_landmark"
                       control={control}
                       render={({ field }) => {
                         return (
                           <>
-                            <InputBase
-                              // type="text"
-                              classes={{ input: "py-0" }}
+                            <input
                               placeholder="Landmark"
-                              className="h-12 sm:h-[60px] xl:h-10 w-full border-b border-[#cdcdcd] !text-lg sm:!text-xl xl:!text-2xl 3xl:!text-[28px] !leading-none font-jost bg-[#f5f5f5] px-4 py-3 xl:p-6 text-black"
+                              className="form-control web-bg-color p-2  Address-Form"
                               {...field}
                             />
-                            <p className="text-red-500">
+                            <p className="text-danger">
                               {errors.address_landmark?.message}
                             </p>
                           </>
@@ -847,22 +1043,20 @@ const CheckOutPage = () => {
                       }}
                     />
                   </div>
-                  <div className="w-full">
+                  <div className="w-100">
                     <Controller
                       name="address_pincode"
                       control={control}
                       render={({ field }) => {
-                        // const errorMessage = getFieldState(field.name)?.error?.message;
                         return (
                           <>
-                            <InputBase
-                              classes={{ input: "py-0" }}
+                            <input
                               placeholder="Pincode"
-                              className="h-12 sm:h-[60px] xl:h-10 w-full border-b border-[#cdcdcd] !text-lg sm:!text-xl xl:!text-2xl 3xl:!text-[28px] !leading-none font-jost bg-[#f5f5f5] px-4 py-3 xl:p-6 text-black"
+                              className="form-control web-bg-color p-2  Address-Form"
                               {...field}
                               type="number"
                             />
-                            <p className="text-red-500">
+                            <p className="text-danger">
                               {errors.address_pincode?.message}
                             </p>
                           </>
@@ -870,23 +1064,19 @@ const CheckOutPage = () => {
                       }}
                     />
                   </div>
-
-                  <div className="w-full">
+                  <div className="w-100">
                     <Controller
                       name="address_city"
                       control={control}
                       render={({ field }) => {
-                        // const errorMessage = getFieldState(field.name)?.error?.message;
                         return (
                           <>
-                            <InputBase
-                              classes={{ input: "py-0" }}
-                              placeholder="City"
-                              className="h-12 sm:h-[60px] xl:h-10 w-full border-b border-[#cdcdcd] !text-lg sm:!text-xl xl:!text-2xl 3xl:!text-[28px] !leading-none font-jost bg-[#f5f5f5] px-4 py-3 xl:p-6 text-black"
+                            <input
+                              placeholder="Town/City"
+                              className="form-control web-bg-color p-2  Address-Form"
                               {...field}
-                            // type="text"
                             />
-                            <p className="text-red-500">
+                            <p className="text-danger">
                               {errors.address_city?.message}
                             </p>
                           </>
@@ -894,20 +1084,19 @@ const CheckOutPage = () => {
                       }}
                     />
                   </div>
-                  <div className="w-full">
+                  <div className="w-100">
                     <Controller
                       name="address_state"
                       control={control}
                       render={({ field }) => {
                         return (
                           <>
-                            <InputBase
-                              classes={{ input: "py-0" }}
+                            <input
                               placeholder="State"
-                              className="h-12 sm:h-[60px] xl:h-10 w-full border-b border-[#cdcdcd] !text-lg sm:!text-xl xl:!text-2xl 3xl:!text-[28px] !leading-none font-jost bg-[#f5f5f5] px-4 py-3 xl:p-6 text-black"
+                              className="form-control web-bg-color p-2  Address-Form"
                               {...field}
                             />
-                            <p className="text-red-500">
+                            <p className="text-danger">
                               {errors.address_state?.message}
                             </p>
                           </>
@@ -915,24 +1104,12 @@ const CheckOutPage = () => {
                       }}
                     />
                   </div>
-
-                  <div className="w-full">
-                    <h4 className="text-xl md:text-2xl xl:text-[22px] !leading-none font-medium mb-3">
-                      Contact
-                    </h4>
-                    <p className="xs:text-lg lg:text-[19px] !leading-[120%] font-normal text-[#696868]">
-                      Information provided here will be used to contact you for
-                      delivery updates
-                    </p>
-                  </div>
                 </div>
               </div>
-              <div className="p-3 md:p-6 lg:px-11 2xl:py-10">
-                <button
-                  className="w-full bg-[#E9B159] p-2 lg:p- text-lg lg:text-2xl font-medium !leading-tight text-center text-white"
-                  type="submit"
-                >
-                  Ship to this address
+              <div className="p-3">
+                <button type="submit"
+                  className="btn-payment w-100">
+                  Submit
                 </button>
               </div>
             </form>
@@ -940,68 +1117,50 @@ const CheckOutPage = () => {
         </Box>
       </Drawer>
 
-      <Drawer
-        open={showCouponCode}
-        onClose={toggleCouponCodeDrawer(false)}
-        anchor="right"
-      >
-        <Box
-          role="presentation"
-          className="scrollbar max-w-[300px] lg:!max-w-[450px] w-screen"
-        >
-          <div className="w-screen max-w-[300px] lg:max-w-[450px] h-full bg-white absolute top-0 right-0">
-            <div className="bag-header flex justify-between items-center border-b border-[#C5C5C5] p-3">
-              <h3 className="text-xl md:text-2xl !leading-none font-medium">
-                Coupon
-              </h3>
-              <button
-                className="w-10 aspect-square flex items-center justify-center"
-                onClick={() => {
-                  setShowCouponCode(false);
-                }}
-              >
+      <Drawer open={showCouponCode} onClose={toggleAddressDrawer(false)} anchor="right">
+        <div className="overflow-auto" style={{ maxWidth: "450px", width: "100vw" }}>
+          <div className="w-100 h-100 bg-white position-absolute top-0 end-0">
+            {/* Header */}
+            <div className="d-flex justify-content-between align-items-center border-bottom border-secondary p-3">
+              <h3 className="fs-4 fw-medium m-0">Coupon</h3>
+              <button className="btn p-0" onClick={() => setShowCouponCode(false)}>
                 <IoIosClose size={40} />
               </button>
             </div>
+
+            {/* Content */}
             <div className="p-3">
               {couponData.length > 0 ? (
                 couponData.map((code, index) => (
-                  <div
-                    key={index}
-                    className="border-solid border-2 border-gray-200 mb-2"
-                  >
-                    <div className="flex w-full">
-                      <div className="bg-[#FFEBEC] px-10 py-1 text-md font-bold relative z-40 text-red-600 rounded-r-lg w-[30%] text-center capitalize">
+                  <div key={index} className="border border-2 border-secondary mb-2 p-2">
+                    <div className="d-flex w-100">
+                      {/* Coupon label */}
+                      <div className="bg-danger bg-opacity-25 px-3 py-1 fw-bold position-relative rounded-end w-30 text-center text-danger text-capitalize">
                         {truncateProductName(code?.title || "")}
-                        <img
-                          className="w-5 top-2 left-3 absolute"
+                        <img className="position-absolute"
                           // src={shoppingBag}
-                          loading="lazy"
-                        />
-                        <img
-                          className="w-5 absolute top-4 right-3 transform rotate-45"
+                          style={{ width: "20px", top: "5px", left: "10px" }}
+                          loading="lazy" />
+                        <img className="position-absolute"
                           // src={shopCart}
-                          loading="lazy"
-                        />
+                          style={{ width: "20px", top: "15px", right: "10px", transform: "rotate(45deg)" }}
+                          loading="lazy" />
                         <img
-                          className="w-8 absolute bottom-0 left-0"
+                          className="position-absolute"
+                          style={{ width: "30px", bottom: "0", left: "0" }}
                           // src={shopBag}
-                          loading="lazy"
-                        />
+                          loading="lazy" />
                       </div>
-                      <div className="grid items-center text-start w-[50%] ps-2">
-                        <div className="text-md font-bold text-black-600">
-                          {truncateProductHeading(code?.heading || "")}
-                        </div>
-                        <div className="text-gray-400 text-sm">
-                          Use Code: {code?.name}
-                        </div>
+
+                      {/* Coupon Details */}
+                      <div className="d-flex flex-column justify-content-center w-50 ps-2">
+                        <div className="fw-bold text-dark">{truncateProductHeading(code?.heading || "")}</div>
+                        <div className="text-muted small">Use Code: {code?.name}</div>
                       </div>
-                      <div className="grid items-center ">
-                        <button
-                          className="bg-black text-white text-sm font-bold px-5 py-1 rounded-[10px] me-3"
-                          onClick={() => handleCodeSelection(code?.name)}
-                        >
+
+                      {/* Copy Button */}
+                      <div className="d-flex align-items-center">
+                        <button className="btn btn-dark text-white fw-bold px-3 py-1 rounded" onClick={() => handleCodeSelection(code?.name)}>
                           COPY
                         </button>
                       </div>
@@ -1013,8 +1172,9 @@ const CheckOutPage = () => {
               )}
             </div>
           </div>
-        </Box>
-      </Drawer>
+        </div>
+      </Drawer>;
+
     </>
   );
 };

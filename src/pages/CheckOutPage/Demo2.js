@@ -9,8 +9,6 @@ import { STORAGE } from '../../config/config';
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { googleLogin, sendOtp, verifyOtp } from '../../redux/auth/authThunk';
-import { fetchCartItems } from '../../redux/cart/cartThunk';
-import { fetchWishlistItem } from '../../redux/wishlist/wishlistThunk';
 
 const LoginOffcanvas = ({ setIsLoggedIn, show, handleClose }) => {
   const [mobileNumber, setMobileNumber] = useState('');
@@ -108,8 +106,6 @@ const LoginOffcanvas = ({ setIsLoggedIn, show, handleClose }) => {
       setOtp(['', '', '', '', '', '']);
       handleClose();
       setMobileNumber("");
-      dispatch(fetchCartItems());
-      dispatch(fetchWishlistItem());
     } else {
       setError(error); // Set the error message in the state
     }
@@ -194,12 +190,6 @@ const LoginOffcanvas = ({ setIsLoggedIn, show, handleClose }) => {
     }
   };
 
-  const handleOtpKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleVerifyOtp(); 
-    }
-  };
-
   const resendOtp = async () => {
     const { success, error } = await dispatch(sendOtp(mobileNumber));
     if (success) {
@@ -264,11 +254,6 @@ const LoginOffcanvas = ({ setIsLoggedIn, show, handleClose }) => {
                 placeholder="Enter your phone number"
                 value={mobileNumber}
                 onChange={(e) => setMobileNumber(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleProceed(e);
-                  }
-                }}
                 onBlur={() => handleBlur('mobileNumber')}
                 className={`form-input ${touched.mobileNumber && !validateInput(mobileNumber) ? 'is-invalid' : ''}`}
                 required
@@ -358,7 +343,6 @@ const LoginOffcanvas = ({ setIsLoggedIn, show, handleClose }) => {
                   maxLength="1"
                   value={digit}
                   onChange={(e) => handleOtpChange(index, e.target.value)}
-                  onKeyDown={handleOtpKeyDown}
                   onPaste={(e) => handleOtpPaste(e)}
                   className="otp-input-box web-bg-color"
                 />

@@ -26,10 +26,9 @@ const publicRoutes = [
     { path: '/term-condition', element: <TermAndConditionPage /> },
     { path: '/faq', element: <FaqsPage /> },
     { path: '/contact-us', element: <ContactUsPage /> },
-    { path: '/profile', element: <ProfilePage /> },
+    { path: '/profile', element: <ProfilePage /> }, // Ensure this is correct
     { path: '/mobile-category', element: <CategoryMobile /> },
     { path: "/orders-details/:orderId", element: <OrderDetails /> },
-
 ];
 
 

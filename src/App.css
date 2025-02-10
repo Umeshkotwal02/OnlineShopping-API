@@ -18,6 +18,10 @@ body {
   width: 100%;
 }
 
+.pointer-style {
+  cursor: pointer;
+}
+
 
 
 

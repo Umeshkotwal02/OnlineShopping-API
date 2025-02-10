@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Accordion, Card, Form } from "react-bootstrap";
 import { FaPlus, FaMinus } from "react-icons/fa";
-import { MdOutlineFilterList } from "react-icons/md";
 import "../../styles/ProductPage.css"
-import { FliterIcon } from "../../assets/SvgIcons";
+import { FliterIcon, SortByIcon } from "../../assets/SvgIcons";
 
 
 const ProductFilter = ({
@@ -16,6 +15,7 @@ const ProductFilter = ({
   activeFilterIndex,
   handleCloseClick,
   handleApplyFilters,
+  handleSortByClick
 }) => {
   const [isExpanded, setIsExpanded] = useState([]);
 
@@ -33,11 +33,18 @@ const ProductFilter = ({
 
   return (
     <>
-      <div className="d-block d-lg-none fixed-bottom w-100 z-50">
-        <div className="d-flex justify-content-center align-items-center gap-2 text-xl fw-medium text-center py-4" style={{ backgroundColor: "#B51B3B" }}>
+      <div className="d-block d-lg-none d-flex justify-content-evenly align-items-center gap-2 fixed-bottom w-100 z-50" style={{ backgroundColor: "#B51B3B" }}>
+        <div className="d-flex justify-content-center align-items-center gap-2 text-xl fw-medium text-center py-4">
           <FliterIcon size={24} />
-          <div className="text-uppercase text-white" onClick={handleFilterClick}>
+          <div className="text-white" onClick={handleFilterClick}>
             Filter
+          </div>
+        </div>
+        <div className="display-1" style={{ color: "#FFFFFF80" }}>|</div>
+        <div className="d-flex justify-content-center align-items-center gap-2 text-xl fw-medium text-center py-4" >
+          <SortByIcon size={24} />
+          <div className="text-white" onClick={handleSortByClick}>
+            Sort
           </div>
         </div>
       </div>

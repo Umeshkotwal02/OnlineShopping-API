@@ -11,10 +11,21 @@ import { API_URL } from "../../constants/constApi";
 import { STORAGE } from "../../config/config";
 import { updateCartItem, removeCartItem } from "./cartSlice";
 
+
 export const fetchCartItems = () => async (dispatch) => {
   dispatch(setLoading(true));
+
   try {
-    const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
+    const userProfileRaw = localStorage.getItem(STORAGE?.USERDETAIL);
+    
+    // If user profile is not found, stop execution
+    if (!userProfileRaw) {
+      dispatch(setLoading(false));
+      return;
+    }
+
+    const userProfile = JSON.parse(userProfileRaw);
+
     const { data } = await axios.post(`${API_URL}viewcart`, {
       device_id: localStorage.getItem(STORAGE?.DEVICEID),
       user_id: userProfile?.id || null,
@@ -40,6 +51,7 @@ export const fetchCartItems = () => async (dispatch) => {
   }
 };
 
+
 export const addToCart = (productId, quantity, stitchingOptions = []) => async (dispatch, getState) => {
   const userProfile = JSON.parse(localStorage.getItem(STORAGE?.USERDETAIL));
   const firstStitchingOption = stitchingOptions?.[0] || {};
@@ -50,7 +62,6 @@ export const addToCart = (productId, quantity, stitchingOptions = []) => async (
   // Get the existing cart ID from the Redux store
   const { cartInfo } = getState().cart;
   const cartId = cartInfo?.cart_id;
-
   dispatch(setLoading(true));
   try {
     const { data } = await axios.post(`${API_URL}addtocart`, {

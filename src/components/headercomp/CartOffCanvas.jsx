@@ -4,17 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { fetchCartItems } from '../../redux/cart/cartThunk';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import BagCard from "../chekoutcard/BagCard"
+import BagCard from '../chekoutcard/BagCard';
+
 
 const CartOffCanvas = ({ show, handleClose }) => {
 
     // Select cart data from Redux store
     const { cartInfo } = useSelector((state) => state.cart);
-    const cartTotal = useSelector((state) => state.cart.cartInfo?.total);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    console.log("cartInfo", cartInfo);
-    console.log("cart", cartTotal);
+    // console.log("cartInfo", cartInfo);
 
     const handleNavigate = () => {
         handleClose(true);

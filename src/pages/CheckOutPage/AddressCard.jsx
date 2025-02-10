@@ -105,12 +105,10 @@ const AddressCard = ({ info, fetchAddresses, onSelectAddress }) => {
 
     //Address
     const handleShowAddresscanvas = () => {
-        document.body.classList.add("body-lock");
         setIsOpen(false);
         setShowAddresscanvas(true);
     };
     const handleCloseAddresscanvas = () => {
-        document.body.classList.remove("body-lock");
         setShowAddresscanvas(false);
     };
 
@@ -140,7 +138,7 @@ const AddressCard = ({ info, fetchAddresses, onSelectAddress }) => {
                     <Button
                         variant="dark"
                         onClick={() => onSelectAddress(info)}
-                        className="d-flex align-items-center border-rad-fivepx text-white"
+                        className="border-rad-fivepx d-flex align-items-center text-white"
                     >
                         Deliver Here <FaArrowRightLong className="ms-2" />
                     </Button>

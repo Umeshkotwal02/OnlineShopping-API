@@ -4,20 +4,13 @@ import { Offcanvas, Row, Col, Nav } from "react-bootstrap";
 import { CartIcon, OffCanvaArrowIcon } from "../../assets/SvgIcons";
 import "../../styles/OffCanvasForHeader.css"
 import CartModal from "../../pages/MobilePages/CartModal";
-import SearchBar from "../SearchBar";
+import { useSelector } from "react-redux";
 
-const MainHeaderMobi = ({
-  wishlistCount,
-  searchTerm,
-  handleKeyUp,
-  handleChange,
-  suggestions,
-  handleSuggestionClick,
-  showSuggestions,
-}) => {
+const MainHeaderMobi = () => {
 
   const [showOffcanvas, setShowOffcanvas] = useState(false); // Menu Offcanvas
   const [showCartModal, setShowCartModal] = useState(false); // Cart Offcanvas
+  const { cartInfo } = useSelector((state) => state.cart);
 
   const handleOffcanvasToggle = () => setShowOffcanvas(!showOffcanvas);
 
@@ -57,11 +50,30 @@ const MainHeaderMobi = ({
           </Col>
 
           {/* Cart icon at the end */}
-          <Col xs={2} className="text-end">
-            <div className="btn text-dark" onClick={handleCartOpen}>
+          {/* Cart icon at the end */}
+          <Col xs={2} className="text-end position-relative">
+            <div className="btn text-dark p-0" onClick={handleCartOpen}>
               <CartIcon />
-              {wishlistCount > 0 && (
-                <span className="badge bg-danger">{wishlistCount}</span>
+              {cartInfo?.cartcount > 0 && (
+                <span
+                  className="cart-badge badge bg-danger rounded-pill text-white position-absolute"
+                  style={{
+                    fontSize: "0.7rem",
+                    width: "16px",
+                    height: "16px",
+                    top: "78%",
+                    right: "15px",
+                    transform: "translate(50%, -50%)", // Center the badge
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {cartInfo?.cartcount !== undefined &&
+                    cartInfo?.cartcount !== null && (
+                      <span>{cartInfo.cartcount}</span>
+                    )}
+                </span>
               )}
             </div>
           </Col>

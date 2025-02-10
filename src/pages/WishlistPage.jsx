@@ -66,10 +66,6 @@ const WishlistPage = () => {
     }
   };
 
-  const productNameSlug = (name) => {
-    return name.replace(/\s+/g, "-").toLowerCase();
-  };
-
   const [loading, setLoading] = useState(true);
 
   // Simulating loading for 2 seconds

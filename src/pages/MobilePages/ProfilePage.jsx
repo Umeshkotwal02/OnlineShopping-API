@@ -9,52 +9,61 @@ import {
     WishlistProfileIcon,
 } from "../../assets/SvgIcons";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserDetails } from "../../redux/user/userThunk.js";
+import { useForm } from "react-hook-form";
+import { STORAGE } from "../../config/config.js";
+import { setCartInfo, setCartItems } from "../../redux/cart/cartSlice.js";
+import { resetWishlistCount } from "../../redux/wishlist/wishlistSlice.js";
+import { signOut } from "firebase/auth";
+import toast from "react-hot-toast";
+import { auth } from "../../components/firebase.jsx";
+import ProfileModal from "../../components/offcanvas/ProfileModal.jsx";
 
 const ProfilePage = () => {
     const navigate = useNavigate();
-    const fileInputRef = useRef(null);
+    const dispatch = useDispatch();
+    const { userDetails, loading, error } = useSelector((state) => state.user);
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    const [showProfileModals, setShowProfileModals] = useState(false); // Profile Modal
+    const [isOpen, setIsOpen] = useState(false);
 
-    const [profileImage, setProfileImage] = useState(
-        "https://via.placeholder.com/100"
-    );
 
-    // Load the profile picture from local storage on component mount
+
+    // Profile
+    const handleProfileModals = () => {
+        setIsOpen(false);
+        setShowProfileModals(true);
+    };
+
+    const handleCloseProfileModals = () => setShowProfileModals(false);
+
     useEffect(() => {
-        const savedImage = localStorage.getItem("profileImage");
-        if (savedImage) {
-            setProfileImage(savedImage);
-        }
-    }, []);
+        dispatch(fetchUserDetails());
+        console.log("Mbile Profile API CALLED::");
 
-    // Handle image selection
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                const base64Image = reader.result;
-                setProfileImage(base64Image);
-                localStorage.setItem("profileImage", base64Image);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+    }, [dispatch]);
 
-    // Trigger the hidden file input on profile image click
-    const handleProfileImageClick = () => {
-        fileInputRef.current.click(); // Programmatically trigger the file input
-    };
+    useEffect(() => {
+        if (userDetails) {
+            setValue("user_email", userDetails.user_email || "");
+            setValue("user_mobile", userDetails.user_mobile || "");
+        }
+    }, [userDetails, setValue]);
 
     // Logout function
     const handleLogout = () => {
-        // Clear user data from localStorage or localStorage
-        localStorage.removeItem("authUser");
-        localStorage.removeItem("userName");
-        localStorage.removeItem("authUserr");
-        localStorage.removeItem("profileImage");
-
-        // Navigate to the home page
-        navigate("/");
+        localStorage.removeItem(STORAGE?.USERDETAIL);
+        localStorage.removeItem(STORAGE?.ISLOGIN);
+        dispatch(setCartInfo(null));
+        dispatch(setCartItems([]));
+        dispatch(resetWishlistCount());
+        signOut(auth).then(() => {
+            toast.success("Logged out successfully");
+            navigate("/");
+        }).catch((error) => {
+            console.error("Logout Error: ", error.message);
+        });
     };
 
     return (
@@ -65,21 +74,13 @@ const ProfilePage = () => {
                 {/* Header Section */}
                 <div className="profile-header">
                     <img
-                        src={profileImage}
+                        src={userDetails?.user_profile || "/images/account-avatar.png"}
                         alt="Profile"
                         className="profile-image"
-                        onClick={handleProfileImageClick} // Click to select image
                     />
-                    <input
-                        type="file"
-                        accept="image/*"
-                        ref={fileInputRef}
-                        onChange={handleImageChange}
-                        style={{ display: "none" }} // Hide the file input
-                    />
-                    <h1 className="fw-bold">Priyanka Singh</h1>
+                    <h1 className="fw-bold">{userDetails?.user_name}{" "} {userDetails?.user_last_name}</h1>
                     <p className="profile-email fw-medium fs-5">
-                        priyankashingh4587921@gmail.com
+                        {userDetails?.user_email}{" "} {userDetails?.user_mobile}{" "}
                     </p>
                 </div>
 
@@ -89,7 +90,8 @@ const ProfilePage = () => {
                     <ul className="settings-list">
                         {/* Profile */}
                         <li className="d-flex align-items-center justify-content-between">
-                            <div className="d-flex align-items-center gap-3">
+                            <div className="d-flex align-items-center gap-3" onClick={handleProfileModals}
+                            >
                                 <div className="settings-icons">
                                     <ProfileTwoIcon className="icon" />
                                 </div>
@@ -102,7 +104,8 @@ const ProfilePage = () => {
 
                         {/* Wishlist */}
                         <li className="d-flex align-items-center justify-content-between">
-                            <div className="d-flex align-items-center gap-3" onClick={navigate('/wishlist')}>
+                            <div className="d-flex align-items-center gap-3 pointer-style" onClick={() => navigate('/wishlist')}
+                            >
                                 <div className="settings-icons">
                                     <WishlistProfileIcon className="icon" />
                                 </div>
@@ -115,7 +118,7 @@ const ProfilePage = () => {
 
                         {/* My Order */}
                         <li className="d-flex align-items-center justify-content-between">
-                            <div className="d-flex align-items-center gap-3" onClick={navigate('/my-order')}>
+                            <div className="d-flex align-items-center gap-3 pointer-style" onClick={() => navigate('/my-order')}>
                                 <div className="settings-icons">
                                     <MyOrderProIcon className="icon" />
                                 </div>
@@ -128,7 +131,7 @@ const ProfilePage = () => {
 
                         {/* My Address */}
                         <li className="d-flex align-items-center justify-content-between">
-                            <div className="d-flex align-items-center gap-3" onClick={navigate('/')}>
+                            <div className="d-flex align-items-center gap-3 pointer-style" onClick={() => navigate('/123')}>
                                 <div className="settings-icons">
                                     <AddressProIcon className="icon" />
                                 </div>
@@ -141,7 +144,7 @@ const ProfilePage = () => {
 
                         {/* Notifications */}
                         <li className="d-flex align-items-center justify-content-between">
-                            <div className="d-flex align-items-center gap-3">
+                            <div className="d-flex align-items-center gap-3 pointer-style">
                                 <div className="settings-icons">
                                     <NotificationProIcon className="icon" />
                                 </div>
@@ -156,11 +159,12 @@ const ProfilePage = () => {
 
                 {/* Logout Button */}
                 <div className="text-center my-4 mx-3">
-                    <button className="logout-btn fw-medium" onClick={handleLogout}>
+                    <button className="logout-btn fw-medium pointer-style" onClick={handleLogout}>
                         Logout
                     </button>
                 </div>
             </div>
+                <ProfileModal show={showProfileModals} handleClose={handleCloseProfileModals} />
         </>
     );
 };

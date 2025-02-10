@@ -61,12 +61,12 @@ const BagCard = ({ info, cartId }) => {
     return (
         <div
             className="card border web-bg-color"
-            onClick={handleCardClick}
             style={{ cursor: "pointer" }}
         >
             <div className="row g-0">
                 <div className="col-4 my-2">
                     <img
+                        onClick={handleCardClick}
                         src={itemInfo?.product_image}
                         alt={itemInfo?.product_name}
                         className="rounded"

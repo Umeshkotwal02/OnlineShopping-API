@@ -33,7 +33,6 @@ const Header = () => {
   const [headerButtons, setHeaderButtons] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const isLoggedIn = localStorage.getItem("isLoggedIn");
-  // const [isLoggedIn, setIsLoggedIn] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const wishlistCount = useSelector((state) => state.wishlist.wishlistCount);
@@ -62,6 +61,7 @@ const Header = () => {
 
   //login
   const handleShowLoginCanvas = () => {
+    
     setIsOpen(false);
     setShowLoginCanvas(true);
   };
@@ -85,6 +85,7 @@ const Header = () => {
 
   // Profile
   const handleProfileModals = () => {
+    
     setIsOpen(false);
     setShowProfileModals(true);
   };
@@ -92,6 +93,7 @@ const Header = () => {
   const handleCloseProfileModals = () => setShowProfileModals(false);
   // Notification
   const handleNotificationModals = () => {
+    
     setIsOpen(false);
     setShowNotificationModal(true);
   };
@@ -128,19 +130,21 @@ const Header = () => {
 
   // Monitor authentication state
   useEffect(() => {
-    dispatch(fetchWishlistItem());
-    dispatch(fetchCartItems());
+    // dispatch(fetchWishlistItem());
+    // dispatch(fetchCartItems());
     fetchHeaderButtons();
-    // const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-    //   setIsLoggedIn(currentUser);
-    // });
-    // return () => unsubscribe(); // Cleanup subscription
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      // setIsLoggedIn(currentUser);
+    });
+    return () => unsubscribe(); // Cleanup subscription
   }, [dispatch]);
 
   return (
     <>
       <TopBar />
+      {/* <MainHeaderMobi /> */}
       <div className="sticky-top" style={{ backgroundColor: "#F3F3F3" }}>
+
         <Container fluid className="px-lg-5 px-xl-5 px-xxl-5 pt-lg-1">
           <div className="d-none d-lg-block">
             <Row className="align-items-center pt-3">
