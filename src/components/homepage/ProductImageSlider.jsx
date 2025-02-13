@@ -32,7 +32,7 @@ const ProductImageSlider = ({ imageList }) => {
           prevEl: "." + nextclassName,
         }}
         pagination={{
-          clickable: false,
+          clickable: true,
         }}
         modules={[Navigation, Pagination]}
         loop={isLoopEnabled} // Enable loop only if there are enough slides
