@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import "../../styles/BridalLahegaCholi.css";
 import { useDispatch } from "react-redux";
@@ -9,6 +9,8 @@ import toast from "react-hot-toast";
 const BridalLahegaCholi = ({ data = [] }) => {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
 
     const productNameSlug = (name) => {
         return name.replace(/\s+/g, "-").toLowerCase();
@@ -98,6 +100,7 @@ const BridalLahegaCholi = ({ data = [] }) => {
                                             e.stopPropagation();
                                             e.preventDefault();
                                             handleAddToCart(product?.id || product?.product_id, product?.stitchingOptions);
+                                            navigate("/checkout-page");
                                         }}
                                     >
                                         SHOP NOW

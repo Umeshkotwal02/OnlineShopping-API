@@ -40,7 +40,7 @@ const NewArrivalCard = ({ product }) => {
             toast.error("Please log in to manage your Add To Cart.");
             return;
         }
-        dispatch(addToCart(product.id, product.stitchingOptions));
+        dispatch(addToCart(product.id || product.product_id, product.stitchingOptions));
     }
 
     const handleWishlistToggle = () => {
@@ -53,7 +53,7 @@ const NewArrivalCard = ({ product }) => {
         if (isWishlisted) {
             dispatch(removeFromWishlist(product.id));
         } else {
-            dispatch(addToWishlist(product.id));
+            dispatch(addToWishlist(product.id || product.product_id));
         }
 
         setIsWishlisted(!isWishlisted);

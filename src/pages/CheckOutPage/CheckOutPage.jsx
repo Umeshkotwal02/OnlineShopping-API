@@ -94,7 +94,7 @@ const CheckOutPage = () => {
 
   //Coupon
   const handleShowCouponcanvas = () => {
-    
+
     setShowCouponcanvas(true);
   };
   const handleCloseCouponcanvas = () => {
@@ -359,7 +359,7 @@ const CheckOutPage = () => {
     setShowCouponCode(false);
   };
   useEffect(() => {
-    fetchCouponCode();
+    // fetchCouponCode();
   }, []);
 
   useEffect(() => { }, [couponData, selectedCodeName]);
@@ -371,14 +371,16 @@ const CheckOutPage = () => {
         .post(`${API_URL}/verifycode`, {
           device_id: localStorage.getItem(STORAGE?.DEVICEID),
           user_id: userProfile.id,
-          coupon_code: selectedCodeName,
+          // coupon_code: selectedCodeName,
+          coupon_code: "",
         })
         .then((response) => {
           if (response.data.STATUS === 200) {
             toast.success(response.data.MESSAGE);
             setCartInfo((prevCartInfo) => ({
               ...prevCartInfo,
-              applied_coupon_code: response.data.coupon_code,
+              // applied_coupon_code: response.data.coupon_code,
+              applied_coupon_code: "0",
               applied_coupon_amount: response.data.coupon_amount,
               total_discount_amount: response.data.discount_amount,
             }));
@@ -512,7 +514,7 @@ const CheckOutPage = () => {
                                       ) : (
                                         <button
                                           className="btn btn-dark  w-100 text-white fw-bold rounded-5"
-                                          onClick={verifyCouponCode}
+                                        onClick={verifyCouponCode}
                                         >
                                           Apply
                                         </button>
@@ -556,7 +558,8 @@ const CheckOutPage = () => {
                                     Coupon
                                   </p>
                                   <p style={{ fontSize: "1.2rem", marginBottom: "0.1rem", fontWeight: "400", color: "#555555" }}>
-                                    ₹{cartInfo.applied_coupon_code ? cartInfo.applied_coupon_code : "0"}
+                                    {/* ₹{cartInfo.applied_coupon_code ? cartInfo.applied_coupon_code : "0"} */}
+                                    ₹{0}
                                   </p>
                                 </div>
                                 <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -661,7 +664,8 @@ const CheckOutPage = () => {
                                     Coupon
                                   </p>
                                   <p style={{ fontSize: "1.2rem", marginBottom: "0.1rem", fontWeight: "400", color: "#555555" }}>
-                                    ₹{cartInfo.applied_coupon_code ? cartInfo.applied_coupon_code : "0"}
+                                    {/* ₹{cartInfo.applied_coupon_code ? cartInfo.applied_coupon_code : "0"} */}
+                                    ₹{0}
                                   </p>
                                 </div>
                                 <div style={{ display: "flex", justifyContent: "space-between" }}>

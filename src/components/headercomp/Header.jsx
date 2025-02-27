@@ -324,8 +324,8 @@ const Header = () => {
 
       {/* <MobileFooter /> */}
 
-    </>
-  );
+      </>
+    );
 };
 
 export default Header;

@@ -175,7 +175,7 @@ const ProductDetailsPage = () => {
     else setIsWishlisted(false);
   }, [productInfo]);
 
-  const handleAddToCartClick = (productId, quantity, stitchingOptions = []) => {
+  const handleAddToCartClick = (productId, stitchingOptions = []) => {
     if (!productId) {
       toast.error("Product ID is required.");
       return;
@@ -551,7 +551,7 @@ const ProductDetailsPage = () => {
                       e.stopPropagation();
                       e.preventDefault();
                       if (isLoggedIn) {
-                        handleAddToCartClick(productInfo?.id || productInfo?.product_id, productInfo?.stitchingOptions, productInfo?.quantity);
+                        handleAddToCartClick(productInfo?.product_id, productInfo?.quantity || productInfo?.id);
                       } else {
                         // setShowLogin(true);
                         toast.error("Please log in to manage your Add To Cart.");
@@ -582,7 +582,8 @@ const ProductDetailsPage = () => {
                       e.stopPropagation();
                       e.preventDefault();
                       if (isLoggedIn) {
-                        handleAddToCartClick(productInfo?.id || productInfo?.product_id, productInfo?.stitchingOptions, productInfo?.quantity);
+                        handleAddToCartClick(productInfo?.product_id, productInfo?.quantity || productInfo?.id);
+                        // handleAddToCartClick(productInfo?.id || productInfo?.product_id, productInfo?.stitchingOptions, productInfo?.quantity);
                         navigate("/checkout-page");
                       } else {
                         // setShowLogin(true);
